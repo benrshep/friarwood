@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '_!__+bsnv-phdg3or=s=v=s^$er0e4p#t%u((gqfl8j-3di++8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # Application definition
 
@@ -103,7 +103,7 @@ STATIC_URL = '/static/'
 # -- HEROKU
 
 # Allow all host hosts/domain names for this site
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['friarwood.herokuapp.com']
 
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
@@ -117,7 +117,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 try:
     from .local_settings import *
 except ImportError as e:
-    print('Unable to load local_settings.py:', e)
+    pass
+    #print('Unable to load local_settings.py:', e)
 
 
 #Amazon S3
@@ -125,7 +126,7 @@ except ImportError as e:
 #Storage on S3 settings are stored as os.environs to keep settings.py clean
 if not DEBUG:
    AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
-   AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY']
+   AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
    STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
    S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
