@@ -34,6 +34,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -112,6 +113,6 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # try to load local_settings.py if it exists
 try:
-    from local_settings import *
-except Exception as e:
-    pass
+    from .local_settings import *
+except ImportError as e:
+    print('Unable to load local_settings.py:', e)
