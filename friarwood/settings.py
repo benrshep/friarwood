@@ -23,10 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '_!__+bsnv-phdg3or=s=v=s^$er0e4p#t%u((gqfl8j-3di++8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+DEBUG = False
 
 # Application definition
 
@@ -74,13 +71,12 @@ WSGI_APPLICATION = 'friarwood.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+# We only need the engine name, as heroku takes care of the rest --HEROKU
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
     }
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -100,3 +96,22 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# -- HEROKU
+
+# Allow all host hosts/domain names for this site
+ALLOWED_HOSTS = ['*']
+
+# Parse database configuration from $DATABASE_URL
+import dj_database_url
+
+DATABASES = { 'default' : dj_database_url.config()}
+
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# try to load local_settings.py if it exists
+try:
+    from local_settings import *
+except Exception as e:
+    pass
