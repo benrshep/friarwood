@@ -33,7 +33,7 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    #'django.contrib.staticfiles',
+    'django.contrib.staticfiles',
     'django_extensions',
     'storages',
     'boto',
@@ -98,6 +98,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
+STATIC_URL = '/static/'
+
 # -- HEROKU
 
 # Allow all host hosts/domain names for this site
@@ -120,8 +122,8 @@ except ImportError as e:
 
 
 #Amazon S3
-#Storage on S3 settings are stored as os.environs to keep settings.py clean
 
+#Storage on S3 settings are stored as os.environs to keep settings.py clean
 if not DEBUG:
    AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
@@ -129,5 +131,3 @@ if not DEBUG:
    STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
    S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
    STATIC_URL = S3_URL
-
-
