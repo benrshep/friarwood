@@ -54,7 +54,6 @@ class Wine(models.Model):
 	
 	single_size = models.CharField(max_length=50, blank=True)
 	case_size = models.IntegerField(default=0)
-	case_type = models.CharField(max_length=100)
 	stocked = models.NullBooleanField()
 	stock_bin = models.CharField(max_length=100)
 
