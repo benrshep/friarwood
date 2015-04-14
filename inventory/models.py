@@ -46,13 +46,6 @@ class Wine(models.Model):
 	searcher_price = models.DecimalField(max_digits=6, decimal_places=2, default = 0)
 	searcher_status = models.CharField(max_length=100, blank=True, null = True)
 	searcher_data = models.TextField(blank= True, null=True)
-
-	
-	region1 = models.CharField(max_length=100)
-	region2 = models.CharField(max_length=100)
-	region3 = models.CharField(max_length=100)
-	region4 = models.CharField(max_length=100)
-	region5 = models.CharField(max_length=100)
 	
 	colour = models.CharField(max_length=100)
 	wine_type = models.CharField(max_length=100)
@@ -80,15 +73,36 @@ class Wine(models.Model):
 	retail_price_s = models.CharField(max_length=100,blank=True, null = True)
 	retail_price= models.DecimalField(max_digits=6, decimal_places=2,blank=True, null = True)
 	#retail_price_vat = models.DecimalField(max_digits=6, decimal_places=2,blank=True, null = True)
-	retail_margin = models.IntegerField(default=0)
 
 	wholesale_price_s = models.CharField(max_length=100,blank=True, null = True)
 	wholesale_price = models.DecimalField(max_digits=6, decimal_places=2,blank=True, null = True)
 
 	#wholesale_price_vat = models.DecimalField(max_digits=6, decimal_places=2,blank=True, null = True)
-	wholesale_margin = models.IntegerField(default=0)
 
 	vat = models.IntegerField(default=20)
+
+	def _retail_margin(self):
+		"Returns the total"
+		try:
+			return  str(round((float(self.cost_price_s) / float(self.retail_price_s))*100, 2)) + '%' 
+		except: 
+			return 'N/A'
+	def _wholesale_margin(self):
+		"Returns the total"
+		try:
+			return  str(round((float(self.cost_price_s) / float(self.wholesale_price_s))*100, 2)) + '%' 
+		except: 
+			return 'N/A'
+	def _in_sage(self):
+		"Returns whether item in sage"
+		if self.sage_name:
+			return True
+		else:
+			return False
+
+	retail_margin = property(_retail_margin)
+	wholesale_margin = property(_wholesale_margin)
+	in_sage = property(_in_sage)
 
 	def __str__(self):
 		return self.sage_name

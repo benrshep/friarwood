@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.forms import TextInput, Textarea
+from django.db import models
 from .models import Wine, Producer, Varietal, Appellation
 #from wines.tasks import find_wine
 
@@ -26,10 +28,11 @@ class AppellationAdmin(admin.ModelAdmin):
 	list_display = ['name','country']
 
 class WineAdmin(ImportExportActionModelAdmin):
+	formfield_overrides = { models.CharField: {'widget': TextInput(attrs={'size':'10'}) } }
 	resource_class = WineResource
 	fieldsets = (
 		(None, {
-			'fields': ('sage_name', 'appellation', 'vintage', 'note')
+			'fields': ('short_name', 'appellation', 'vintage', 'note')
 			}),
 		('Pricing', {
 			'classes': ('grp-collapse','grp-closed'),
@@ -37,13 +40,16 @@ class WineAdmin(ImportExportActionModelAdmin):
 			}),
 		('Linking Fields', {
 			'classes': ('grp-collapse','grp-closed'),
-			'fields': ('sage_ref','lcb_ref', 'octavian_ref')
+			'fields': ('sage_name','sage_ref','lcb_ref', 'octavian_ref')
 			}),
 		)
-	list_display = ['short_name', 'sage_name', 'stock_bin', 'single_size' , 'sage_ref', 'vintage', 'cost_price_s', 'retail_price_s', 'wholesale_price_s']
-	list_filter = ['vintage', 'retail_price_s']
-	search_fields = ['sage_name','short_name' ,'vintage', 'single_size']
+	list_display = ['short_name', 'sage_name', 'in_sage', 'stock_bin', 'single_size' , 'sage_ref', 'vintage', 'cost_price_s', 'retail_price_s', 'retail_margin', 'wholesale_price_s', 'wholesale_margin']
+	list_filter = ['single_size','vintage']
+	search_fields = ['short_name' ,'vintage', 'single_size']
 	list_per_page = 500
+	list_display_links = ['short_name']
+	list_editable = ['cost_price_s', 'retail_price_s', 'wholesale_price_s']
+	readonly_fields = ('sage_name','sage_ref',)
 
 	def save_model(self, request, obj, form, change):
 		#Save initial required infomation
