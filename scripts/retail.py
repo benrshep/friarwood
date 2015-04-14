@@ -17,8 +17,8 @@ def run():
 			if w.count() < 1:
 				n_found+=1
 				#ADD WINE
-				new_wine = Wine(short_name=row[15], vintage=row[16], single_size=row[17],cost_price=row[18],retail_price=[20])
-				new_wine.save()
+				nwine = Wine(stock_bin = row[0],short_name=row[15], vintage=row[16], single_size=row[17],cost_price_s=row[18],retail_price_s=row[20])
+				nwine.save()
 				n_handled+=1
 
 			else:
@@ -30,36 +30,58 @@ def run():
 						if 'half' in sage:
 							if vint == row[16]:
 								#UPDATE WINE
+								wine.short_name = row[15]
+								wine.vintage = row[16]
+								wine.single_size = row[17]
+								wine.cost_price_s = row[18]
+								wine.retail_price_s = row[20]
+								wine.stock_bin = row[0]
+								wine.save()
 								handled+=1
 						else:
 							#ADD WINE
-							new_wine = Wine(short_name=row[15], vintage=row[16], single_size=row[17],cost_price=row[18],retail_price=[20])
-							new_wine.save()
+							nwine = Wine(stock_bin = row[0],short_name=row[15], vintage=row[16], single_size=row[17],cost_price_s=row[18],retail_price_s=row[20])
+							nwine.save()
 							handled+=1
 
 					elif row[17] == '1.5' or row[17] == '1.50':
 						if 'mag' in sage:
 							if vint == row[16]:
 								#UPDATE WINE
+								wine.short_name = row[15]
+								wine.vintage = row[16]
+								wine.single_size = row[17]
+								wine.cost_price_s = row[18]
+								wine.retail_price_s = row[20] 
+								wine.stock_bin = row[0]
+								wine.save()
 								handled+=1
 						else:
 							#ADD WINE
-							new_wine = Wine(short_name=row[15], vintage=row[16], single_size=row[17],cost_price=row[18],retail_price=[20])
-							new_wine.save()
+							nwine = Wine(stock_bin = row[0],short_name=row[15], vintage=row[16], single_size=row[17],cost_price_s=row[18],retail_price_s=row[20])
+							nwine.save()
 							handled+=1
 
 					elif row[17] == '0.5' or row[17] == '0.7':
 						#ADD WINE
-						new_wine = Wine(short_name=row[15], vintage=row[16], single_size=row[17],cost_price=row[18],retail_price=[20])
-						new_wine.save()
-						#print("%s, %s, %s" % (row[17],row[15],row[16]))
-						#print("%s" % wine)
+						nwine = Wine(stock_bin = row[0],short_name=row[15], vintage=row[16], single_size=row[17],cost_price_s=row[18],retail_price_s=row[20])
+						nwine.save()
 						handled+=1
 
-					else:
-						if vint == row[16]:
+					elif row[17] == '0.75':
+						if vint == row[16] and 'half' not in sage:
 							#UPDATE WINE
+							wine.short_name = row[15]
+							wine.vintage = row[16]
+							wine.single_size = row[17]
+							wine.cost_price_s = row[18]
+							wine.retail_price_s = row[20]
+							wine.stock_bin = row[0]
+							wine.save()
 							handled+=1
+
+		#print("%s, %s, %s" % (row[17],row[15],row[16]))
+		#print("%s" % wine)
 
 		total = n_found+found
 		h_total = handled+n_handled
@@ -70,9 +92,5 @@ def run():
 		print("Total: %d" % total)
 		print("Rows: %d" % rows)
 		
-		
 		print("Handled Total: %d" % h_total)
 
-
-			#w = Wine(sage_ref=row[0], sage_name=row[1],)
-			#w.save()

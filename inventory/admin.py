@@ -2,6 +2,15 @@ from django.contrib import admin
 from .models import Wine, Producer, Varietal, Appellation
 #from wines.tasks import find_wine
 
+from import_export import resources
+from import_export.admin import ImportExportActionModelAdmin
+
+
+class WineResource(resources.ModelResource):
+
+    class Meta:
+        model = Wine
+
 # Register your models here.
 
 class WineInline(admin.StackedInline):
@@ -16,23 +25,24 @@ class ProducerAdmin(admin.ModelAdmin):
 class AppellationAdmin(admin.ModelAdmin):
 	list_display = ['name','country']
 
-class WineAdmin(admin.ModelAdmin):
+class WineAdmin(ImportExportActionModelAdmin):
+	resource_class = WineResource
 	fieldsets = (
 		(None, {
 			'fields': ('sage_name', 'appellation', 'vintage', 'note')
 			}),
 		('Pricing', {
 			'classes': ('grp-collapse','grp-closed'),
-			'fields': ('cost_price','retail_price','wholesale_price')
+			'fields': ('cost_price_s','retail_price_s','wholesale_price_s')
 			}),
 		('Linking Fields', {
 			'classes': ('grp-collapse','grp-closed'),
 			'fields': ('sage_ref','lcb_ref', 'octavian_ref')
 			}),
 		)
-	list_display = ['sage_name', 'short_name', 'stock_bin' , 'sage_ref', 'vintage', 'cost_price', 'retail_price', 'wholesale_price']
-	list_filter = ['vintage', 'retail_price']
-	search_fields = ['sage_name', 'vintage']
+	list_display = ['short_name', 'sage_name', 'stock_bin', 'single_size' , 'sage_ref', 'vintage', 'cost_price_s', 'retail_price_s', 'wholesale_price_s']
+	list_filter = ['vintage', 'retail_price_s']
+	search_fields = ['sage_name','short_name' ,'vintage', 'single_size']
 	list_per_page = 500
 
 	def save_model(self, request, obj, form, change):

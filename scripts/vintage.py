@@ -12,6 +12,6 @@ def run():
 			try:
 				wine.vintage = nums[0]
 				wine.save()
-				print(nums)
+				#print(nums)
 			except:
 				print(nums)	

@@ -29,7 +29,7 @@ class Appellation(models.Model):
 class Wine(models.Model):
 	"""docstring for  Wine"""
 	wine = models.CharField(max_length=100)
-	sage_name = models.CharField(max_length=100)
+	sage_name = models.CharField(max_length=100, blank=True)
 	short_name = models.CharField(max_length=100, blank=True)
 	full_name = models.CharField(max_length=200, blank=True)
 	sku = models.CharField(max_length=200, blank=True)
@@ -59,7 +59,7 @@ class Wine(models.Model):
 	alcohol = models.DecimalField(max_digits=3, decimal_places=2,default=0)
 	classification = models.CharField(max_length=200)
 	
-	single_size = models.IntegerField(default=0)
+	single_size = models.CharField(max_length=50, blank=True)
 	case_size = models.IntegerField(default=0)
 	case_type = models.CharField(max_length=100)
 	stocked = models.NullBooleanField()
@@ -73,13 +73,21 @@ class Wine(models.Model):
 	lcb_ref = models.CharField(max_length=100,blank=True, null = True)
 	sage_ref = models.CharField(max_length=100,blank=True, null = True)
 
-	cost_price = models.DecimalField(max_digits=6, decimal_places=2,null=True, blank=True)
-	retail_price = models.DecimalField(max_digits=6, decimal_places=2,null=True, blank=True)
-	retail_price_vat = models.DecimalField(max_digits=6, decimal_places=2,null=True,blank=True)
-	wholesale_price = models.DecimalField(max_digits=6, decimal_places=2,null=True, blank=True)
-	wholesale_price_vat = models.DecimalField(max_digits=6, decimal_places=2,null=True, blank=True)
+	cost_price_s = models.CharField(max_length=100,blank=True, null = True)
+	w_cost_price_s = models.CharField(max_length=100,blank=True, null = True)
+	cost_price = models.DecimalField(max_digits=6, decimal_places=2,blank=True, null = True)
+
+	retail_price_s = models.CharField(max_length=100,blank=True, null = True)
+	retail_price= models.DecimalField(max_digits=6, decimal_places=2,blank=True, null = True)
+	#retail_price_vat = models.DecimalField(max_digits=6, decimal_places=2,blank=True, null = True)
 	retail_margin = models.IntegerField(default=0)
+
+	wholesale_price_s = models.CharField(max_length=100,blank=True, null = True)
+	wholesale_price = models.DecimalField(max_digits=6, decimal_places=2,blank=True, null = True)
+
+	#wholesale_price_vat = models.DecimalField(max_digits=6, decimal_places=2,blank=True, null = True)
 	wholesale_margin = models.IntegerField(default=0)
+
 	vat = models.IntegerField(default=20)
 
 	def __str__(self):

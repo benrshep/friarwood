@@ -1,0 +1,1084 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE auth_group (
+    id integer NOT NULL,
+    name character varying(80) NOT NULL
+);
+
+
+ALTER TABLE auth_group OWNER TO "Benshep";
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE auth_group_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_group_id_seq OWNER TO "Benshep";
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE auth_group_id_seq OWNED BY auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE auth_group_permissions (
+    id integer NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE auth_group_permissions OWNER TO "Benshep";
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE auth_group_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_group_permissions_id_seq OWNER TO "Benshep";
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE auth_group_permissions_id_seq OWNED BY auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE auth_permission (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE auth_permission OWNER TO "Benshep";
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE auth_permission_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_permission_id_seq OWNER TO "Benshep";
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE auth_permission_id_seq OWNED BY auth_permission.id;
+
+
+--
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE auth_user (
+    id integer NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone,
+    is_superuser boolean NOT NULL,
+    username character varying(30) NOT NULL,
+    first_name character varying(30) NOT NULL,
+    last_name character varying(30) NOT NULL,
+    email character varying(254) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    date_joined timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE auth_user OWNER TO "Benshep";
+
+--
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE auth_user_groups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE auth_user_groups OWNER TO "Benshep";
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE auth_user_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_user_groups_id_seq OWNER TO "Benshep";
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE auth_user_groups_id_seq OWNED BY auth_user_groups.id;
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE auth_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_user_id_seq OWNER TO "Benshep";
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE auth_user_id_seq OWNED BY auth_user.id;
+
+
+--
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE auth_user_user_permissions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE auth_user_user_permissions OWNER TO "Benshep";
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE auth_user_user_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_user_user_permissions_id_seq OWNER TO "Benshep";
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE auth_user_user_permissions_id_seq OWNED BY auth_user_user_permissions.id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    content_type_id integer,
+    user_id integer NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE django_admin_log OWNER TO "Benshep";
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE django_admin_log_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE django_admin_log_id_seq OWNER TO "Benshep";
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE django_admin_log_id_seq OWNED BY django_admin_log.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE django_content_type (
+    id integer NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE django_content_type OWNER TO "Benshep";
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE django_content_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE django_content_type_id_seq OWNER TO "Benshep";
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE django_content_type_id_seq OWNED BY django_content_type.id;
+
+
+--
+-- Name: django_migrations; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE django_migrations (
+    id integer NOT NULL,
+    app character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE django_migrations OWNER TO "Benshep";
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE django_migrations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE django_migrations_id_seq OWNER TO "Benshep";
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE django_migrations_id_seq OWNED BY django_migrations.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE django_session OWNER TO "Benshep";
+
+--
+-- Name: inventory_appellation; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE inventory_appellation (
+    id integer NOT NULL,
+    name character varying(200) NOT NULL,
+    country character varying(200) NOT NULL
+);
+
+
+ALTER TABLE inventory_appellation OWNER TO "Benshep";
+
+--
+-- Name: inventory_appellation_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE inventory_appellation_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE inventory_appellation_id_seq OWNER TO "Benshep";
+
+--
+-- Name: inventory_appellation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE inventory_appellation_id_seq OWNED BY inventory_appellation.id;
+
+
+--
+-- Name: inventory_producer; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE inventory_producer (
+    id integer NOT NULL,
+    name character varying(200) NOT NULL
+);
+
+
+ALTER TABLE inventory_producer OWNER TO "Benshep";
+
+--
+-- Name: inventory_producer_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE inventory_producer_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE inventory_producer_id_seq OWNER TO "Benshep";
+
+--
+-- Name: inventory_producer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE inventory_producer_id_seq OWNED BY inventory_producer.id;
+
+
+--
+-- Name: inventory_varietal; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE inventory_varietal (
+    id integer NOT NULL,
+    name character varying(200) NOT NULL,
+    details text
+);
+
+
+ALTER TABLE inventory_varietal OWNER TO "Benshep";
+
+--
+-- Name: inventory_varietal_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE inventory_varietal_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE inventory_varietal_id_seq OWNER TO "Benshep";
+
+--
+-- Name: inventory_varietal_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE inventory_varietal_id_seq OWNED BY inventory_varietal.id;
+
+
+--
+-- Name: inventory_wine; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE inventory_wine (
+    id integer NOT NULL,
+    wine character varying(100) NOT NULL,
+    sage_name character varying(100) NOT NULL,
+    full_name character varying(200) NOT NULL,
+    sku character varying(200) NOT NULL,
+    l_win character varying(200) NOT NULL,
+    vintage character varying(50) NOT NULL,
+    searcher_details boolean,
+    searcher_url character varying(200) NOT NULL,
+    searcher_price numeric(6,2) NOT NULL,
+    searcher_status character varying(100),
+    searcher_data text,
+    region1 character varying(100) NOT NULL,
+    region2 character varying(100) NOT NULL,
+    region3 character varying(100) NOT NULL,
+    region4 character varying(100) NOT NULL,
+    region5 character varying(100) NOT NULL,
+    colour character varying(100) NOT NULL,
+    wine_type character varying(100) NOT NULL,
+    alcohol numeric(3,2) NOT NULL,
+    classification character varying(200) NOT NULL,
+    single_size character varying(50) NOT NULL,
+    case_size integer NOT NULL,
+    case_type character varying(100) NOT NULL,
+    stocked boolean,
+    stock_bin character varying(100) NOT NULL,
+    wholesale boolean NOT NULL,
+    retail boolean NOT NULL,
+    note text,
+    octavian_ref character varying(100),
+    lcb_ref character varying(100),
+    sage_ref character varying(100),
+    cost_price_s character varying(100),
+    retail_price_s character varying(100),
+    wholesale_price_s character varying(100),
+    retail_margin integer NOT NULL,
+    wholesale_margin integer NOT NULL,
+    vat integer NOT NULL,
+    appellation_id integer,
+    producer_id integer,
+    varietal_id integer,
+    short_name character varying(100) NOT NULL,
+    cost_price numeric(6,2),
+    retail_price numeric(6,2),
+    wholesale_price numeric(6,2),
+    w_cost_price_s character varying(100)
+);
+
+
+ALTER TABLE inventory_wine OWNER TO "Benshep";
+
+--
+-- Name: inventory_wine_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE inventory_wine_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE inventory_wine_id_seq OWNER TO "Benshep";
+
+--
+-- Name: inventory_wine_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE inventory_wine_id_seq OWNED BY inventory_wine.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_group ALTER COLUMN id SET DEFAULT nextval('auth_group_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_permission ALTER COLUMN id SET DEFAULT nextval('auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_user ALTER COLUMN id SET DEFAULT nextval('auth_user_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_user_groups ALTER COLUMN id SET DEFAULT nextval('auth_user_groups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('auth_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY django_admin_log ALTER COLUMN id SET DEFAULT nextval('django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY django_content_type ALTER COLUMN id SET DEFAULT nextval('django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY django_migrations ALTER COLUMN id SET DEFAULT nextval('django_migrations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY inventory_appellation ALTER COLUMN id SET DEFAULT nextval('inventory_appellation_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY inventory_producer ALTER COLUMN id SET DEFAULT nextval('inventory_producer_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY inventory_varietal ALTER COLUMN id SET DEFAULT nextval('inventory_varietal_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY inventory_wine ALTER COLUMN id SET DEFAULT nextval('inventory_wine_id_seq'::regclass);
+
+
+--
+-- Name: auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions_group_id_permission_id_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_permission_id_key UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission_content_type_id_codename_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_codename_key UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_user_id_group_id_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_group_id_key UNIQUE (user_id, group_id);
+
+
+--
+-- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id_permission_id_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_permission_id_key UNIQUE (user_id, permission_id);
+
+
+--
+-- Name: auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_username_key UNIQUE (username);
+
+
+--
+-- Name: django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type_app_label_715c830a9ef47622_uniq; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_app_label_715c830a9ef47622_uniq UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY django_migrations
+    ADD CONSTRAINT django_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: inventory_appellation_country_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_appellation
+    ADD CONSTRAINT inventory_appellation_country_key UNIQUE (country);
+
+
+--
+-- Name: inventory_appellation_name_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_appellation
+    ADD CONSTRAINT inventory_appellation_name_key UNIQUE (name);
+
+
+--
+-- Name: inventory_appellation_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_appellation
+    ADD CONSTRAINT inventory_appellation_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_producer_name_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_producer
+    ADD CONSTRAINT inventory_producer_name_key UNIQUE (name);
+
+
+--
+-- Name: inventory_producer_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_producer
+    ADD CONSTRAINT inventory_producer_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_varietal_name_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_varietal
+    ADD CONSTRAINT inventory_varietal_name_key UNIQUE (name);
+
+
+--
+-- Name: inventory_varietal_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_varietal
+    ADD CONSTRAINT inventory_varietal_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_wine_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_wine
+    ADD CONSTRAINT inventory_wine_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_name_1af7d74dc0aa1877_like; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX auth_group_name_1af7d74dc0aa1877_like ON auth_group USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permissions_0e939a4f; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_0e939a4f ON auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_8373b171; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_8373b171 ON auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_417f1b1c; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX auth_permission_417f1b1c ON auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: auth_user_groups_0e939a4f; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_0e939a4f ON auth_user_groups USING btree (group_id);
+
+
+--
+-- Name: auth_user_groups_e8701ad4; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_e8701ad4 ON auth_user_groups USING btree (user_id);
+
+
+--
+-- Name: auth_user_user_permissions_8373b171; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_8373b171 ON auth_user_user_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_user_user_permissions_e8701ad4; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_e8701ad4 ON auth_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: auth_user_username_5612f01893cdd2d7_like; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX auth_user_username_5612f01893cdd2d7_like ON auth_user USING btree (username varchar_pattern_ops);
+
+
+--
+-- Name: django_admin_log_417f1b1c; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_417f1b1c ON django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_e8701ad4; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_e8701ad4 ON django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_session_de54fa62; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX django_session_de54fa62 ON django_session USING btree (expire_date);
+
+
+--
+-- Name: django_session_session_key_1e4799a50505970f_like; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX django_session_session_key_1e4799a50505970f_like ON django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: inventory_appellation_country_4e29500bd2ddd40_like; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX inventory_appellation_country_4e29500bd2ddd40_like ON inventory_appellation USING btree (country varchar_pattern_ops);
+
+
+--
+-- Name: inventory_appellation_name_115983c028304b4e_like; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX inventory_appellation_name_115983c028304b4e_like ON inventory_appellation USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: inventory_producer_name_fe51d09797f81b9_like; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX inventory_producer_name_fe51d09797f81b9_like ON inventory_producer USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: inventory_varietal_name_6811272292d64867_like; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX inventory_varietal_name_6811272292d64867_like ON inventory_varietal USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: inventory_wine_3c053924; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX inventory_wine_3c053924 ON inventory_wine USING btree (appellation_id);
+
+
+--
+-- Name: inventory_wine_b1cbcd4f; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX inventory_wine_b1cbcd4f ON inventory_wine USING btree (varietal_id);
+
+
+--
+-- Name: inventory_wine_ffd0e4bf; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX inventory_wine_ffd0e4bf ON inventory_wine USING btree (producer_id);
+
+
+--
+-- Name: auth_content_type_id_77d4d352638de0e2_fk_django_content_type_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_content_type_id_77d4d352638de0e2_fk_django_content_type_id FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissio_group_id_2b08b3497e593609_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissio_group_id_2b08b3497e593609_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permission_id_5662b38bcdf8cff9_fk_auth_permission_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permission_id_5662b38bcdf8cff9_fk_auth_permission_id FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user__permission_id_6e9013d3ba98e6e7_fk_auth_permission_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user__permission_id_6e9013d3ba98e6e7_fk_auth_permission_id FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups_group_id_7757eb5dc3e5cfe9_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_group_id_7757eb5dc3e5cfe9_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups_user_id_16da27d2c3ff49dd_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_16da27d2c3ff49dd_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permiss_user_id_5659c3eba2240c95_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permiss_user_id_5659c3eba2240c95_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: djan_content_type_id_473e2a33aeda5e7e_fk_django_content_type_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT djan_content_type_id_473e2a33aeda5e7e_fk_django_content_type_id FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log_user_id_27c29fc696bd6e14_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_27c29fc696bd6e14_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inv_appellation_id_47427d7abea62c79_fk_inventory_appellation_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY inventory_wine
+    ADD CONSTRAINT inv_appellation_id_47427d7abea62c79_fk_inventory_appellation_id FOREIGN KEY (appellation_id) REFERENCES inventory_appellation(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_producer_id_26f47fd329368db9_fk_inventory_producer_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY inventory_wine
+    ADD CONSTRAINT inventory_producer_id_26f47fd329368db9_fk_inventory_producer_id FOREIGN KEY (producer_id) REFERENCES inventory_producer(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_varietal_id_5c56b456a7b90dcb_fk_inventory_varietal_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY inventory_wine
+    ADD CONSTRAINT inventory_varietal_id_5c56b456a7b90dcb_fk_inventory_varietal_id FOREIGN KEY (varietal_id) REFERENCES inventory_varietal(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: Benshep
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM "Benshep";
+GRANT ALL ON SCHEMA public TO "Benshep";
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

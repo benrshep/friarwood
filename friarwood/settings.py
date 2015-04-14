@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
     'storages',
+    'import_export',
     'boto',
     'inventory',
 )
