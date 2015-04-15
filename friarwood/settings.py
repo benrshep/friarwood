@@ -80,8 +80,9 @@ WSGI_APPLICATION = 'friarwood.wsgi.application'
 
 DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2', 
-    }
+            'ENGINE': 'django.db.backends.postgresql_psycopg2'
+        }
+        }
 
 
 # Internationalization
