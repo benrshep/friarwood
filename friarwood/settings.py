@@ -28,6 +28,7 @@ DEBUG = False
 # Application definition
 
 INSTALLED_APPS = (
+    'inventory',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,7 +39,6 @@ INSTALLED_APPS = (
     'storages',
     'import_export',
     'boto',
-    'inventory',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'friarwood.wsgi.application'
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2'
-        }
+            }
         }
 
 
