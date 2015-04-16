@@ -51,8 +51,6 @@ class VarietalAdmin(admin.ModelAdmin):
 	list_display = ('name',)
 	
 class WineAdmin(ImportExportActionModelAdmin):
-	
-
 	resource_class = WineResource
 
 	fieldsets = (
@@ -68,8 +66,8 @@ class WineAdmin(ImportExportActionModelAdmin):
 	list_filter = ['size', 'varietal', 'price_group' ,'vintage']
 	search_fields = ['short_name' ,'vintage', 'sage_ref']
 	list_per_page = 50
-	list_display = ['short_name','vintage', 'producer','varietal', 'size' , 'product_code', 'sage_ref', 'cost_price_s','retail_price_s', 'wholesale_price_s']
-	list_editable = ['producer', 'varietal', 'size', 'product_code', 'cost_price_s','retail_price_s', 'wholesale_price_s']
+	list_display = ['short_name','vintage', 'producer','varietal', 'size' , 'product_code', 'sage_ref', 'cost_price_s', 'retail', 'retail_price_s', 'wholesale', 'wholesale_price_s']
+	list_editable = ['varietal', 'product_code', 'retail','wholesale', 'cost_price_s','retail_price_s', 'wholesale_price_s']
 	
 	def get_changelist_form(self, request, **kwargs):
 		return WineForm
