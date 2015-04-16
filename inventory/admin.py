@@ -57,7 +57,7 @@ class WineAdmin(ImportExportActionModelAdmin):
 
 	fieldsets = (
 		(None, {
-			'fields': ('producer', 'full_name', 'appellation', 'varietal', 'vintage', 'note', 'size', 'cost_price_s','retail_price_s', 'wholesale_price_s')
+			'fields': ('short_name','producer', 'full_name', 'appellation', 'varietal', 'vintage', 'note', 'size', 'cost_price_s','retail_price_s', 'wholesale_price_s')
 			}),
 		('Linking Fields', {
 			'classes': ('collapse',),
@@ -66,7 +66,7 @@ class WineAdmin(ImportExportActionModelAdmin):
 		)
 	
 	list_filter = ['size', 'varietal', 'price_group' ,'vintage']
-	search_fields = ['short_name' ,'vintage']
+	search_fields = ['short_name' ,'vintage', 'sage_ref']
 	list_per_page = 50
 	list_display = ['short_name','vintage', 'producer','varietal', 'size' , 'product_code', 'sage_ref', 'cost_price_s','retail_price_s', 'wholesale_price_s']
 	list_editable = ['producer', 'varietal', 'size', 'product_code', 'cost_price_s','retail_price_s', 'wholesale_price_s']
