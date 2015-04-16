@@ -67,7 +67,8 @@ class WineAdmin(ImportExportActionModelAdmin):
 	search_fields = ['short_name' ,'vintage', 'sage_ref']
 	list_per_page = 50
 	list_display = ['short_name','vintage', 'producer','varietal', 'size' , 'product_code', 'sage_ref', 'cost_price_s', 'retail', 'retail_price_s', 'wholesale', 'wholesale_price_s']
-	list_editable = ['varietal', 'product_code', 'retail','wholesale', 'cost_price_s','retail_price_s', 'wholesale_price_s']
+	#list_editable = ['varietal', 'product_code', 'retail','wholesale', 'cost_price_s','retail_price_s', 'wholesale_price_s']
+	list_editable = ['product_code','retail','wholesale']
 	
 	def get_changelist_form(self, request, **kwargs):
 		return WineForm
