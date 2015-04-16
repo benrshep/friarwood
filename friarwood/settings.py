@@ -107,7 +107,7 @@ STATIC_URL = '/static/'
 # -- HEROKU
 
 # Allow all host hosts/domain names for this site
-ALLOWED_HOSTS = ['friarwood.herokuapp.com']
+ALLOWED_HOSTS = ['friar.herokuapp.com']
 
 # Parse database configuration from $DATABASE_URL
 
