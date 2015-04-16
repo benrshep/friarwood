@@ -54,7 +54,7 @@ class WineAdmin(ImportExportActionModelAdmin):
 		)
 		
 	list_display = ['short_name','vintage', 'producer','varietal', 'size' , 'product_code', 'sage_ref', 'cost_price_s','retail_price_s', 'wholesale_price_s']
-	#list_filter = ['single_size','vintage']
+	list_filter = ['size', 'varietal', 'price_group' ,'vintage']
 	search_fields = ['short_name' ,'vintage']
 	list_per_page = 50
 	#readonly_fields = ('sage_name','sage_ref',)
