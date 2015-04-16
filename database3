@@ -1,0 +1,2352 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE auth_group (
+    id integer NOT NULL,
+    name character varying(80) NOT NULL
+);
+
+
+ALTER TABLE auth_group OWNER TO "Benshep";
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE auth_group_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_group_id_seq OWNER TO "Benshep";
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE auth_group_id_seq OWNED BY auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE auth_group_permissions (
+    id integer NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE auth_group_permissions OWNER TO "Benshep";
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE auth_group_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_group_permissions_id_seq OWNER TO "Benshep";
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE auth_group_permissions_id_seq OWNED BY auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE auth_permission (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE auth_permission OWNER TO "Benshep";
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE auth_permission_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_permission_id_seq OWNER TO "Benshep";
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE auth_permission_id_seq OWNED BY auth_permission.id;
+
+
+--
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE auth_user (
+    id integer NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone NOT NULL,
+    is_superuser boolean NOT NULL,
+    username character varying(30) NOT NULL,
+    first_name character varying(30) NOT NULL,
+    last_name character varying(30) NOT NULL,
+    email character varying(75) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    date_joined timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE auth_user OWNER TO "Benshep";
+
+--
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE auth_user_groups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE auth_user_groups OWNER TO "Benshep";
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE auth_user_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_user_groups_id_seq OWNER TO "Benshep";
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE auth_user_groups_id_seq OWNED BY auth_user_groups.id;
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE auth_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_user_id_seq OWNER TO "Benshep";
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE auth_user_id_seq OWNED BY auth_user.id;
+
+
+--
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE auth_user_user_permissions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE auth_user_user_permissions OWNER TO "Benshep";
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE auth_user_user_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_user_user_permissions_id_seq OWNER TO "Benshep";
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE auth_user_user_permissions_id_seq OWNED BY auth_user_user_permissions.id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    content_type_id integer,
+    user_id integer NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE django_admin_log OWNER TO "Benshep";
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE django_admin_log_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE django_admin_log_id_seq OWNER TO "Benshep";
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE django_admin_log_id_seq OWNED BY django_admin_log.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE django_content_type (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE django_content_type OWNER TO "Benshep";
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE django_content_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE django_content_type_id_seq OWNER TO "Benshep";
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE django_content_type_id_seq OWNED BY django_content_type.id;
+
+
+--
+-- Name: django_migrations; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE django_migrations (
+    id integer NOT NULL,
+    app character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE django_migrations OWNER TO "Benshep";
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE django_migrations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE django_migrations_id_seq OWNER TO "Benshep";
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE django_migrations_id_seq OWNED BY django_migrations.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE django_session OWNER TO "Benshep";
+
+--
+-- Name: inventory_appellation; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE inventory_appellation (
+    id integer NOT NULL,
+    name character varying(200) NOT NULL,
+    country character varying(200) NOT NULL
+);
+
+
+ALTER TABLE inventory_appellation OWNER TO "Benshep";
+
+--
+-- Name: inventory_appellation_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE inventory_appellation_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE inventory_appellation_id_seq OWNER TO "Benshep";
+
+--
+-- Name: inventory_appellation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE inventory_appellation_id_seq OWNED BY inventory_appellation.id;
+
+
+--
+-- Name: inventory_pricegroup; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE inventory_pricegroup (
+    id integer NOT NULL,
+    name character varying(200) NOT NULL,
+    details text
+);
+
+
+ALTER TABLE inventory_pricegroup OWNER TO "Benshep";
+
+--
+-- Name: inventory_pricegroup_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE inventory_pricegroup_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE inventory_pricegroup_id_seq OWNER TO "Benshep";
+
+--
+-- Name: inventory_pricegroup_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE inventory_pricegroup_id_seq OWNED BY inventory_pricegroup.id;
+
+
+--
+-- Name: inventory_producer; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE inventory_producer (
+    id integer NOT NULL,
+    name character varying(200) NOT NULL
+);
+
+
+ALTER TABLE inventory_producer OWNER TO "Benshep";
+
+--
+-- Name: inventory_producer_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE inventory_producer_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE inventory_producer_id_seq OWNER TO "Benshep";
+
+--
+-- Name: inventory_producer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE inventory_producer_id_seq OWNED BY inventory_producer.id;
+
+
+--
+-- Name: inventory_size; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE inventory_size (
+    id integer NOT NULL,
+    size character varying(200) NOT NULL,
+    name character varying(200) NOT NULL
+);
+
+
+ALTER TABLE inventory_size OWNER TO "Benshep";
+
+--
+-- Name: inventory_size_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE inventory_size_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE inventory_size_id_seq OWNER TO "Benshep";
+
+--
+-- Name: inventory_size_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE inventory_size_id_seq OWNED BY inventory_size.id;
+
+
+--
+-- Name: inventory_varietal; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE inventory_varietal (
+    id integer NOT NULL,
+    name character varying(200) NOT NULL,
+    details text
+);
+
+
+ALTER TABLE inventory_varietal OWNER TO "Benshep";
+
+--
+-- Name: inventory_varietal_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE inventory_varietal_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE inventory_varietal_id_seq OWNER TO "Benshep";
+
+--
+-- Name: inventory_varietal_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE inventory_varietal_id_seq OWNED BY inventory_varietal.id;
+
+
+--
+-- Name: inventory_wine; Type: TABLE; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE TABLE inventory_wine (
+    id integer NOT NULL,
+    wine character varying(100) NOT NULL,
+    short_name character varying(100) NOT NULL,
+    full_name character varying(200) NOT NULL,
+    vintage character varying(50) NOT NULL,
+    searcher_details boolean,
+    searcher_url character varying(200) NOT NULL,
+    searcher_price numeric(6,2) NOT NULL,
+    searcher_status character varying(100),
+    searcher_data text,
+    colour character varying(100) NOT NULL,
+    wine_type character varying(100) NOT NULL,
+    alcohol numeric(3,2) NOT NULL,
+    classification character varying(200) NOT NULL,
+    single_size character varying(50) NOT NULL,
+    note text,
+    sku character varying(200) NOT NULL,
+    product_code character varying(20),
+    l_win character varying(200) NOT NULL,
+    sage_name character varying(100) NOT NULL,
+    case_size integer NOT NULL,
+    stocked boolean,
+    stock_bin character varying(100) NOT NULL,
+    wholesale boolean NOT NULL,
+    pricelist boolean NOT NULL,
+    retail boolean NOT NULL,
+    octavian_ref character varying(100),
+    lcb_ref character varying(100),
+    sage_ref character varying(100),
+    cost_price_s character varying(100),
+    w_cost_price_s character varying(100),
+    cost_price numeric(6,2),
+    retail_price_s character varying(100),
+    retail_price numeric(6,2),
+    wholesale_price_s character varying(100),
+    wholesale_price numeric(6,2),
+    appellation_id integer,
+    price_group_id integer,
+    producer_id integer,
+    size_id integer,
+    varietal_id integer
+);
+
+
+ALTER TABLE inventory_wine OWNER TO "Benshep";
+
+--
+-- Name: inventory_wine_id_seq; Type: SEQUENCE; Schema: public; Owner: Benshep
+--
+
+CREATE SEQUENCE inventory_wine_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE inventory_wine_id_seq OWNER TO "Benshep";
+
+--
+-- Name: inventory_wine_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Benshep
+--
+
+ALTER SEQUENCE inventory_wine_id_seq OWNED BY inventory_wine.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_group ALTER COLUMN id SET DEFAULT nextval('auth_group_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_permission ALTER COLUMN id SET DEFAULT nextval('auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_user ALTER COLUMN id SET DEFAULT nextval('auth_user_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_user_groups ALTER COLUMN id SET DEFAULT nextval('auth_user_groups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('auth_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY django_admin_log ALTER COLUMN id SET DEFAULT nextval('django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY django_content_type ALTER COLUMN id SET DEFAULT nextval('django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY django_migrations ALTER COLUMN id SET DEFAULT nextval('django_migrations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY inventory_appellation ALTER COLUMN id SET DEFAULT nextval('inventory_appellation_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY inventory_pricegroup ALTER COLUMN id SET DEFAULT nextval('inventory_pricegroup_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY inventory_producer ALTER COLUMN id SET DEFAULT nextval('inventory_producer_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY inventory_size ALTER COLUMN id SET DEFAULT nextval('inventory_size_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY inventory_varietal ALTER COLUMN id SET DEFAULT nextval('inventory_varietal_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY inventory_wine ALTER COLUMN id SET DEFAULT nextval('inventory_wine_id_seq'::regclass);
+
+
+--
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: Benshep
+--
+
+COPY auth_group (id, name) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Benshep
+--
+
+SELECT pg_catalog.setval('auth_group_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: Benshep
+--
+
+COPY auth_group_permissions (id, group_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Benshep
+--
+
+SELECT pg_catalog.setval('auth_group_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: Benshep
+--
+
+COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
+1	Can add producer	1	add_producer
+2	Can change producer	1	change_producer
+3	Can delete producer	1	delete_producer
+4	Can add price group	2	add_pricegroup
+5	Can change price group	2	change_pricegroup
+6	Can delete price group	2	delete_pricegroup
+7	Can add varietal	3	add_varietal
+8	Can change varietal	3	change_varietal
+9	Can delete varietal	3	delete_varietal
+10	Can add appellation	4	add_appellation
+11	Can change appellation	4	change_appellation
+12	Can delete appellation	4	delete_appellation
+13	Can add size	5	add_size
+14	Can change size	5	change_size
+15	Can delete size	5	delete_size
+16	Can add wine	6	add_wine
+17	Can change wine	6	change_wine
+18	Can delete wine	6	delete_wine
+19	Can add log entry	7	add_logentry
+20	Can change log entry	7	change_logentry
+21	Can delete log entry	7	delete_logentry
+22	Can add permission	8	add_permission
+23	Can change permission	8	change_permission
+24	Can delete permission	8	delete_permission
+25	Can add group	9	add_group
+26	Can change group	9	change_group
+27	Can delete group	9	delete_group
+28	Can add user	10	add_user
+29	Can change user	10	change_user
+30	Can delete user	10	delete_user
+31	Can add content type	11	add_contenttype
+32	Can change content type	11	change_contenttype
+33	Can delete content type	11	delete_contenttype
+34	Can add session	12	add_session
+35	Can change session	12	change_session
+36	Can delete session	12	delete_session
+\.
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Benshep
+--
+
+SELECT pg_catalog.setval('auth_permission_id_seq', 36, true);
+
+
+--
+-- Data for Name: auth_user; Type: TABLE DATA; Schema: public; Owner: Benshep
+--
+
+COPY auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
+1	pbkdf2_sha256$12000$cgCPu7Uu5E1k$UgwAjyx8fK0EqK72fqP4ogysGSKa9fzPwwmIpV5QT/k=	2015-04-15 18:47:39.105687+01	t	benshep			benshep@me.com	t	t	2015-04-15 18:47:33.360855+01
+\.
+
+
+--
+-- Data for Name: auth_user_groups; Type: TABLE DATA; Schema: public; Owner: Benshep
+--
+
+COPY auth_user_groups (id, user_id, group_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Benshep
+--
+
+SELECT pg_catalog.setval('auth_user_groups_id_seq', 1, false);
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Benshep
+--
+
+SELECT pg_catalog.setval('auth_user_id_seq', 1, true);
+
+
+--
+-- Data for Name: auth_user_user_permissions; Type: TABLE DATA; Schema: public; Owner: Benshep
+--
+
+COPY auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Benshep
+--
+
+SELECT pg_catalog.setval('auth_user_user_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: Benshep
+--
+
+COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, change_message, content_type_id, user_id) FROM stdin;
+1	2015-04-15 19:00:26.231329+01	1	None	1		5	1
+2	2015-04-15 19:00:32.008479+01	1	None	3		5	1
+3	2015-04-15 19:05:02.820555+01	4	Half Bottle	2	Changed name.	5	1
+4	2015-04-15 19:05:07.763386+01	2	Bottle	2	Changed name.	5	1
+5	2015-04-15 19:05:12.98725+01	6	Magnum	2	Changed name.	5	1
+6	2015-04-15 19:05:20.426832+01	7	Whiskey	2	Changed name.	5	1
+7	2015-04-15 19:08:55.542557+01	335	Castra Rubra, Petit Manseng	2	Changed size.	6	1
+8	2015-04-15 19:08:55.548402+01	189	Saumon Sauvignon Blanc 	2	Changed size.	6	1
+9	2015-04-15 19:08:55.552332+01	184	Saint George 2011 	2	Changed size.	6	1
+10	2015-04-15 19:08:55.555638+01	175	Quatre Tours, Provence Rose 	2	Changed size.	6	1
+11	2015-04-15 19:08:55.558955+01	174	Quatre Tours, Provence Rose 	2	Changed size.	6	1
+12	2015-04-15 19:08:55.562138+01	165	Pignataro, Trebbiano D'Abruzzo 	2	Changed size.	6	1
+13	2015-04-15 19:08:55.565257+01	158	Pastor Diaz, Rioja Valdejimena Reserva 	2	Changed size.	6	1
+14	2015-04-15 19:08:55.56911+01	153	Ormes De Pez 	2	Changed size.	6	1
+15	2015-04-15 19:10:24.460607+01	221	Verne Maziere, Fleurie Madone 2009 	2	Changed size.	6	1
+16	2015-04-15 19:10:24.465351+01	220	Valle Andino Reserva, Syrah 	2	Changed size.	6	1
+17	2015-04-15 19:10:24.469114+01	204	Tonon, Villa Teresa Spumante Prosecco NV	2	Changed size.	6	1
+18	2015-04-15 19:10:24.47248+01	201	Tonon, Pinot Grigio Venezia 	2	Changed size.	6	1
+19	2015-04-15 19:10:24.475621+01	196	Stony, Muscat 2007 	2	Changed size.	6	1
+20	2015-04-15 19:10:24.479094+01	133	Monteviejo, Lindaflor Malbec 	2	Changed size.	6	1
+21	2015-04-15 19:10:24.482224+01	132	Monteviejo Malbec 	2	Changed size.	6	1
+22	2015-04-15 19:10:24.485598+01	126	Mille Roses (Haut Medoc) 2009 	2	Changed size.	6	1
+23	2015-04-15 19:10:24.48878+01	125	Mille Roses (Haut Medoc) 	2	Changed size.	6	1
+24	2015-04-15 19:10:24.491737+01	123	Mille Roses (Haut Medoc) 	2	Changed size.	6	1
+25	2015-04-15 19:10:24.494787+01	117	Merlot Vieilles Vignes "Le Marcassin"	2	Changed size.	6	1
+26	2015-04-15 19:10:24.497861+01	116	Marchesi Barolo, Picit Langue	2	Changed size.	6	1
+27	2015-04-15 19:10:24.500912+01	114	Lucas 2008 	2	Changed size.	6	1
+28	2015-04-15 19:10:24.504477+01	103	Jean Cordier, Saint Veran 	2	Changed size.	6	1
+29	2015-04-15 19:10:24.507704+01	101	Jean Chartron, Puligny Montrachet Cailleret Rouge 	2	Changed size.	6	1
+30	2015-04-15 19:10:24.510679+01	100	Jean Chartron, Puligny Montrachet Cailleret 	2	Changed size.	6	1
+31	2015-04-15 19:10:24.513674+01	90	Grant Burge, Benchmark Shiraz 	2	Changed size.	6	1
+32	2015-04-15 19:10:24.516592+01	89	Grant Burge, Benchmark Chardonnay 	2	Changed size.	6	1
+33	2015-04-15 19:10:24.520503+01	78	Friarwood, Sauvignon Saumon 	2	Changed size.	6	1
+34	2015-04-15 19:10:24.523537+01	76	Friarwood, Macon Lugny "Les Charmes" 	2	Changed size.	6	1
+35	2015-04-15 19:10:24.526606+01	73	Friarwood Champagne Brut NV Magnums	2	Changed size.	6	1
+36	2015-04-15 19:10:24.529735+01	72	Friarwood Champagne Brut Nv 	2	Changed size.	6	1
+37	2015-04-15 19:10:24.532792+01	69	Fleur Des Pins, Clos Pins 2009 	2	Changed size.	6	1
+38	2015-04-15 19:10:24.536085+01	66	Fernand & Laurent Pillot, Chassagne Montrachet Champgai 	2	Changed size.	6	1
+39	2015-04-15 19:10:24.539177+01	56	Dufort Vivens 	2	Changed size.	6	1
+40	2015-04-15 19:10:24.542126+01	55	Ducru Beaucallou 	2	Changed size.	6	1
+41	2015-04-15 19:10:54.838854+01	9	3 Size	2	Changed name.	5	1
+42	2015-04-15 19:11:00.165405+01	8	0.5	2	Changed name.	5	1
+43	2015-04-15 19:11:50.265609+01	52	Delord, Armagnac VSOP	2	Changed size.	6	1
+44	2015-04-15 19:11:50.270371+01	6	Antonin Guyon, Chorey Les Beaune Champs Long 2009 	2	Changed size.	6	1
+45	2015-04-15 19:12:18.496133+01	51	Delivery Charge	3		6	1
+46	2015-04-15 19:12:18.499953+01	50	Delivery	3		6	1
+47	2015-04-15 19:12:18.501515+01	1	Description	3		6	1
+48	2015-04-15 19:12:33.93438+01	520	0 Wine Name	3		6	1
+\.
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Benshep
+--
+
+SELECT pg_catalog.setval('django_admin_log_id_seq', 48, true);
+
+
+--
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: Benshep
+--
+
+COPY django_content_type (id, name, app_label, model) FROM stdin;
+1	producer	inventory	producer
+2	price group	inventory	pricegroup
+3	varietal	inventory	varietal
+4	appellation	inventory	appellation
+5	size	inventory	size
+6	wine	inventory	wine
+7	log entry	admin	logentry
+8	permission	auth	permission
+9	group	auth	group
+10	user	auth	user
+11	content type	contenttypes	contenttype
+12	session	sessions	session
+\.
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Benshep
+--
+
+SELECT pg_catalog.setval('django_content_type_id_seq', 12, true);
+
+
+--
+-- Data for Name: django_migrations; Type: TABLE DATA; Schema: public; Owner: Benshep
+--
+
+COPY django_migrations (id, app, name, applied) FROM stdin;
+1	contenttypes	0001_initial	2015-04-15 18:46:54.582515+01
+2	auth	0001_initial	2015-04-15 18:46:54.669962+01
+3	admin	0001_initial	2015-04-15 18:46:54.713761+01
+4	inventory	0001_initial	2015-04-15 18:46:54.805178+01
+5	sessions	0001_initial	2015-04-15 18:46:54.818204+01
+6	inventory	0002_auto_20150415_1802	2015-04-15 19:02:08.070933+01
+7	inventory	0003_wine_varietal	2015-04-16 07:42:09.48999+01
+\.
+
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Benshep
+--
+
+SELECT pg_catalog.setval('django_migrations_id_seq', 7, true);
+
+
+--
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: Benshep
+--
+
+COPY django_session (session_key, session_data, expire_date) FROM stdin;
+m864bdtmvqas75bc32yjkh63gqzefj4h	MmY1YTM0YTQxMTY5Yjk5ZDlmNDc2ZmEyYjRkMjQxYWY0NzgzZWEzNDp7Il9hdXRoX3VzZXJfaWQiOjEsIl9hdXRoX3VzZXJfaGFzaCI6IjcyNzAxMzVkMzcyMDczNzM3NzVjYTU4ZGJmMjI2MWZjMWQ5YzUxZTQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCJ9	2015-04-29 18:47:39.108036+01
+\.
+
+
+--
+-- Data for Name: inventory_appellation; Type: TABLE DATA; Schema: public; Owner: Benshep
+--
+
+COPY inventory_appellation (id, name, country) FROM stdin;
+\.
+
+
+--
+-- Name: inventory_appellation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Benshep
+--
+
+SELECT pg_catalog.setval('inventory_appellation_id_seq', 1, false);
+
+
+--
+-- Data for Name: inventory_pricegroup; Type: TABLE DATA; Schema: public; Owner: Benshep
+--
+
+COPY inventory_pricegroup (id, name, details) FROM stdin;
+\.
+
+
+--
+-- Name: inventory_pricegroup_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Benshep
+--
+
+SELECT pg_catalog.setval('inventory_pricegroup_id_seq', 1, false);
+
+
+--
+-- Data for Name: inventory_producer; Type: TABLE DATA; Schema: public; Owner: Benshep
+--
+
+COPY inventory_producer (id, name) FROM stdin;
+42	Friarwood, Champagne Brut
+127	Verne Maziere, Fleurie Madone
+4	Bassac, Lo Bartas Rose
+6	Citari, Lugana
+1	Bellegrave
+7	Ellevin, Chablis Vosgros
+116	Pichon Lalande
+9	Clifford Bay, Pinot Noir
+10	Castra Rubra, Castra Rubra
+23	Delord, Armagnac VSOP
+11	Ellevin, Petit Chablis
+12	Citari, San Martino Della Battaglia Vv
+13	Castra Rubra, Dominant White
+14	Castra Rubra, Motley Cock White
+15	Castra Rubra, Motley Cock Red
+16	De Bortoli, Shiraz Willowglen
+17	Altovela, Sauvignon Blanc Cumplido
+18	Altovela, Tempranillo Cumplido
+98	Ormer Bay, Chardonnay
+20	Description
+21	Delivery
+22	Delivery Charge
+8	Ellevin, Chablis Vaucoupin
+25	Ducru Beaucallou 
+26	Dufort Vivens 
+27	Friarwood Champagne Brut Nv 
+28	Fleur Des Pins, Clos Pins 2009 
+29	Friarwood Champagne Brut NV Magnums
+119	Potensac
+30	Antonin Guyon, Chambolle Musigney Clos Village
+2	Charles Deloire, Pouilly Fume
+59	Grant Burge, Benchmark Chardonnay 
+112	Ormes Pez
+35	Clinet
+69	Lafon Rochet
+36	Coche-Bouillot, Meursault Charmes
+37	Cantenac Brown
+38	Corte Aleardi, Amarone Valpolicella Classico
+33	Figeac
+40	Cos d'Estournel
+41	Clos Fourtet
+32	Dauzac
+60	Grant Burge, Benchmark Shiraz 
+56	Marchesi Barolo, Picit Langue
+61	Jean Chartron, Puligny Montrachet Cailleret Rouge 
+44	Grand Montmirail, Vacqueyras Deux Frere
+45	Monteviejo, Petite Fleur
+47	Michel Wust, Gewurztraminer Tradition
+73	Lucas
+48	Orangerie
+49	Mont Auriol, Viognier
+50	Monteviejo, Malbec Festivo
+51	Lisennes
+52	Haute Cariziere, Muscadet Clos Chene
+53	Mont Auriol, Chardonnay
+54	Mont Auriol, Merlot
+55	Graham, Late Bottled Vintage Port
+5	Ellevin, Chablis
+57	Merlot Vieilles Vignes "Le Marcassin"
+62	Jean Cordier, Saint Veran 
+64	Henri Delagrange, Pommard Vaumuriens Hauts
+65	Lucas 2008 
+66	Monteviejo Malbec 
+67	Monteviejo, Lindaflor Malbec 
+68	Friarwood, Sauvignon Saumon 
+124	Chasse Spleen
+70	Friarwood, Volnay Clos Chenes
+71	Issan
+88	Serio and Borgogno, Barbera D'Alba Superiore
+43	Mille Roses (Haut Medoc)
+74	Gloria
+75	Leoville Poyferre
+89	Valle Andino Reserva Especial, Pinot Noir
+76	Nenin
+126	Lascombes
+90	Valle Andino Gran Reserva, Cabernet Sauvignon
+72	Montrose
+125	Yquem
+78	Leoville Barton
+79	Grand Puy Lacoste
+80	Gay
+19	Antonin Guyon, Savigny les Beaune Goudelettes
+82	Poggio Salvi, Campo Del Bosco
+83	Serio and Borgogno, Barbaresco
+84	Tonon, Prosecco Frizzante Corda
+85	Poggio Salvi, Vino Nobile
+87	Serio and Borgogno, Gavi
+91	Valle Andino Reserva, Merlot
+92	Valle Andino Reserva Especial, Chardonnay
+93	Valle Andino Reserva Especial, Merlot
+94	Pastor Diaz, Rioja Valdejimena Crianza
+95	Saint Peyre, Picpoul de Pinet
+96	Tonon, Pinot Grigio Villa Teresa
+97	Valle Andino Reserva, Carmenere
+99	Ormer Bay, Pinotage
+100	Ormes De Pez 
+101	Pignataro, Trebbiano D'Abruzzo 
+108	Tonon, Pinot Grigio Venezia 
+103	Petit Village
+102	Quatre Tours, Provence Rose 
+104	Saumon Sauvignon Blanc 
+106	Suduiraut
+105	Tour Figeac
+107	Saint George 2011 
+109	Stony, Muscat 2007 
+110	Valle Andino Reserva, Syrah 
+111	Tonon, Villa Teresa Spumante Prosecco NV
+118	Rieussec
+113	Richard, Condrieu Amaraze
+114	Verne Maziere, Fleurie Madone 2009 
+121	Landes, Cuvee Tradition
+117	Pastor Diaz, Rioja Valdejimena Reserva 
+115	Talbot
+120	Trois Origines
+31	Fonplegade
+81	Saint Georges
+34	Clos Rene
+122	Villaudiere, Sancerre
+77	Lynch Bages
+24	Brane Cantenac
+123	Boyd Cantenac
+46	Grand Corbin
+39	Beychevelle
+58	Graham, 
+63	Mille Roses (Haut Medoc) 
+86	Poggio Salvi, Chianti Colli Senesi
+128	Robert Michel, Cornas Geynale
+209	Gruaud Larose
+224	Macon Lugny, Les Charmes
+132	Vincent Bouzereau, Meursault
+210	Trottevielle
+135	Agro de Bazan, Albarino Contrapunto
+205	Monbousquet
+137	Lagrange (Saint Julien)
+225	Clos Du Marouis
+140	Stracquadaini, Don Sari
+141	Castra Rubra, Butterflys Rock
+134	Giscours
+143	Vitalonga, Terra Di Confine
+144	Vignol
+145	Mille Roses (Haut Medoc) 2009 
+146	Clos Pins, rouge
+147	La Fleur Des Pins, Graves Superieures
+148	Delord, Armagnac
+149	Hidalgo, Sherry Almeda
+183	Moet & Chandon, Dom Perignon
+211	Lagune
+178	Palmer
+234	Grand Montmirail, Gigondas Beauchamp
+150	Friarwood Delord, Armagnac
+151	SloeMotion, Sloe Gin 
+152	Hidalgo, Sherry Faraon
+153	Castra Rubra, Petit Manseng
+154	Jean Filloux, Cognac Tres Vieux
+155	Jean Filloux, Cognac Cep d'Or
+156	Sheep Dip, Whisky
+195	Taylor
+158	Antonin Guyon, Savigny les Beaune
+159	Paul Dangin, Carte Or
+3	Antonin Guyon, Chorey les Beaune Champs Longs
+207	Antonin Guyon, Aloxe Corton Fournieres
+174	Mouton Rothschild
+239	Navrina Cove, Sauvignon Blanc 
+161	Fleur de Pin, Doux
+162	Hidalgo 
+163	Manoir Gay
+212	Grand Puy Ducasse
+165	Tour Du Pin Figeac
+166	Valle Andino, Reserva Syrah
+226	Meerlust, Rubicon
+168	Valle Andino Reserva, Sauvignon Blanc
+169	Mont Auriol, Sauvignon Blanc
+138	Pointe
+187	Climens
+171	Lafite Rothschild
+172	Ausone
+192	Clos Marquis
+129	Pichon Baron
+170	Margaux
+173	Latour
+175	Haut Brion
+184	Pontet Canet
+177	Angelus
+176	Pavie
+164	Ducru Beaucaillou
+213	Poujeaux
+188	Gaffeliere (Saint Emilion)
+180	Pape Clement
+181	Conseillante
+189	Domaine Guyon, Echezeaux Grand Cru
+190	Domaine Chevalier
+214	Pavie Decesse
+191	Bon Pasteur
+186	Smith Haut Lafitte
+185	Lagrange
+193	Croix Gay
+194	Langoa Barton
+227	Michel Wust, Pinot-Blanc Auxerrois
+215	Pouget
+196	Chassenay D'arc, Martivey Rose
+197	Cambon Pelouse
+198	Dow
+199	Enclos
+200	Durfort Vivens
+201	Pommery brut
+136	Antonin Guyon, Gevrey Chambertin Justice
+202	Ferraton, Hermitage Miaux
+203	Domaine Guyon, Vosne Romanee Orveaux
+133	Branaire Ducru
+204	Fleur Gay
+206	Bollinger, Rose
+216	Montviel
+182	Calon Segur
+228	Chassenay D'arc, Martivey Brut
+235	Antonin Guyon, Cote de Beaune Village 
+208	Dominique
+157	Veuve Clicquot, Yellow Label
+217	Fernand & Laurent Pillot, Chassagne Montrachet Champgains
+218	Vincent Prunier, Puligny Montrachet Garennes
+130	Sociando Mallet
+219	Domaine Pierre Andre, Corton Pougets
+139	Camensac
+142	Berliquet
+220	Monteviejo, Malbec Lindaflor
+167	Monteviejo, Malbec Monteviejo
+221	Jean Cordier Pere et Fils, Saint Veran
+222	Friarwood, Sauvignon Blanc Saumon
+223	Castra Rubra, Nimbus Premium
+229	Poggio Salvi, Morellino di Scansano
+230	Pastor Diaz, Rioja Valdejimena Gran Reserva
+231	Graham, Crusted
+232	Serio and Borgogno, Barolo Riserva
+131	Ruinart, Rose
+160	Guillopees, Sancerre Cuvee Henri Vernoy
+233	Canon (Saint Emilion)
+236	Domaine Dominique Guyon, Hautes Cotes de Nuits Dames de Vergy
+237	Graham, 10 Year Old Tawny Port
+238	Vignes Tracey, Pouilly Fume
+240	Cailleteau Bergeron, Rouge
+241	Valle Andino Gran Reserva, Merlot
+242	Villa Teresa, Prosecco Spumante
+243	Empson, Spumante Borgo Imperiale Brut Rose
+244	Benchmark, Shiraz Grant Burge
+245	Trois Celliers, Cotes du Rhone Sentier des Terroirs
+246	Monteviejo, Torrontes Festivo
+247	Castra Rubra, Dominant Red
+248	Pastor Diaz, Rioja Valdejimena Tempranillo
+249	Henriques, Madeira 10 Years
+250	Henriques, Madeira Full Rich
+251	Mont Auriol, Cabernet Sauvignon
+252	Valle Andino Reserva, Cabernet Sauvignon
+253	Friarwood, Marcassin Merlot
+254	Henriques, Olivier
+179	Evangile
+255	Benchmark, Chardonnay Grant Burge
+256	Ormer Bay, Sauvignon Blanc
+257	0 Wine Name
+258	Bouchard Pere et Fils, Bourgogne Vignee
+259	Hartford Court, Russian river valley, Pinot Noir 
+260	Louis Roederer, Cristal
+261	Marchesato Degli Aleramici, Brunello di Montalcino Carlo Magno
+262	Leoville Las Cases
+263	Ducru Beaucallou
+266	Moulin
+264	Krug, Grand Cuvee
+267	Clos L'Eglise (Pomerol)
+268	Bollinger, Brut
+265	Ruinart, Blanc De Blancs Vv
+269	Enclose
+270	Jean Chartron, Puligny Montrachet Clos Cailleret Rouge
+271	Dufort Vivens
+273	Quatre Tours, Provence Rose
+274	Broustet
+272	Poggio Salvi, Brunello Di Montalcino
+275	Henri & Gilles Remoriquet, Nuits Saint Georges
+277	Fonbel
+278	Olivier Ravoire, Chateauneuf du Pape
+279	Vincent Prunier, Saint Aubin Frionnes
+280	Ransom, K Syrah
+276	Serio and Borgogno, Barolo Cannubi
+281	Ransom, Dark Summit 
+282	Henri Delagrange, Volnay Vv
+283	Jean Cordier, Saint Veran
+284	Corte Aleardi, Ripasso Valpolicella Bure Alto
+285	Friarwood, Bourgogne Blanc Chatelaine
+286	Valle Andino Reserva Especial, Sauvignon Blanc
+287	Clos Pins, Rouge
+288	Stony, Muscat
+289	Friarwood, Sauvignon Saumon
+290	Tonon, Pinot Grigio Venezia
+291	Pignataro, Montelpuciano d'Abruzzo Monte Tessa
+292	Valle Andino Reserva, Syrah
+293	Cristo de la Vega, Tempranillo Marques de Castilla
+294	Guillopees, Sancerre Cuvee Henri Vernoy Rose
+295	Ormer Bay, Chardonnay Viogner
+296	Pignataro, Trebbiano d'Abruzzo
+297	Antonin Guyon, Chorey Les Beaune Champs Long 2009 
+298	Domaine Dominique Guyon, Hautes Cotes De Nuits Dames 
+299	Fernand & Laurent Pillot, Chassagne Montrachet Champgai 
+300	Friarwood, Macon Lugny "Les Charmes" 
+301	Jean Chartron, Puligny Montrachet Cailleret 
+\.
+
+
+--
+-- Name: inventory_producer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Benshep
+--
+
+SELECT pg_catalog.setval('inventory_producer_id_seq', 301, true);
+
+
+--
+-- Data for Name: inventory_size; Type: TABLE DATA; Schema: public; Owner: Benshep
+--
+
+COPY inventory_size (id, size, name) FROM stdin;
+4	0.375	Half Bottle
+2	0.75	Bottle
+6	1.5	Magnum
+7	0.7	Whiskey
+9	3 Size	3 Size
+8	0.5	0.5
+5		None
+\.
+
+
+--
+-- Name: inventory_size_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Benshep
+--
+
+SELECT pg_catalog.setval('inventory_size_id_seq', 9, true);
+
+
+--
+-- Data for Name: inventory_varietal; Type: TABLE DATA; Schema: public; Owner: Benshep
+--
+
+COPY inventory_varietal (id, name, details) FROM stdin;
+\.
+
+
+--
+-- Name: inventory_varietal_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Benshep
+--
+
+SELECT pg_catalog.setval('inventory_varietal_id_seq', 1, false);
+
+
+--
+-- Data for Name: inventory_wine; Type: TABLE DATA; Schema: public; Owner: Benshep
+--
+
+COPY inventory_wine (id, wine, short_name, full_name, vintage, searcher_details, searcher_url, searcher_price, searcher_status, searcher_data, colour, wine_type, alcohol, classification, single_size, note, sku, product_code, l_win, sage_name, case_size, stocked, stock_bin, wholesale, pricelist, retail, octavian_ref, lcb_ref, sage_ref, cost_price_s, w_cost_price_s, cost_price, retail_price_s, retail_price, wholesale_price_s, wholesale_price, appellation_id, price_group_id, producer_id, size_id, varietal_id) FROM stdin;
+73		Friarwood Champagne Brut NV Magnums		NV	f		0.00	\N	\N			0.00			\N		\N		Friarwood Champagne Brut Nv Magnums	0	\N		t	t	t	\N	\N	FRIA005		\N	\N		\N		\N	\N	\N	29	2	\N
+7		Antonin Guyon, Chorey les Beaune Champs Longs		2009	f		0.00	\N	\N			0.00		0.75			\N		Antonin Guyon, Chorey les Beaune Champs Longs 2009	0	\N		t	t	t	\N	\N	GUYO006	11.20	11.20	\N	20.32	\N	17.75	\N	\N	\N	3	2	\N
+13		Bassac, Lo Bartas Rose		2013	f		0.00	\N	\N			0.00		0.75	Bought too expensive. 500 bottles bought		\N		Bassac, Lo Bartas Rose 2013	0	\N	A1	t	t	t	\N	\N	BASS001	11.00	11.00	\N	8.08	\N	7.50	\N	\N	\N	4	2	\N
+72		Friarwood Champagne Brut Nv 		NV	f		0.00	\N	\N			0.00			\N		\N		Friarwood Champagne Brut Nv Half Bottles	0	\N		t	t	t	\N	\N	FRIA004		\N	\N		\N		\N	\N	\N	27	2	\N
+69		Fleur Des Pins, Clos Pins 2009 		2009	f		0.00	\N	\N			0.00			\N		\N		Fleur Des Pins, Clos Pins 2009 Half Bottles	0	\N		t	t	t	\N	\N	FLEU001		\N	\N		\N		\N	\N	\N	28	2	\N
+56		Dufort Vivens 		1995	f		0.00	\N	\N			0.00			\N		\N		Dufort Vivens 1995	0	\N		t	t	t	\N	\N	DURF001		\N	\N		\N		\N	\N	\N	26	2	\N
+55		Ducru Beaucallou 		1998	f		0.00	\N	\N			0.00			\N		\N		Ducru Beaucallou 1998	0	\N		t	t	t	\N	\N	DUCR001		\N	\N		\N		\N	\N	\N	25	2	\N
+62		Ellevin, Chablis		2012	f		0.00	\N	\N			0.00		0.75			\N		Ellevin, Chablis Vaucoupin 2012 Half Bottles	0	\N	A2	t	t	t	\N	\N	ELLE006	3.98	7.75	\N	7.56	\N	11.00	\N	\N	\N	5	2	\N
+31		Citari, Lugana		2012	f		0.00	\N	\N			0.00		0.75			\N		Citari, Lugana 2012	0	\N	A5	t	t	t	\N	\N	CITA001	7.02	7.02	\N	0.00	\N	10.00	\N	\N	\N	6	2	\N
+28		Charles Deloire, Pouilly Fume		2012	f		0.00	\N	\N			0.00		0.375	bought to expensive. 60 bottles 		\N		Charles Deloire, Pouilly Fume 2012 Half Bottles	0	\N	A2	t	t	t	\N	\N	DELO002	10.24	10.24	\N	6.80	\N	6.50	\N	\N	\N	2	4	\N
+63		Ellevin, Chablis Vosgros		2011	f		0.00	\N	\N			0.00		0.75			\N		Ellevin, Chablis Vosgros 2011	0	\N	A4	t	t	t	\N	\N	ELLE008	9.10	9.10	\N	18.00	\N	15.25	\N	\N	\N	7	2	\N
+52		Delord, Armagnac VSOP			f		0.00	\N	\N			0.00			\N		\N		Delord, Armagnac Vsop	0	\N		t	t	t	\N	\N	ARMA001		\N	\N		\N		\N	\N	\N	23	2	\N
+60		Ellevin, Chablis Vaucoupin		2011	f		0.00	\N	\N			0.00		0.75			\N		Ellevin, Chablis Vaucoupin 2011	0	\N		t	t	t	\N	\N	ELLE005	9.08	9.08	\N	18.00	\N	15.25	\N	\N	\N	8	2	\N
+33		Clifford Bay, Pinot Noir		2004	f		0.00	\N	\N			0.00		0.75			\N		Clifford Bay, Pinot Noir 2004	0	\N		t	t	t	\N	\N	CLIFF001	8.65	8.65	\N	15.44	\N	14.00	\N	\N	\N	9	2	\N
+22		Castra Rubra, Castra Rubra		2008	f		0.00	\N	\N			0.00		0.75			\N		Castra Rubra, Castra Rubra 2008	0	\N	A8	t	t	t	\N	\N	CAST005	7.79	7.79	\N	11.92	\N	10.50	\N	\N	\N	10	2	\N
+58		Ellevin, Chablis		2012	f		0.00	\N	\N			0.00		0.75			\N		Ellevin, Chablis 2012 Magnum	0	\N	A2	t	t	t	\N	\N	ELLE004	10.54	7.75	\N	29.76	\N	11.00	\N	\N	\N	5	2	\N
+64		Ellevin, Petit Chablis		2011	f		0.00	\N	\N			0.00		0.75			\N		Ellevin, Petit Chablis 2011	0	\N	A4	t	t	t	\N	\N	ELLE001	6.64	6.64	\N	11.08	\N	10.25	\N	\N	\N	11	2	\N
+32		Citari, San Martino Della Battaglia Vv		2010	f		0.00	\N	\N			0.00		0.75			\N		Citari, San Martino Della Battaglia Vv 2010	0	\N	A4	t	t	t	\N	\N	CITA002	5.86	5.86	\N	9.44	\N	8.75	\N	\N	\N	12	2	\N
+24		Castra Rubra, Dominant White		2013	f		0.00	\N	\N			0.00		0.75			\N		Castra Rubra, Dominant White 2013	0	\N	A4	t	t	t	\N	\N	CAST002	5.28	5.28	\N	8.40	\N	7.00	\N	\N	\N	13	2	\N
+26		Castra Rubra, Motley Cock White		2013	f		0.00	\N	\N			0.00		0.75			\N		Castra Rubra, Motley Cock White 2013	0	\N	A8	t	t	t	\N	\N	CAST004	5.28	5.28	\N	7.84	\N	7.00	\N	\N	\N	14	2	\N
+25		Castra Rubra, Motley Cock Red		2009	f		0.00	\N	\N			0.00		0.75			\N		Castra Rubra, Motley Cock Red 2009	0	\N	A6	t	t	t	\N	\N	CAST003	5.04	5.04	\N	7.84	\N	7.00	\N	\N	\N	15	2	\N
+49		De Bortoli, Shiraz Willowglen		2012	f		0.00	\N	\N			0.00		0.75			\N		De Bortoli, Shiraz Willowglen 2012	0	\N		t	t	t	\N	\N	WILL001	4.40	4.40	\N	7.00	\N	6.00	\N	\N	\N	16	2	\N
+3		Altovela, Sauvignon Blanc Cumplido		2010	f		0.00	\N	\N			0.00		0.75			\N		Altovela, Sauvignon Blanc Cumplido 2010	0	\N	A4	t	t	t	\N	\N	ALTO002	3.95	3.95	\N	5.48	\N	5.25	\N	\N	\N	17	2	\N
+4		Altovela, Tempranillo Cumplido		2011	f		0.00	\N	\N			0.00		0.75			\N		Altovela, Tempranillo Cumplido 2011	0	\N		t	t	t	\N	\N	ALTO001	3.62	3.62	\N	5.48	\N	5.25	\N	\N	\N	18	2	\N
+12		Antonin Guyon, Savigny les Beaune Goudelettes		2009	f		0.00	\N	\N			0.00		0.375	Bought in bond 22.97 for 24x37.5 Edward mistake !		\N		Antonin Guyon, Savigny les Beaune Goudelettes 2009 Half Bott	0	\N		t	t	t	\N	\N	GUYO009	3.00	3.00	\N	14.24	\N	12.50	\N	\N	\N	19	4	\N
+344		Brane Cantenac		2010	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	40.25	40.25	\N	0.00	\N	76.00	\N	\N	\N	24	2	\N
+15		Bellegrave		2005	f		0.00	\N	\N			0.00		0.75			\N		Bellegrave 2005	0	\N		t	t	t	\N	\N	BELLE002	13.63	13.63	\N	34.92	\N	30.00	\N	\N	\N	1	2	\N
+14		Bellegrave		2000	f		0.00	\N	\N			0.00		0.75			\N		Bellegrave 2000	0	\N		t	t	t	\N	\N	BELLE001	16.46	16.46	\N	34.92	\N	30.00	\N	\N	\N	1	2	\N
+5		Antonin Guyon, Chambolle Musigney Clos Village		2009	f		0.00	\N	\N			0.00		0.75			\N		Antonin Guyon, Chambolle Musigney Clos Village 2009	0	\N		t	t	t	\N	\N	GUYO004	20.22	20.22	\N	35.48	\N	32.50	\N	\N	\N	30	2	\N
+71		Fonplegade		2010	f		0.00	\N	\N			0.00		0.75			\N		Fonplegade 2010	0	\N		t	t	t	\N	\N	FONP001	20.00	20.00	\N	24.00	\N	30.00	\N	\N	\N	31	2	\N
+47		Dauzac		1995	f		0.00	\N	\N			0.00		0.75			\N		Dauzac 1995	0	\N	C2	t	t	t	\N	\N	DAUZ001	23.54	23.54	\N	37.20	\N	32.00	\N	\N	\N	32	2	\N
+67		Figeac		2000	f		0.00	\N	\N			0.00		0.75	only bought 1 bottle, in the shop		\N		Figeac 2000	0	\N		t	t	t	\N	\N	FIGE001	200.00	200.00	\N	157.20	\N	135.00	\N	\N	\N	33	2	\N
+38		Clos Rene		2005	f		0.00	\N	\N			0.00		0.75	Only 2 cases in bond. Shop only?		\N		Clos Rene 2005	0	\N		t	t	t	\N	\N	CLOS003	19.29	19.29	\N	32.60	\N	0.00	\N	\N	\N	34	2	\N
+34		Clinet		2000	f		0.00	\N	\N			0.00		0.75	13 bottle only		\N		Clinet 2000	0	\N		t	t	t	\N	\N	CLIN001	73.33	73.33	\N	104.00	\N	95.00	\N	\N	\N	35	2	\N
+68		Figeac		2005	f		0.00	\N	\N			0.00		0.75			\N		Figeac 2005	0	\N	C1	t	t	t	\N	\N	FIGE002	66.04	66.04	\N	145.52	\N	125.00	\N	\N	\N	33	2	\N
+39		Coche-Bouillot, Meursault Charmes		2004	f		0.00	\N	\N			0.00		0.75			\N		Coche-Bouillot, Meursault Charmes 2004	0	\N	A5	t	t	t	\N	\N	BOUI001	27.50	27.50	\N	42.48	\N	36.75	\N	\N	\N	36	2	\N
+20		Cantenac Brown		2000	f		0.00	\N	\N			0.00		0.75			\N		Cantenac Brown 2000	0	\N	B1	t	t	t	\N	\N	CANT001	32.04	32.04	\N	58.20	\N	50.00	\N	\N	\N	37	2	\N
+42		Corte Aleardi, Amarone Valpolicella Classico		2007	f		0.00	\N	\N			0.00		0.75			\N		Corte Aleardi, Amarone Valpolicella Classico 2007	0	\N	B2	t	t	t	\N	\N	CORT002	20.63	20.63	\N	34.20	\N	29.25	\N	\N	\N	38	2	\N
+343		Beychevelle		2009	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	41.96	41.96	\N	0.00	\N	65.00	\N	\N	\N	39	2	\N
+44		Cos d'Estournel		2000	f		0.00	\N	\N			0.00		0.75			\N		Cos d'Estournell 2000	0	\N		t	t	t	\N	\N	COSE001	106.67	106.67	\N	168.80	\N	145.00	\N	\N	\N	40	2	\N
+35		Clos Fourtet		2000	f		0.00	\N	\N			0.00		0.75	Bought at market price. 46 bottles		\N		Clos Fourtet 2000	0	\N	C3	t	t	t	\N	\N	CLOSF001	67.50	67.50	\N	93.12	\N	80.00	\N	\N	\N	41	2	\N
+48		Dauzac		1996	f		0.00	\N	\N			0.00		0.75			\N		Dauzac 1996	0	\N	C2	t	t	t	\N	\N	DAUZ002	22.33	22.33	\N	37.24	\N	32.00	\N	\N	\N	32	2	\N
+133		Monteviejo, Lindaflor Malbec 		2007	f		0.00	\N	\N			0.00			\N		\N		Monteviejo, Lindaflor Malbec 2007	0	\N		t	t	t	\N	\N	MONT004		\N	\N		\N		\N	\N	\N	67	2	\N
+120		Mille Roses (Haut Medoc)		2005	f		0.00	\N	\N			0.00		0.75			\N		Mille Roses (Haut Medoc) 2005	0	\N		t	t	t	\N	\N	MILL002	9.38	9.38	\N	0.00	\N	16.50	\N	\N	\N	43	2	\N
+121		Mille Roses (Haut Medoc)		2006	f		0.00	\N	\N			0.00		0.75	right price		\N		Mille Roses (Haut Medoc) 2006	0	\N	B2	t	t	t	\N	\N	MILL003	9.17	9.17	\N	17.68	\N	16.50	\N	\N	\N	43	2	\N
+132		Monteviejo Malbec 		2007	f		0.00	\N	\N			0.00			\N		\N		Monteviejo Malbec 2007	0	\N		t	t	t	\N	\N	MONT003		\N	\N		\N		\N	\N	\N	66	2	\N
+135		Monteviejo, Petite Fleur		2010	f		0.00	\N	\N			0.00		0.75			\N		Monteviejo, Petite Fleur 2010	0	\N		t	t	t	\N	\N	MONT001	8.34	8.34	\N	13.52	\N	12.50	\N	\N	\N	45	2	\N
+85		Grand Corbin		2006	f		0.00	\N	\N			0.00		0.375			\N		Grand Corbin 2006 Half Bottles	0	\N	C4	t	t	t	\N	\N	CORB002	8.00	8.00	\N	0.00	\N	14.50	\N	\N	\N	46	4	\N
+118		Michel Wust, Gewurztraminer Tradition		2012	f		0.00	\N	\N			0.00		0.75			\N		Michel Wust, Gewurztraminer Tradition 2012	0	\N	A4	t	t	t	\N	\N	MICH001	6.92	6.92	\N	11.28	\N	10.25	\N	\N	\N	47	2	\N
+124		Mille Roses (Haut Medoc)		2008	f		0.00	\N	\N			0.00		0.375			\N		Mille Roses (Haut Medoc) 2008 Half Bottles	0	\N		t	t	t	\N	\N	MILL006	6.37	6.37	\N	12.24	\N	10.75	\N	\N	\N	43	4	\N
+123		Mille Roses (Haut Medoc) 		2008	f		0.00	\N	\N			0.00			\N		\N		Mille Roses (Haut Medoc) 2008	0	\N		t	t	t	\N	\N	MILL005		\N	\N		\N		\N	\N	\N	63	2	\N
+148		Orangerie		2006	f		0.00	\N	\N			0.00		0.75			\N		Orangerie 2006	0	\N		t	t	t	\N	\N	ORAN001	5.80	5.80	\N	9.76	\N	9.75	\N	\N	\N	48	2	\N
+131		Mont Auriol, Viognier		2012	f		0.00	\N	\N			0.00		0.75			\N		Mont Auriol, Viognier 2012	0	\N	A3	t	t	t	\N	\N	MONT006	5.15	5.15	\N	7.16	\N	6.75	\N	\N	\N	49	2	\N
+134		Monteviejo, Malbec Festivo		2012	f		0.00	\N	\N			0.00		0.75			\N		Monteviejo, Malbec Festivo 2012	0	\N	B2	t	t	t	\N	\N	MONT002	5.12	5.12	\N	8.44	\N	7.75	\N	\N	\N	50	2	\N
+117		Merlot Vieilles Vignes "Le Marcassin"			f		0.00	\N	\N			0.00			\N		\N		Merlot Vieilles Vignes "Le Marcassin"	0	\N		t	t	t	\N	\N	MARC001		\N	\N		\N		\N	\N	\N	57	2	\N
+111		Lisennes		2010	f		0.00	\N	\N			0.00		0.75			\N		Lisennes 2010	0	\N	B10	t	t	t	\N	\N	LISE001	5.00	5.00	\N	6.28	\N	8.00	\N	\N	\N	51	2	\N
+95		Haute Cariziere, Muscadet Clos Chene		2012	f		0.00	\N	\N			0.00		0.75			\N		Haute Cariziere, Muscadet Clos Chene 2012	0	\N		t	t	t	\N	\N	DANI001	4.82	4.82	\N	7.84	\N	7.25	\N	\N	\N	52	2	\N
+128		Mont Auriol, Chardonnay		2012	f		0.00	\N	\N			0.00		0.75			\N		Mont Auriol, Chardonnay 2012	0	\N		t	t	t	\N	\N	MONT008	4.81	4.81	\N	7.16	\N	6.75	\N	\N	\N	53	2	\N
+129		Mont Auriol, Merlot		2013	f		0.00	\N	\N			0.00		0.75			\N		Mont Auriol, Merlot 2013	0	\N	B9	t	t	t	\N	\N	MONT007	4.79	4.79	\N	7.16	\N	6.75	\N	\N	\N	54	2	\N
+83		Graham, Late Bottled Vintage Port			f		0.00	\N	\N			0.00			\N		\N		Graham, Late Bottled Vintage Port	0	\N		t	t	t	\N	\N	GRAH001	\N	\N	\N	\N	\N	\N	\N	\N	\N	55	5	\N
+116		Marchesi Barolo, Picit Langue			f		0.00	\N	\N			0.00			\N		\N		Marchesi Barolo, Picit Langue	0	\N		t	t	t	\N	\N	BARO001		\N	\N		\N		\N	\N	\N	56	2	\N
+114		Lucas 2008 		2008	f		0.00	\N	\N			0.00			\N		\N		Lucas 2008 Half Bottles	0	\N		t	t	t	\N	\N	LUCA002		\N	\N		\N		\N	\N	\N	65	2	\N
+103		Jean Cordier, Saint Veran 		2012	f		0.00	\N	\N			0.00			\N		\N		Jean Cordier, Saint Veran 2012	0	\N		t	t	t	\N	\N	CORD001		\N	\N		\N		\N	\N	\N	62	2	\N
+90		Grant Burge, Benchmark Shiraz 		2012	f		0.00	\N	\N			0.00			\N		\N		Grant Burge, Benchmark Shiraz 2012	0	\N		t	t	t	\N	\N	GRAN001		\N	\N		\N		\N	\N	\N	60	2	\N
+89		Grant Burge, Benchmark Chardonnay 		2012	f		0.00	\N	\N			0.00			\N		\N		Grant Burge, Benchmark Chardonnay 2012	0	\N		t	t	t	\N	\N	GRAN002		\N	\N		\N		\N	\N	\N	59	2	\N
+81		Graham, 		20	f		0.00	\N	\N			0.00			\N		\N		Graham, 20 Years Old Tawny Port	0	\N		t	t	t	\N	\N	GRAH003	\N	\N	\N	\N	\N	\N	\N	\N	\N	58	5	\N
+78		Friarwood, Sauvignon Saumon 		2012	f		0.00	\N	\N			0.00			\N		\N		Friarwood, Sauvignon Saumon 2012	0	\N		t	t	t	\N	\N	FRIA001		\N	\N		\N		\N	\N	\N	68	2	\N
+97		Henri Delagrange, Pommard Vaumuriens Hauts		2008	f		0.00	\N	\N			0.00		0.75			\N		Henri Delagrange, Pommard Vaumuriens Hauts 2008	0	\N		t	t	t	\N	\N	DELA001	14.03	14.03	\N	25.84	\N	23.25	\N	\N	\N	64	2	\N
+105		Lafon Rochet		2005	f		0.00	\N	\N			0.00		0.75			\N		Lafon Rochet 2005	0	\N	C3	t	t	t	\N	\N	LAFO002	24.96	24.96	\N	0.00	\N	55.00	\N	\N	\N	69	2	\N
+75		Friarwood, Champagne Brut		NV	f		0.00	\N	\N			0.00		0.75			\N		Friarwood, Champagne Brut NV	0	\N	A8	t	t	t	\N	\N	FRIA003	13.57	13.57	\N	22.16	\N	20.00	\N	\N	\N	42	2	\N
+84		Grand Corbin		2000	f		0.00	\N	\N			0.00		0.75			\N		Grand Corbin 2000	0	\N	B2	t	t	t	\N	\N	CORB001	16.46	16.46	\N	26.20	\N	22.50	\N	\N	\N	46	2	\N
+509		Friarwood, Champagne Brut		NV	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A8	t	t	t	\N	\N	\N	27.28	13.57	\N	51.84	\N	20.00	\N	\N	\N	42	2	\N
+79		Friarwood, Volnay Clos Chenes		2001	f		0.00	\N	\N			0.00		0.75	shop only		\N		Friarwood, Volnay Clos Chenes 2001	0	\N		t	t	t	\N	\N	LABO001	15.15	15.15	\N	29.92	\N	0.00	\N	\N	\N	70	2	\N
+119		Mille Roses (Haut Medoc)		2004	f		0.00	\N	\N			0.00		0.75			\N		Mille Roses (Haut Medoc) 2004	0	\N		t	t	t	\N	\N	MILL001	9.72	9.72	\N	17.68	\N	16.25	\N	\N	\N	43	2	\N
+99		Issan		2008	f		0.00	\N	\N			0.00		0.75			\N		Issan 2008	0	\N		t	t	t	\N	\N	ISSA002	26.38	26.38	\N	52.40	\N	45.00	\N	\N	\N	71	2	\N
+142		Montrose		2003	f		0.00	\N	\N			0.00		0.75			\N		Montrose 2003	0	\N		t	t	t	\N	\N	MONT020	122.09	122.09	\N	0.00	\N	175.00	\N	\N	\N	72	2	\N
+112		Lucas		2000	f		0.00	\N	\N			0.00		1.5			\N		Lucas 2000 Magnum	0	\N	A8	t	t	t	\N	\N	LUCA003	16.99	16.99	\N	32.60	\N	28.50	\N	\N	\N	73	6	\N
+139		Montrose		2000	f		0.00	\N	\N			0.00		0.375	To add to wholesale list		\N		Montrose 2000 Half Bottles	0	\N	C4	t	t	t	\N	\N	MONT017	40.00	40.00	\N	0.00	\N	0.00	\N	\N	\N	72	4	\N
+80		Gloria		2005	f		0.00	\N	\N			0.00		0.75			\N		Gloria 2005	0	\N		t	t	t	\N	\N	GLOR001	28.00	28.00	\N	45.60	\N	40.00	\N	\N	\N	74	2	\N
+110		Leoville Poyferre		2001	f		0.00	\N	\N			0.00		0.75			\N		Leoville Poyferre 2001	0	\N	C6	t	t	t	\N	\N	LEOP001	45.00	45.00	\N	81.48	\N	70.00	\N	\N	\N	75	2	\N
+138		Montrose		2000	f		0.00	\N	\N			0.00		0.75			\N		Montrose 2000	0	\N	C7	t	t	t	\N	\N	MONT016	80.42	80.42	\N	203.80	\N	175.00	\N	\N	\N	72	2	\N
+146		Nenin		1998	f		0.00	\N	\N			0.00		0.75			\N		Nenin 1998	0	\N		t	t	t	\N	\N	NENI001	36.50	36.50	\N	69.84	\N	60.00	\N	\N	\N	76	2	\N
+115		Lynch Bages		2003	f		0.00	\N	\N			0.00		0.75			\N		Lynch Bages 2003	0	\N	C6	t	t	t	\N	\N	LYNC001	72.27	72.27	\N	128.04	\N	110.00	\N	\N	\N	77	2	\N
+137		Montrose		1999	f		0.00	\N	\N			0.00		0.75			\N		Montrose 1999	0	\N	C6	t	t	t	\N	\N	MONT015	56.67	56.67	\N	75.68	\N	70.00	\N	\N	\N	72	2	\N
+143		Montrose		2004	f		0.00	\N	\N			0.00		0.75			\N		Montrose 2004	0	\N	C7	t	t	t	\N	\N	MONT022	39.33	39.33	\N	69.84	\N	65.00	\N	\N	\N	72	2	\N
+136		Montrose		2003	f		0.00	\N	\N			0.00		0.75			\N		Montrose  2003 Magnums	0	\N		t	t	t	\N	\N	MONT021	244.17	122.09	\N	0.00	\N	175.00	\N	\N	\N	72	2	\N
+144		Montrose		2007	f		0.00	\N	\N			0.00		0.75			\N		Montrose 2007	0	\N	C7	t	t	t	\N	\N	MONT023	37.80	37.80	\N	75.68	\N	65.00	\N	\N	\N	72	2	\N
+108		Leoville Barton		2002	f		0.00	\N	\N			0.00		0.75			\N		Leoville Barton 2002	0	\N	C6	t	t	t	\N	\N	BART001	36.50	36.50	\N	87.32	\N	75.00	\N	\N	\N	78	2	\N
+88		Grand Puy Lacoste		1998	f		0.00	\N	\N			0.00		0.75			\N		Grand Puy Lacoste 1998	0	\N	C7	t	t	t	\N	\N	GRAN003	34.38	34.38	\N	55.88	\N	48.00	\N	\N	\N	79	2	\N
+107		Gay		2004	f		0.00	\N	\N			0.00		0.75			\N		Le Gay 2004	0	\N		t	t	t	\N	\N	LEGA001	32.50	32.50	\N	0.00	\N	80.00	\N	\N	\N	80	2	\N
+168		Poggio Salvi, Campo Del Bosco		2006	f		0.00	\N	\N			0.00		0.75			\N		Poggio Salvi, Campo Del Bosco 2006	0	\N		t	t	t	\N	\N	POGG005	11.95	11.95	\N	20.08	\N	18.00	\N	\N	\N	82	2	\N
+189		Saumon Sauvignon Blanc 		2012	f		0.00	\N	\N			0.00			\N		\N		Saumon Sauvignon Blanc 2012	0	\N		t	t	t	\N	\N	SAUM001		\N	\N		\N		\N	\N	\N	104	2	\N
+190		Serio and Borgogno, Barbaresco		2008	f		0.00	\N	\N			0.00		0.75			\N		Serio and Borgogno, Barbaresco 2008	0	\N	B9	t	t	t	\N	\N	SERI005	11.68	11.68	\N	19.12	\N	17.25	\N	\N	\N	83	2	\N
+184		Saint George 2011 		2011	f		0.00	\N	\N			0.00			\N		\N		Saint George 2011 Half Bottles	0	\N		t	t	t	\N	\N	GEOR003		\N	\N		\N		\N	\N	\N	107	2	\N
+203		Tonon, Prosecco Frizzante Corda		NV	f		0.00	\N	\N			0.00		0.75	Bought to expensive		\N		Tonon, Prosecco Frizzante Corda NV	0	\N	A6	t	t	t	\N	\N	TONO003	10.74	10.74	\N	8.40	\N	7.25	\N	\N	\N	84	2	\N
+172		Poggio Salvi, Vino Nobile		2007	f		0.00	\N	\N			0.00		0.75			\N		Poggio Salvi, Vino Nobile 2007	0	\N		t	t	t	\N	\N	POGG006	10.45	10.45	\N	16.88	\N	15.25	\N	\N	\N	85	2	\N
+195		Serio and Borgogno, Gavi		2013	f		0.00	\N	\N			0.00		0.75			\N		Serio and Borgogno, Gavi 2013	0	\N	A3	t	t	t	\N	\N	SERI006	7.69	7.69	\N	11.64	\N	10.25	\N	\N	\N	87	2	\N
+191		Serio and Borgogno, Barbera D'Alba Superiore		2009	f		0.00	\N	\N			0.00		0.75			\N		Serio and Borgogno, Barbera D'Alba Superiore 2009	0	\N		t	t	t	\N	\N	SERI001	7.25	7.25	\N	11.64	\N	10.25	\N	\N	\N	88	2	\N
+175		Quatre Tours, Provence Rose 		2014	f		0.00	\N	\N			0.00			\N		\N		Quatre Tours, Provence Rose 2014  Magnum	0	\N		t	t	t	\N	\N	QUAT002		\N	\N		\N		\N	\N	\N	102	2	\N
+215		Valle Andino Reserva Especial, Pinot Noir		2010	f		0.00	\N	\N			0.00		0.75			\N		Valle Andino Reserva Especial, Pinot Noir 2010	0	\N		t	t	t	\N	\N	VALL008	6.74	6.74	\N	11.28	\N	10.00	\N	\N	\N	89	2	\N
+174		Quatre Tours, Provence Rose 		2014	f		0.00	\N	\N			0.00			\N		\N		Quatre Tours, Provence Rose 2014	0	\N		t	t	t	\N	\N	QUAT001		\N	\N		\N		\N	\N	\N	102	2	\N
+165		Pignataro, Trebbiano D'Abruzzo 		2011	f		0.00	\N	\N			0.00			\N		\N		Pignataro, Trebbiano D'Abruzzo 2011	0	\N		t	t	t	\N	\N	PIGN002		\N	\N		\N		\N	\N	\N	101	2	\N
+211		Valle Andino Gran Reserva, Cabernet Sauvignon		2008	f		0.00	\N	\N			0.00		0.75			\N		Valle Andino Gran Reserva, Cabernet Sauvignon 2008	0	\N	B9	t	t	t	\N	\N	VALL009	6.69	6.69	\N	11.28	\N	10.00	\N	\N	\N	90	2	\N
+158		Pastor Diaz, Rioja Valdejimena Reserva 		2004	f		0.00	\N	\N			0.00			\N		\N		Pastor Diaz, Rioja Valdejimena Reserva 2004	0	\N		t	t	t	\N	\N	PAST002		\N	\N		\N		\N	\N	\N	117	2	\N
+170		Poggio Salvi, Chianti Colli Senesi		2012	f		0.00	\N	\N			0.00		0.75			\N		Poggio Salvi, Chianti Colli Senesi 2012	0	\N		t	t	t	\N	\N	POGG002	6.60	6.60	\N	10.20	\N	9.75	\N	\N	\N	86	2	\N
+153		Ormes De Pez 		2000	f		0.00	\N	\N			0.00			\N		\N		Ormes De Pez Half Bottles 2000	0	\N		t	t	t	\N	\N	ODPE003		\N	\N		\N		\N	\N	\N	100	2	\N
+219		Valle Andino Reserva, Merlot		2009	f		0.00	\N	\N			0.00		0.75			\N		Valle Andino Reserva, Merlot 2009	0	\N		t	t	t	\N	\N	VALL002	6.19	6.19	\N	7.84	\N	7.00	\N	\N	\N	91	2	\N
+221		Verne Maziere, Fleurie Madone 2009 		2009	f		0.00	\N	\N			0.00			\N		\N		Verne Maziere, Fleurie Madone 2009 Half Bottles	0	\N		t	t	t	\N	\N	VERN002		\N	\N		\N		\N	\N	\N	114	2	\N
+204		Tonon, Villa Teresa Spumante Prosecco NV		NV	f		0.00	\N	\N			0.00			\N		\N		Tonon, Villa Teresa Spumante Prosecco Nv	0	\N		t	t	t	\N	\N	TONO004		\N	\N		\N		\N	\N	\N	111	2	\N
+213		Valle Andino Reserva Especial, Chardonnay		2012	f		0.00	\N	\N			0.00		0.75			\N		Valle Andino Reserva Especial, Chardonnay 2012	0	\N	A5	t	t	t	\N	\N	VALL005	5.75	5.75	\N	9.28	\N	8.25	\N	\N	\N	92	2	\N
+214		Valle Andino Reserva Especial, Merlot		2009	f		0.00	\N	\N			0.00		0.75			\N		Valle Andino Reserva Especial, Merlot 2009	0	\N	B10	t	t	t	\N	\N	VALL006	5.70	5.70	\N	9.28	\N	8.25	\N	\N	\N	93	2	\N
+156		Pastor Diaz, Rioja Valdejimena Crianza		2008	f		0.00	\N	\N			0.00		0.75			\N		Pastor Diaz, Rioja Valdejimena Crianza 2008	0	\N		t	t	t	\N	\N	PAST003	5.37	5.37	\N	9.44	\N	8.75	\N	\N	\N	94	2	\N
+201		Tonon, Pinot Grigio Venezia 		2012	f		0.00	\N	\N			0.00			\N		\N		Tonon, Pinot Grigio Venezia 2012	0	\N		t	t	t	\N	\N	TONO002		\N	\N		\N		\N	\N	\N	108	2	\N
+188		Saint Peyre, Picpoul de Pinet		2012	f		0.00	\N	\N			0.00		0.75			\N		Saint Peyre, Picpoul de Pinet 2012	0	\N		t	t	t	\N	\N	PICP001	5.12	5.12	\N	7.32	\N	6.75	\N	\N	\N	95	2	\N
+202		Tonon, Pinot Grigio Villa Teresa		2013	f		0.00	\N	\N			0.00		0.75			\N		Tonon, Pinot Grigio Villa Teresa 2013	0	\N	A1	t	t	t	\N	\N	TONO001	4.91	4.91	\N	7.84	\N	7.00	\N	\N	\N	96	2	\N
+218		Valle Andino Reserva, Carmenere		2009	f		0.00	\N	\N			0.00		0.75			\N		Valle Andino Reserva, Carmenere 2009	0	\N	B10	t	t	t	\N	\N	VALL001	4.53	4.53	\N	7.84	\N	7.00	\N	\N	\N	97	2	\N
+149		Ormer Bay, Chardonnay		2009	f		0.00	\N	\N			0.00		0.75			\N		Ormer Bay, Chardonnay 2009	0	\N	A3	t	t	t	\N	\N	ORME002	4.48	4.48	\N	6.24	\N	5.50	\N	\N	\N	98	2	\N
+196		Stony, Muscat 2007 		2007	f		0.00	\N	\N			0.00			\N		\N		Stony, Muscat 2007 Half Bottles	0	\N		t	t	t	\N	\N	STON001		\N	\N		\N		\N	\N	\N	109	2	\N
+151		Ormer Bay, Pinotage		2009	f		0.00	\N	\N			0.00		0.75			\N		Ormer Bay, Pinotage 2009	0	\N	B2	t	t	t	\N	\N	ORME001	4.17	4.17	\N	6.24	\N	5.50	\N	\N	\N	99	2	\N
+161		Petit Village		1996	f		0.00	\N	\N			0.00		0.75			\N		Petit Village 1996	0	\N	C7	t	t	t	\N	\N	PETI001	23.75	23.75	\N	48.88	\N	42.00	\N	\N	\N	103	2	\N
+206		Tour Figeac		2008	f		0.00	\N	\N			0.00		0.75			\N		Tour Figeac 2008	0	\N		t	t	t	\N	\N	TOUR001	16.46	16.46	\N	31.76	\N	28.00	\N	\N	\N	105	2	\N
+198		Suduiraut		1995	f		0.00	\N	\N			0.00		0.75			\N		Suduiraut 1995	0	\N		t	t	t	\N	\N	SUDU001	21.98	21.98	\N	43.64	\N	38.00	\N	\N	\N	106	2	\N
+154		Ormes Pez		1996	f		0.00	\N	\N			0.00		0.75			\N		Ormes Pez 1996	0	\N	B1	t	t	t	\N	\N	ODPE001	21.98	21.98	\N	40.72	\N	35.00	\N	\N	\N	112	2	\N
+178		Richard, Condrieu Amaraze		2010	f		0.00	\N	\N			0.00		0.75			\N		Richard, Condrieu Amaraze 2010	0	\N	A4	t	t	t	\N	\N	RICH001	15.18	15.18	\N	23.88	\N	22.50	\N	\N	\N	113	2	\N
+185		Saint Georges		2010	f		0.00	\N	\N			0.00		0.75			\N		Saint Georges 2010	0	\N	B9	t	t	t	\N	\N	GEOR001	13.84	13.84	\N	20.80	\N	19.00	\N	\N	\N	81	2	\N
+200		Talbot		2003	f		0.00	\N	\N			0.00		0.75			\N		Talbot 2003	0	\N		t	t	t	\N	\N	TALB001	35.08	35.08	\N	62.72	\N	55.00	\N	\N	\N	115	2	\N
+163		Pichon Lalande		1989	f		0.00	\N	\N			0.00		0.75			\N		Pichon Lalande 1989	0	\N	C2	t	t	t	\N	\N	PICH001	127.50	127.50	\N	215.36	\N	189.00	\N	\N	\N	116	2	\N
+181		Rieussec		1999	f		0.00	\N	\N			0.00		0.75			\N		Rieussec 1999	0	\N		t	t	t	\N	\N	RIEU003	20.21	20.21	\N	46.56	\N	42.00	\N	\N	\N	118	2	\N
+208		Tour Figeac		2009	f		0.00	\N	\N			0.00		0.375			\N		Tour Figeac 2009 Half Bottles	0	\N		t	t	t	\N	\N	TOUR003	13.96	13.96	\N	0.00	\N	18.50	\N	\N	\N	105	4	\N
+199		Suduiraut		1996	f		0.00	\N	\N			0.00		0.75			\N		Suduiraut 1996	0	\N		t	t	t	\N	\N	SUDU002	21.98	21.98	\N	46.56	\N	38.00	\N	\N	\N	106	2	\N
+207		Tour Figeac		2009	f		0.00	\N	\N			0.00		0.75			\N		Tour Figeac 2009	0	\N		t	t	t	\N	\N	TOUR002	21.77	21.77	\N	0.00	\N	32.00	\N	\N	\N	105	2	\N
+173		Potensac		2005	f		0.00	\N	\N			0.00		0.75			\N		Potensac 2005	0	\N	C7	t	t	t	\N	\N	POTE001	16.67	16.67	\N	34.92	\N	30.00	\N	\N	\N	119	2	\N
+155		Ormes Pez		2005	f		0.00	\N	\N			0.00		0.75			\N		Ormes Pez 2005	0	\N	B1	t	t	t	\N	\N	ODPE002	19.50	19.50	\N	46.56	\N	40.00	\N	\N	\N	112	2	\N
+180		Rieussec		1996	f		0.00	\N	\N			0.00		0.75			\N		Rieussec 1996	0	\N		t	t	t	\N	\N	RIEU002	23.75	23.75	\N	44.24	\N	38.00	\N	\N	\N	118	2	\N
+210		Trois Origines		2006	f		0.00	\N	\N			0.00		0.75			\N		Trois Origines 2006	0	\N	B2	t	t	t	\N	\N	ORIG001	14.94	14.94	\N	29.68	\N	24.75	\N	\N	\N	120	2	\N
+253		Landes, Cuvee Tradition		2012	f		0.00	\N	\N			0.00		0.375	To put on the wholesale list.		\N			0	\N	A2	t	t	t	\N	\N	\N	7.00	7.00	\N	0.00	\N	0.00	\N	\N	\N	121	4	\N
+150		Ormer Bay, Chardonnay		2009	f		0.00	\N	\N			0.00		0.75			\N		Ormer Bay, Chardonnay Viognier 2009	0	\N	A3	t	t	t	\N	\N	ORME003	4.48	4.48	\N	6.24	\N	5.50	\N	\N	\N	98	2	\N
+225		Villaudiere, Sancerre		2012	f		0.00	\N	\N			0.00		0.75			\N		Villaudiere, Sancerre 2012	0	\N	A3	t	t	t	\N	\N	VILL001	8.06	8.06	\N	13.04	\N	11.75	\N	\N	\N	122	2	\N
+236		Talbot		2009	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	14.60	14.60	\N	0.00	\N	30.00	\N	\N	\N	115	4	\N
+266		Boyd Cantenac		2000	f		0.00	\N	\N			0.00		0.375			\N			0	\N	C4	t	t	t	\N	\N	\N	12.00	12.00	\N	32.00	\N	27.50	\N	\N	\N	123	4	\N
+238		Chasse Spleen		2009	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	8.23	8.23	\N	0.00	\N	15.50	\N	\N	\N	124	4	\N
+251		Grand Corbin		2006	f		0.00	\N	\N			0.00		0.375			\N			0	\N	C4	t	t	t	\N	\N	\N	8.00	8.00	\N	0.00	\N	14.50	\N	\N	\N	46	4	\N
+230		Yquem		1995	f		0.00	\N	\N			0.00		0.75			\N		Yquem 1995	0	\N	C5	t	t	t	\N	\N	QUEM001	105.21	105.21	\N	0.00	\N	260.00	\N	\N	\N	125	2	\N
+113		Lucas		2005	f		0.00	\N	\N			0.00		0.75			\N		Lucas 2005	0	\N		t	t	t	\N	\N	LUCA001	7.03	7.03	\N	12.72	\N	11.75	\N	\N	\N	73	2	\N
+267		Ormes Pez		2000	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	10.99	10.99	\N	27.36	\N	23.50	\N	\N	\N	112	4	\N
+232		Lascombes		2009	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	20.27	20.27	\N	0.00	\N	45.00	\N	\N	\N	126	4	\N
+183		Robert Michel, Cornas Geynale		2001	f		0.00	\N	\N			0.00		0.75			\N		Robert Michel, Cornas Geynale 2001	0	\N		t	t	t	\N	\N	ROBE001	14.93	14.93	\N	29.20	\N	30.00	\N	\N	\N	128	2	\N
+254		Charles Deloire, Pouilly Fume		2010	f		0.00	\N	\N			0.00		0.375			\N			0	\N	A2	t	t	t	\N	\N	\N	4.10	4.10	\N	0.00	\N	6.50	\N	\N	\N	2	4	\N
+255		Poggio Salvi, Chianti Colli Senesi		2012	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	3.77	3.77	\N	0.00	\N	6.50	\N	\N	\N	86	4	\N
+257		Pichon Baron		1998	f		0.00	\N	\N			0.00		0.375			\N			0	\N	C4	t	t	t	\N	\N	\N	31.54	31.54	\N	58.20	\N	50.00	\N	\N	\N	129	4	\N
+231		Yquem		1995	f		0.00	\N	\N			0.00		0.375			\N		Yquem 1995 Half Bottle	0	\N	C5	t	t	t	\N	\N	QUEM002	65.00	65.00	\N	0.00	\N	145.00	\N	\N	\N	125	4	\N
+264		Sociando Mallet		2000	f		0.00	\N	\N			0.00		0.375			\N			0	\N	C4	t	t	t	\N	\N	\N	20.00	20.00	\N	34.92	\N	30.00	\N	\N	\N	130	4	\N
+241		Montrose		2000	f		0.00	\N	\N			0.00		0.375	To add to wholesale list		\N			0	\N	C4	t	t	t	\N	\N	\N	40.00	40.00	\N	0.00	\N	0.00	\N	\N	\N	72	4	\N
+242		Montrose		2000	f		0.00	\N	\N			0.00		0.375	To add to wholesale list		\N			0	\N	C4	t	t	t	\N	\N	\N	40.00	40.00	\N	0.00	\N	0.00	\N	\N	\N	72	4	\N
+243		Montrose		2000	f		0.00	\N	\N			0.00		0.375	To add to wholesale list		\N			0	\N	C4	t	t	t	\N	\N	\N	40.00	40.00	\N	0.00	\N	0.00	\N	\N	\N	72	4	\N
+245		Montrose		2000	f		0.00	\N	\N			0.00		0.375	To add to wholesale list		\N			0	\N	C4	t	t	t	\N	\N	\N	40.00	40.00	\N	0.00	\N	0.00	\N	\N	\N	72	4	\N
+246		Montrose		2000	f		0.00	\N	\N			0.00		0.375	To add to wholesale list		\N			0	\N	C4	t	t	t	\N	\N	\N	40.00	40.00	\N	0.00	\N	0.00	\N	\N	\N	72	4	\N
+248		Montrose		2000	f		0.00	\N	\N			0.00		0.375	To add to wholesale list		\N			0	\N	C4	t	t	t	\N	\N	\N	40.00	40.00	\N	0.00	\N	0.00	\N	\N	\N	72	4	\N
+262		Lascombes		2004	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C4	t	t	t	\N	\N	\N	19.67	39.33	\N	43.64	\N	70.00	\N	\N	\N	126	2	\N
+269		Ruinart, Rose		NV	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N		t	t	t	\N	\N	\N	19.56	30.00	\N	23.92	\N	0.00	\N	\N	\N	131	2	\N
+126		Mille Roses (Haut Medoc) 2009 		2009	f		0.00	\N	\N			0.00			\N		\N		Mille Roses (Haut Medoc) 2009 Half Bottles	0	\N		t	t	t	\N	\N	MILL008		\N	\N		\N		\N	\N	\N	145	2	\N
+226		Vincent Bouzereau, Meursault		2012	f		0.00	\N	\N			0.00		0.75			\N		Vincent Bouzereau, Meursault 2012	0	\N	A5	t	t	t	\N	\N	BOUZ001	19.09	19.09	\N	31.28	\N	27.50	\N	\N	\N	132	2	\N
+271		Potensac		2000	f		0.00	\N	\N			0.00		0.375	shop only		\N			0	\N	C4	t	t	t	\N	\N	\N	17.50	17.50	\N	23.60	\N	0.00	\N	\N	\N	119	4	\N
+263		Talbot		2005	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	17.19	17.19	\N	40.76	\N	35.00	\N	\N	\N	115	4	\N
+234		Branaire Ducru		2009	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	17.08	17.08	\N	0.00	\N	35.00	\N	\N	\N	133	4	\N
+235		Giscours		2009	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	16.02	16.02	\N	0.00	\N	29.00	\N	\N	\N	134	4	\N
+265		Giscours		2004	f		0.00	\N	\N			0.00		0.375			\N			0	\N	C4	t	t	t	\N	\N	\N	16.00	16.00	\N	34.92	\N	30.00	\N	\N	\N	134	4	\N
+2		Agro de Bazan, Albarino Contrapunto		2013	f		0.00	\N	\N			0.00		0.75	Bought too expensive		\N		Agro de Bazan, Albarino Contrapunto 2013	0	\N	A4	t	t	t	\N	\N	AGRO001	14.94	14.94	\N	10.36	\N	9.75	\N	\N	\N	135	2	\N
+275		Antonin Guyon, Gevrey Chambertin Justice		2009	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	14.26	14.26	\N	19.20	\N	17.25	\N	\N	\N	136	4	\N
+237		Lagrange (Saint Julien)		2009	f		0.00	\N	\N			0.00		0.375	to put on the list		\N			0	\N		t	t	t	\N	\N	\N	14.20	14.20	\N	0.00	\N	0.00	\N	\N	\N	137	4	\N
+249		Tour Figeac		2009	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	13.96	13.96	\N	0.00	\N	18.50	\N	\N	\N	105	4	\N
+250		Tour Figeac		2009	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	13.96	13.96	\N	0.00	\N	18.50	\N	\N	\N	105	4	\N
+258		Rieussec		2005	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	13.00	13.00	\N	44.24	\N	37.50	\N	\N	\N	118	4	\N
+259		Rieussec		2005	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	13.00	13.00	\N	44.24	\N	37.50	\N	\N	\N	118	4	\N
+273		Pointe		2000	f		0.00	\N	\N			0.00		0.375			\N			0	\N	C4	t	t	t	\N	\N	\N	12.00	12.00	\N	20.32	\N	17.50	\N	\N	\N	138	4	\N
+276		Clos Rene		2000	f		0.00	\N	\N			0.00		0.375	To put on the wholesale list. 312 bottles in bond		\N			0	\N	C4	t	t	t	\N	\N	\N	11.77	11.77	\N	19.20	\N	0.00	\N	\N	\N	34	4	\N
+277		Clos Rene		2000	f		0.00	\N	\N			0.00		0.375	To put on the wholesale list. 312 bottles in bond		\N			0	\N	C4	t	t	t	\N	\N	\N	11.77	11.77	\N	19.20	\N	0.00	\N	\N	\N	34	4	\N
+268		Ormes Pez		2000	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	10.99	10.99	\N	27.36	\N	23.50	\N	\N	\N	112	4	\N
+272		Camensac		2000	f		0.00	\N	\N			0.00		0.375			\N			0	\N	C4	t	t	t	\N	\N	\N	8.69	8.69	\N	21.52	\N	18.50	\N	\N	\N	139	4	\N
+197		Stracquadaini, Don Sari		2007	f		0.00	\N	\N			0.00		0.75			\N		Stracquadaini, Don Sari 2007	0	\N		t	t	t	\N	\N	STRA001	8.51	8.51	\N	14.32	\N	13.25	\N	\N	\N	140	2	\N
+21		Castra Rubra, Butterflys Rock		2010	f		0.00	\N	\N			0.00		0.75			\N		Castra Rubra, Butterflys Rock 2010	0	\N	A8	t	t	t	\N	\N	CAST006	8.12	8.12	\N	12.56	\N	11.00	\N	\N	\N	141	2	\N
+252		Berliquet		2004	f		0.00	\N	\N			0.00		0.375	Shop only		\N			0	\N	C4	t	t	t	\N	\N	\N	7.63	7.63	\N	0.00	\N	0.00	\N	\N	\N	142	4	\N
+278		Bellegrave		2006	f		0.00	\N	\N			0.00		0.375			\N			0	\N	A2	t	t	t	\N	\N	\N	7.50	7.50	\N	19.20	\N	16.50	\N	\N	\N	1	4	\N
+229		Vitalonga, Terra Di Confine		2004	f		0.00	\N	\N			0.00		0.75			\N		Vitalonga, Terra Di Confine 2004	0	\N		t	t	t	\N	\N	VITA001	7.46	7.46	\N	13.68	\N	12.25	\N	\N	\N	143	2	\N
+239		Potensac		2009	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	6.46	6.46	\N	0.00	\N	14.50	\N	\N	\N	119	4	\N
+224		Vignol		2009	f		0.00	\N	\N			0.00		0.75			\N		Vignol 2009	0	\N		t	t	t	\N	\N	VIGN001	5.30	5.30	\N	8.40	\N	7.75	\N	\N	\N	144	2	\N
+82		Graham, 		2001	f		0.00	\N	\N			0.00			\N		\N		Graham, 2001 Vintage Port	0	\N		t	t	t	\N	\N	GRAH002	\N	\N	\N	\N	\N	\N	\N	\N	\N	58	5	\N
+233		Brane Cantenac		2009	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	18.85	18.85	\N	0.00	\N	35.00	\N	\N	\N	24	4	\N
+27		Charles Deloire, Pouilly Fume		2012	f		0.00	\N	\N			0.00		0.75	bought to expensive. 370 bottles		\N		Charles Deloire, Pouilly Fume 2012	0	\N	A1	t	t	t	\N	\N	DELO001	11.33	11.33	\N	11.88	\N	10.75	\N	\N	\N	2	2	\N
+303		Clos Pins, rouge		2009	f		0.00	\N	\N			0.00		0.375	\N		\N			0	\N	A2	t	t	t	\N	\N	\N	5.62	\N	\N	7.84	\N	\N	\N	\N	\N	146	4	\N
+322		La Fleur Des Pins, Graves Superieures		2009	f		0.00	\N	\N			0.00		0.375	\N		\N			0	\N	A6	t	t	t	\N	\N	\N		\N	\N	0.00	\N	\N	\N	\N	\N	147	4	\N
+341		Pichon Baron		2006	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	50.46	50.46	\N	0.00	\N	100.00	\N	\N	\N	129	2	\N
+280		Veuve Clicquot, Yellow Label		NV	f		0.00	\N	\N			0.00		0.375	shop only		\N			0	\N	A7	t	t	t	\N	\N	\N	15.58	15.58	\N	18.40	\N	0.00	\N	\N	\N	157	4	\N
+310		Ellevin, Chablis		2012	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	3.98	7.75	\N	7.56	\N	11.00	\N	\N	\N	5	2	\N
+311		Ellevin, Chablis		2012	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	3.98	7.75	\N	7.56	\N	11.00	\N	\N	\N	5	2	\N
+335		Castra Rubra, Petit Manseng		2011	f		0.00	\N	\N			0.00		0.5	\N		\N			0	\N	A6	t	t	t	\N	\N	\N		\N	\N	0.00	\N		\N	\N	\N	153	2	\N
+313		Ellevin, Chablis		2012	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	3.98	7.75	\N	7.56	\N	11.00	\N	\N	\N	5	2	\N
+281		Antonin Guyon, Savigny les Beaune		2008	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	7.54	7.54	\N	14.24	\N	12.50	\N	\N	\N	158	4	\N
+283		Fonplegade		2010	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	5.57	20.00	\N	14.00	\N	30.00	\N	\N	\N	31	2	\N
+316		Charles Deloire, Pouilly Fume		2012	f		0.00	\N	\N			0.00		0.375	bought to expensive. 60 bottles 		\N			0	\N	A2	t	t	t	\N	\N	\N	10.24	10.24	\N	6.80	\N	6.50	\N	\N	\N	2	4	\N
+315		Poggio Salvi, Chianti Colli Senesi		2009	f		0.00	\N	\N			0.00		0.375	To increase price		\N			0	\N	A2	t	t	t	\N	\N	\N	8.36	8.36	\N	6.88	\N	9.75	\N	\N	\N	86	4	\N
+300		Ellevin, Chablis		2012	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	5.44	7.75	\N	9.88	\N	11.00	\N	\N	\N	5	2	\N
+312		Ellevin, Chablis		2012	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	3.98	7.75	\N	7.56	\N	11.00	\N	\N	\N	5	2	\N
+279		Bellegrave		2006	f		0.00	\N	\N			0.00		0.375			\N			0	\N	A2	t	t	t	\N	\N	\N	7.50	7.50	\N	19.20	\N	16.50	\N	\N	\N	1	4	\N
+294		Mille Roses (Haut Medoc)		2008	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	6.37	6.37	\N	12.24	\N	10.75	\N	\N	\N	43	4	\N
+295		Mille Roses (Haut Medoc)		2008	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	6.37	6.37	\N	12.24	\N	10.75	\N	\N	\N	43	4	\N
+296		Mille Roses (Haut Medoc)		2008	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	6.37	6.37	\N	12.24	\N	10.75	\N	\N	\N	43	4	\N
+297		Mille Roses (Haut Medoc)		2008	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	6.37	6.37	\N	12.24	\N	10.75	\N	\N	\N	43	4	\N
+298		Mille Roses (Haut Medoc)		2008	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	6.37	6.37	\N	12.24	\N	10.75	\N	\N	\N	43	4	\N
+299		Antonin Guyon, Chorey les Beaune Champs Longs		2009	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	6.22	6.22	\N	11.92	\N	10.50	\N	\N	\N	3	4	\N
+317		Guillopees, Sancerre Cuvee Henri Vernoy		2013	f		0.00	\N	\N			0.00		0.375			\N			0	\N	A2	t	t	t	\N	\N	\N	5.52	5.52	\N	6.68	\N	6.25	\N	\N	\N	160	4	\N
+318		Guillopees, Sancerre Cuvee Henri Vernoy		2013	f		0.00	\N	\N			0.00		0.375			\N			0	\N	A2	t	t	t	\N	\N	\N	5.52	5.52	\N	6.68	\N	6.25	\N	\N	\N	160	4	\N
+92		Guillopees, Sancerre Cuvee Henri Vernoy		2013	f		0.00	\N	\N			0.00		0.375			\N		Guillopees, Sancerre Cuvee Henri Vernoy 2013 Half Bottles	0	\N	A2	t	t	t	\N	\N	GUIL002	5.52	5.52	\N	6.68	\N	6.25	\N	\N	\N	160	4	\N
+320		Guillopees, Sancerre Cuvee Henri Vernoy		2013	f		0.00	\N	\N			0.00		0.375			\N			0	\N	A2	t	t	t	\N	\N	\N	4.53	5.52	\N	6.68	\N	6.25	\N	\N	\N	160	4	\N
+94		Guillopees, Sancerre Cuvee Henri Vernoy		2013	f		0.00	\N	\N			0.00		0.375			\N		Guillopees, Sancerre Cuvee Henri Vernoy Rose 2013 Half Bottl	0	\N	A2	t	t	t	\N	\N	GUIL004	4.53	5.52	\N	6.68	\N	6.25	\N	\N	\N	160	4	\N
+302		Fleur de Pin, Doux		2009	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	5.50	5.50	\N	8.16	\N	7.50	\N	\N	\N	161	4	\N
+304		Ellevin, Chablis		2013	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	4.91	4.91	\N	7.56	\N	7.25	\N	\N	\N	5	4	\N
+305		Ellevin, Chablis		2013	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	4.91	4.91	\N	7.56	\N	7.25	\N	\N	\N	5	4	\N
+59		Ellevin, Chablis		2013	f		0.00	\N	\N			0.00		0.375			\N		Ellevin, Chablis 2013 Half Bottles	0	\N		t	t	t	\N	\N	ELLE003	4.91	4.91	\N	7.56	\N	7.25	\N	\N	\N	5	4	\N
+306		Ellevin, Chablis		2013	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	4.91	4.91	\N	7.56	\N	7.25	\N	\N	\N	5	4	\N
+307		Ellevin, Chablis		2013	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	4.91	4.91	\N	7.56	\N	7.25	\N	\N	\N	5	4	\N
+308		Ellevin, Chablis		2013	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	4.91	4.91	\N	7.56	\N	7.25	\N	\N	\N	5	4	\N
+319		Verne Maziere, Fleurie Madone		2010	f		0.00	\N	\N			0.00		0.375			\N			0	\N	A2	t	t	t	\N	\N	\N	4.68	4.68	\N	6.68	\N	6.25	\N	\N	\N	127	4	\N
+314		Lucas		2008	f		0.00	\N	\N			0.00		0.375			\N			0	\N	A2	t	t	t	\N	\N	\N	4.16	4.16	\N	7.52	\N	7.25	\N	\N	\N	73	4	\N
+282		Antonin Guyon, Savigny les Beaune Goudelettes		2009	f		0.00	\N	\N			0.00		0.375	Bought in bond 22.97 for 24x37.5 Edward mistake !		\N			0	\N		t	t	t	\N	\N	\N	3.00	3.00	\N	14.24	\N	12.50	\N	\N	\N	19	4	\N
+336		Hidalgo 		NV	f		0.00	\N	\N			0.00		0.7	\N		\N			0	\N		t	t	t	\N	\N	\N	0.00	\N	\N	0.00	\N	\N	\N	\N	\N	162	7	\N
+288		Friarwood, Champagne Brut		NV	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	12.57	13.57	\N	13.00	\N	20.00	\N	\N	\N	42	2	\N
+301		Ellevin, Chablis		2012	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	5.44	7.75	\N	9.88	\N	11.00	\N	\N	\N	5	2	\N
+323		Ormes Pez		2002	f		0.00	\N	\N			0.00		0.375	\N		\N			0	\N	C4	t	t	t	\N	\N	\N		\N	\N		\N	\N	\N	\N	\N	112	4	\N
+324		Ormes Pez		2002	f		0.00	\N	\N			0.00		0.375	\N		\N			0	\N	C4	t	t	t	\N	\N	\N		\N	\N		\N	\N	\N	\N	\N	112	4	\N
+325		Delord, Armagnac		NV	f		0.00	\N	\N			0.00		0.5	\N		\N			0	\N		t	t	t	\N	\N	\N	45.00	\N	\N	0.00	\N	\N	\N	\N	\N	148	8	\N
+326		Delord, Armagnac VSOP		NV	f		0.00	\N	\N			0.00		0.5	\N		\N			0	\N		t	t	t	\N	\N	\N	30.00	\N	\N	0.00	\N	\N	\N	\N	\N	23	8	\N
+327		Hidalgo, Sherry Almeda		NV	f		0.00	\N	\N			0.00		0.5	\N		\N			0	\N		t	t	t	\N	\N	\N	7.50	\N	\N	0.00	\N	\N	\N	\N	\N	149	8	\N
+328		Friarwood Delord, Armagnac		1946	f		0.00	\N	\N			0.00		0.5	\N		\N			0	\N		t	t	t	\N	\N	\N	45.00	\N	\N	292.80	\N	\N	\N	\N	\N	150	8	\N
+329		Friarwood Delord, Armagnac		1942	f		0.00	\N	\N			0.00		0.5	\N		\N			0	\N		t	t	t	\N	\N	\N	45.00	\N	\N	292.80	\N	\N	\N	\N	\N	150	8	\N
+330		Friarwood Delord, Armagnac		1953	f		0.00	\N	\N			0.00		0.5	\N		\N			0	\N		t	t	t	\N	\N	\N	45.00	\N	\N	240.00	\N	\N	\N	\N	\N	150	8	\N
+331		Friarwood Delord, Armagnac		1956	f		0.00	\N	\N			0.00		0.5	\N		\N			0	\N		t	t	t	\N	\N	\N	45.00	\N	\N	205.60	\N	\N	\N	\N	\N	150	8	\N
+332		Friarwood Delord, Armagnac		1960	f		0.00	\N	\N			0.00		0.5	\N		\N			0	\N		t	t	t	\N	\N	\N	45.00	\N	\N	181.60	\N	\N	\N	\N	\N	150	8	\N
+333		SloeMotion, Sloe Gin 		NV	f		0.00	\N	\N			0.00		0.5	\N		\N			0	\N		t	t	t	\N	\N	\N	7.00	\N	\N	15.12	\N	\N	\N	\N	\N	151	8	\N
+334		Hidalgo, Sherry Faraon		NV	f		0.00	\N	\N			0.00		0.5	\N		\N			0	\N		t	t	t	\N	\N	\N	7.50	\N	\N	9.44	\N	\N	\N	\N	\N	152	8	\N
+337		Jean Filloux, Cognac Tres Vieux		NV	f		0.00	\N	\N			0.00		0.7	\N		\N			0	\N		t	t	t	\N	\N	\N	30.80	\N	\N	0.00	\N	\N	\N	\N	\N	154	7	\N
+338		Jean Filloux, Cognac Cep d'Or		NV	f		0.00	\N	\N			0.00		0.7	\N		\N			0	\N		t	t	t	\N	\N	\N	20.39	\N	\N	61.96	\N	\N	\N	\N	\N	155	7	\N
+339		Sheep Dip, Whisky		1999	f		0.00	\N	\N			0.00		0.7	\N		\N			0	\N		t	t	t	\N	\N	\N	10.00	\N	\N	46.00	\N	\N	\N	\N	\N	156	7	\N
+340		Sheep Dip, Whisky		NV	f		0.00	\N	\N			0.00		0.7	\N		\N			0	\N		t	t	t	\N	\N	\N	10.00	\N	\N	30.56	\N	\N	\N	\N	\N	156	7	\N
+309		Ellevin, Chablis		2012	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	3.98	7.75	\N	7.56	\N	11.00	\N	\N	\N	5	2	\N
+365		Ducru Beaucaillou		2003	f		0.00	\N	\N			0.00		0.75	\N		\N			0	\N		t	t	t	\N	\N	\N	98.33	\N	\N	0.00	\N	\N	\N	\N	\N	164	2	\N
+130		Mont Auriol, Sauvignon Blanc		2014	f		0.00	\N	\N			0.00		0.75			\N		Mont Auriol, Sauvignon Blanc 2014	0	\N	A1	t	t	t	\N	\N	MONT005	4.78	4.78	\N	0.00	\N	6.75	\N	\N	\N	169	2	\N
+376		Ormer Bay, Chardonnay		2009	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	4.48	4.48	\N	0.00	\N	5.50	\N	\N	\N	98	2	\N
+387		Ducru Beaucaillou		2003	f		0.00	\N	\N			0.00		0.75	\N		\N			0	\N	C2	t	t	t	\N	\N	\N	112.50	\N	\N	209.52	\N	\N	\N	\N	\N	164	2	\N
+353		Manoir Gay		2006	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	13.83	13.83	\N	0.00	\N	24.00	\N	\N	\N	163	2	\N
+525		Tour Du Pin Figeac		2004	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	\N	13.50	\N	\N	\N	25.00	\N	\N	\N	165	2	\N
+375		Valle Andino, Reserva Syrah		2011	f		0.00	\N	\N			0.00		0.75	\N		\N			0	\N	A1	t	t	t	\N	\N	\N	4.67	\N	\N	0.00	\N	\N	\N	\N	\N	166	2	\N
+373		Monteviejo, Malbec Monteviejo		2008	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	11.95	11.95	\N	0.00	\N	19.00	\N	\N	\N	167	2	\N
+402		Ducru Beaucaillou		1999	f		0.00	\N	\N			0.00		0.75	\N		\N			0	\N	C2	t	t	t	\N	\N	\N	75.42	\N	\N	116.40	\N	\N	\N	\N	\N	164	2	\N
+354		Lafite Rothschild		1995	f		0.00	\N	\N			0.00		0.75	To put on the wholesale list.		\N			0	\N		t	t	t	\N	\N	\N	650.00	650.00	\N	0.00	\N	0.00	\N	\N	\N	171	2	\N
+355		Lafite Rothschild		2004	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C1	t	t	t	\N	\N	\N	385.83	385.83	\N	0.00	\N	950.00	\N	\N	\N	171	2	\N
+356		Ausone		2007	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	320.00	320.00	\N	0.00	\N	0.00	\N	\N	\N	172	2	\N
+357		Latour		1998	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C2	t	t	t	\N	\N	\N	315.00	315.00	\N	0.00	\N	475.00	\N	\N	\N	173	2	\N
+379		Mouton Rothschild		1996	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C3	t	t	t	\N	\N	\N	277.50	277.50	\N	552.92	\N	475.00	\N	\N	\N	174	2	\N
+358		Mouton Rothschild		2001	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C1	t	t	t	\N	\N	\N	252.50	252.50	\N	0.00	\N	400.00	\N	\N	\N	174	2	\N
+359		Margaux		2004	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C3	t	t	t	\N	\N	\N	244.17	244.17	\N	0.00	\N	500.00	\N	\N	\N	170	2	\N
+378		Latour		2001	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C3	t	t	t	\N	\N	\N	239.79	239.79	\N	756.60	\N	650.00	\N	\N	\N	173	2	\N
+360		Haut Brion		2001	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C5	t	t	t	\N	\N	\N	219.17	219.17	\N	0.00	\N	400.00	\N	\N	\N	175	2	\N
+361		Pavie		2005	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C8	t	t	t	\N	\N	\N	202.50	202.50	\N	0.00	\N	300.00	\N	\N	\N	176	2	\N
+385		Angelus		2003	f		0.00	\N	\N			0.00		0.75	Only Bought 9 bottles in the cellar. To check market price		\N			0	\N	C5	t	t	t	\N	\N	\N	181.67	181.67	\N	225.00	\N	185.00	\N	\N	\N	177	2	\N
+362		Palmer		2000	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C5	t	t	t	\N	\N	\N	150.00	150.00	\N	0.00	\N	300.00	\N	\N	\N	178	2	\N
+363		Pavie		2006	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C3	t	t	t	\N	\N	\N	126.25	126.25	\N	0.00	\N	240.00	\N	\N	\N	176	2	\N
+386		Evangile		1998	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C5	t	t	t	\N	\N	\N	118.80	118.80	\N	209.52	\N	180.00	\N	\N	\N	179	2	\N
+388		Ducru Beaucaillou		2000	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C2	t	t	t	\N	\N	\N	112.50	112.50	\N	209.52	\N	180.00	\N	\N	\N	164	2	\N
+384		Pichon Baron		2000	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C8	t	t	t	\N	\N	\N	110.52	110.52	\N	244.44	\N	210.00	\N	\N	\N	129	2	\N
+389		Palmer		2001	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C5	t	t	t	\N	\N	\N	99.00	99.00	\N	197.88	\N	170.00	\N	\N	\N	178	2	\N
+366		Pape Clement		2005	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C8	t	t	t	\N	\N	\N	92.50	92.50	\N	0.00	\N	280.00	\N	\N	\N	180	2	\N
+40		Conseillante		1998	f		0.00	\N	\N			0.00		0.75			\N		Conseillante 1998	0	\N	C3	t	t	t	\N	\N	CONS001	92.50	92.50	\N	151.32	\N	130.00	\N	\N	\N	181	2	\N
+398		Calon Segur		2006	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C5	t	t	t	\N	\N	\N	37.92	37.92	\N	128.40	\N	110.00	\N	\N	\N	182	2	\N
+401		Moet & Chandon, Dom Perignon		2002	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N	A7	t	t	t	\N	\N	\N	85.00	85.00	\N	116.40	\N	0.00	\N	\N	\N	183	2	\N
+367		Pichon Baron		2009	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	76.67	76.67	\N	0.00	\N	145.00	\N	\N	\N	129	2	\N
+392		Evangile		1999	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C5	t	t	t	\N	\N	\N	72.50	72.50	\N	162.96	\N	140.00	\N	\N	\N	179	2	\N
+394		Pichon Baron		1995	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C2	t	t	t	\N	\N	\N	69.30	69.30	\N	139.68	\N	120.00	\N	\N	\N	129	2	\N
+36		Clos Rene		2000	f		0.00	\N	\N			0.00		0.75	Sold out		\N		Clos Rene 2000	0	\N		t	t	t	\N	\N	CLOS001	62.71	62.71	\N	0.00	\N	0.00	\N	\N	\N	34	2	\N
+395		Pontet Canet		2000	f		0.00	\N	\N			0.00		0.75			\N			0	\N	B1	t	t	t	\N	\N	\N	62.71	62.71	\N	139.68	\N	120.00	\N	\N	\N	184	2	\N
+393		Calon Segur		2000	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C5	t	t	t	\N	\N	\N	58.50	58.50	\N	157.20	\N	130.00	\N	\N	\N	182	2	\N
+368		Calon Segur		2009	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	46.92	46.92	\N	0.00	\N	80.00	\N	\N	\N	182	2	\N
+396		Pontet Canet		2006	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	46.42	46.42	\N	139.68	\N	120.00	\N	\N	\N	184	2	\N
+409		Lagrange		2000	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	46.42	46.42	\N	98.96	\N	85.00	\N	\N	\N	185	2	\N
+400		Smith Haut Lafitte		2001	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C8	t	t	t	\N	\N	\N	43.20	43.20	\N	116.44	\N	100.00	\N	\N	\N	186	2	\N
+370		Climens		2005	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	42.00	42.00	\N	0.00	\N	125.00	\N	\N	\N	187	2	\N
+411		Gaffeliere (Saint Emilion)		2005	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C1	t	t	t	\N	\N	\N	41.46	41.46	\N	93.12	\N	80.00	\N	\N	\N	188	2	\N
+397		Pontet Canet		2008	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C3	t	t	t	\N	\N	\N	41.25	41.25	\N	139.68	\N	120.00	\N	\N	\N	184	2	\N
+371		Lascombes		2004	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C1	t	t	t	\N	\N	\N	39.33	39.33	\N	0.00	\N	70.00	\N	\N	\N	126	2	\N
+345		Domaine Chevalier		2010	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	37.71	37.71	\N	0.00	\N	65.00	\N	\N	\N	190	2	\N
+346		Domaine Chevalier		2009	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	36.29	36.29	\N	0.00	\N	65.00	\N	\N	\N	190	2	\N
+408		Bon Pasteur		2000	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	35.08	35.08	\N	104.76	\N	90.00	\N	\N	\N	191	2	\N
+347		Bon Pasteur		2009	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	34.88	34.88	\N	0.00	\N	70.00	\N	\N	\N	191	2	\N
+372		Beychevelle		2011	f		0.00	\N	\N			0.00		0.75	To put on the wholesale list.		\N			0	\N		t	t	t	\N	\N	\N	34.17	34.17	\N	0.00	\N	0.00	\N	\N	\N	39	2	\N
+348		Branaire Ducru		2010	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	34.17	34.17	\N	0.00	\N	65.00	\N	\N	\N	133	2	\N
+349		Smith Haut Lafitte		2008	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	34.17	34.17	\N	0.00	\N	65.00	\N	\N	\N	186	2	\N
+350		Lagrange		2005	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	32.25	32.25	\N	0.00	\N	65.00	\N	\N	\N	185	2	\N
+351		Clos Marquis		2009	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	27.79	27.79	\N	0.00	\N	50.00	\N	\N	\N	192	2	\N
+46		Croix Gay		2000	f		0.00	\N	\N			0.00		0.75			\N		Croix Gay 2000	0	\N	C	t	t	t	\N	\N	CROI001	27.00	27.00	\N	0.00	\N	40.00	\N	\N	\N	193	2	\N
+410		Langoa Barton		2006	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C	t	t	t	\N	\N	\N	23.04	23.04	\N	98.96	\N	50.00	\N	\N	\N	194	2	\N
+391		Taylor		1992	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N		t	t	t	\N	\N	\N	20.00	20.00	\N	180.00	\N	0.00	\N	\N	\N	195	2	\N
+352		Sociando Mallet		2009	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	18.23	18.23	\N	0.00	\N	38.00	\N	\N	\N	130	2	\N
+403		Ducru Beaucaillou		1998	f		0.00	\N	\N			0.00		0.75	\N		\N			0	\N	C2	t	t	t	\N	\N	\N	72.50	\N	\N	116.40	\N	\N	\N	\N	\N	164	2	\N
+377		Margaux		2005	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C3	t	t	t	\N	\N	\N	725.00	725.00	\N	1105.80	\N	950.00	\N	\N	\N	170	2	\N
+463		Dow		2001	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N		t	t	t	\N	\N	\N	10.00	10.00	\N	27.52	\N	0.00	\N	\N	\N	198	2	\N
+452		Enclos		2000	f		0.00	\N	\N			0.00		0.75	\N		\N			0	\N		t	t	t	\N	\N	\N	27.00	\N	\N	34.92	\N	\N	\N	\N	\N	199	2	\N
+459		Cambon Pelouse		2005	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	11.00	11.00	\N	32.60	\N	30.00	\N	\N	\N	197	2	\N
+454		Durfort Vivens		1995	f		0.00	\N	\N			0.00		0.75	\N		\N			0	\N		t	t	t	\N	\N	\N	20.00	\N	\N	34.92	\N	\N	\N	\N	\N	200	2	\N
+440		Pommery brut		NV	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N	A7	t	t	t	\N	\N	\N	0.00	0.00	\N	50.40	\N	0.00	\N	\N	\N	201	2	\N
+101		Jean Chartron, Puligny Montrachet Cailleret Rouge 		2006	f		0.00	\N	\N			0.00			\N		\N		Jean Chartron, Puligny Montrachet Cailleret Rouge 2006	0	\N		t	t	t	\N	\N	CHART004		\N	\N		\N		\N	\N	\N	61	2	\N
+415		Branaire Ducru		2000	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	46.42	46.42	\N	87.32	\N	75.00	\N	\N	\N	133	2	\N
+205		Figeac		2005	f		0.00	\N	\N			0.00		0.75			\N		Tour Du Pin Figeac 2005	0	\N		t	t	t	\N	\N	TPFI001	12.92	66.04	\N	32.60	\N	125.00	\N	\N	\N	33	2	\N
+456		Ferraton, Hermitage Miaux		2000	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N		t	t	t	\N	\N	\N	30.80	30.80	\N	32.64	\N	0.00	\N	\N	\N	202	2	\N
+413		Lascombes		2000	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C1	t	t	t	\N	\N	\N	64.17	64.17	\N	87.32	\N	75.00	\N	\N	\N	126	2	\N
+427		Domaine Guyon, Vosne Romanee Orveaux		2004	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	29.80	29.80	\N	60.40	\N	60.00	\N	\N	\N	203	2	\N
+432		Branaire Ducru		2008	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	27.08	27.08	\N	58.20	\N	50.00	\N	\N	\N	133	2	\N
+417		Fleur Gay		1995	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C1	t	t	t	\N	\N	\N	52.50	52.50	\N	79.16	\N	68.00	\N	\N	\N	204	2	\N
+414		Lascombes		2005	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	50.46	50.46	\N	87.32	\N	75.00	\N	\N	\N	126	2	\N
+416		Brane Cantenac		2005	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C1	t	t	t	\N	\N	\N	41.46	41.46	\N	81.48	\N	70.00	\N	\N	\N	24	2	\N
+418		Lascombes		2003	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	40.75	40.75	\N	75.68	\N	65.00	\N	\N	\N	126	2	\N
+420		Monbousquet		2005	f		0.00	\N	\N			0.00		0.75			\N			0	\N	B1	t	t	t	\N	\N	\N	40.75	40.75	\N	69.84	\N	60.00	\N	\N	\N	205	2	\N
+141		Montrose		2002	f		0.00	\N	\N			0.00		0.75			\N		Montrose 2002	0	\N	C7	t	t	t	\N	\N	MONT019	40.00	40.00	\N	67.52	\N	58.00	\N	\N	\N	72	2	\N
+445		Bollinger, Rose		NV	f		0.00	\N	\N			0.00		0.75	Shop only		\N			0	\N	A7	t	t	t	\N	\N	\N	39.29	39.29	\N	44.00	\N	0.00	\N	\N	\N	206	2	\N
+419		Lascombes		2006	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C1	t	t	t	\N	\N	\N	38.50	38.50	\N	75.68	\N	65.00	\N	\N	\N	126	2	\N
+428		Giscours		2001	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	36.50	36.50	\N	58.20	\N	50.00	\N	\N	\N	134	2	\N
+449		Antonin Guyon, Aloxe Corton Fournieres		1998	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N		t	t	t	\N	\N	\N	32.33	32.33	\N	39.20	\N	0.00	\N	\N	\N	207	2	\N
+421		Gaffeliere (Saint Emilion)		1998	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C1	t	t	t	\N	\N	\N	32.25	32.25	\N	69.84	\N	60.00	\N	\N	\N	188	2	\N
+425		Sociando Mallet		2000	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C3	t	t	t	\N	\N	\N	32.25	32.25	\N	64.00	\N	55.00	\N	\N	\N	130	2	\N
+429		Giscours		2003	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	32.25	32.25	\N	58.20	\N	50.00	\N	\N	\N	134	2	\N
+430		Monbousquet		2003	f		0.00	\N	\N			0.00		0.75			\N			0	\N	B1	t	t	t	\N	\N	\N	32.25	32.25	\N	58.20	\N	50.00	\N	\N	\N	205	2	\N
+54		Dominique		2000	f		0.00	\N	\N			0.00		0.75			\N		Dominique 2000	0	\N		t	t	t	\N	\N	DOMI001	32.25	32.25	\N	55.88	\N	48.00	\N	\N	\N	208	2	\N
+443		Ruinart, Rose		NV	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N		t	t	t	\N	\N	\N	30.00	30.00	\N	46.20	\N	0.00	\N	\N	\N	131	2	\N
+451		Veuve Clicquot, Yellow Label		NV	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N		t	t	t	\N	\N	\N	29.62	29.62	\N	35.60	\N	0.00	\N	\N	\N	157	2	\N
+422		Gruaud Larose		2006	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	28.00	28.00	\N	69.84	\N	60.00	\N	\N	\N	209	2	\N
+424		Giscours		2004	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	28.00	28.00	\N	64.04	\N	55.00	\N	\N	\N	134	2	\N
+431		Boyd Cantenac		2005	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C2	t	t	t	\N	\N	\N	28.00	28.00	\N	58.20	\N	50.00	\N	\N	\N	123	2	\N
+436		Trottevielle		2000	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C5	t	t	t	\N	\N	\N	28.00	28.00	\N	55.88	\N	48.00	\N	\N	\N	210	2	\N
+439		Lagune		1998	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	28.00	28.00	\N	52.36	\N	45.00	\N	\N	\N	211	2	\N
+426		Brane Cantenac		2008	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	26.08	26.08	\N	60.52	\N	52.00	\N	\N	\N	24	2	\N
+433		Giscours		2006	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	25.17	25.17	\N	58.20	\N	50.00	\N	\N	\N	134	2	\N
+434		Sociando Mallet		2005	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C5	t	t	t	\N	\N	\N	25.17	25.17	\N	58.20	\N	50.00	\N	\N	\N	130	2	\N
+423		Taylor		1985	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N		t	t	t	\N	\N	\N	25.00	25.00	\N	67.64	\N	0.00	\N	\N	\N	195	2	\N
+104		Lafon Rochet		1995	f		0.00	\N	\N			0.00		0.75			\N		Lafon Rochet 1995	0	\N	C8	t	t	t	\N	\N	LAFO001	25.00	25.00	\N	52.40	\N	48.00	\N	\N	\N	69	2	\N
+464		Antonin Guyon, Aloxe Corton Fournieres		1996	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N		t	t	t	\N	\N	\N	24.27	24.27	\N	26.80	\N	0.00	\N	\N	\N	207	2	\N
+437		Grand Puy Ducasse		2005	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	23.75	23.75	\N	52.40	\N	45.00	\N	\N	\N	212	2	\N
+453		Pointe		2000	f		0.00	\N	\N			0.00		0.75			\N			0	\N	B1	t	t	t	\N	\N	\N	23.75	23.75	\N	34.92	\N	30.00	\N	\N	\N	138	2	\N
+179		Rieussec		1995	f		0.00	\N	\N			0.00		0.75			\N		Rieussec 1995	0	\N		t	t	t	\N	\N	RIEU001	20.21	20.21	\N	44.24	\N	38.00	\N	\N	\N	118	2	\N
+444		Clos Marquis		2008	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	20.00	20.00	\N	44.24	\N	38.00	\N	\N	\N	192	2	\N
+447		Poujeaux		2005	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C5	t	t	t	\N	\N	\N	20.00	20.00	\N	40.72	\N	35.00	\N	\N	\N	213	2	\N
+457		Pavie Decesse		1995	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	20.00	20.00	\N	32.60	\N	28.00	\N	\N	\N	214	2	\N
+182		Rieussec		2002	f		0.00	\N	\N			0.00		0.75			\N		Rieussec 2002	0	\N		t	t	t	\N	\N	RIEU004	19.50	19.50	\N	48.88	\N	45.00	\N	\N	\N	118	2	\N
+441		Pouget		2000	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	19.50	19.50	\N	49.60	\N	42.00	\N	\N	\N	215	2	\N
+448		Montviel		2006	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	19.06	19.06	\N	39.76	\N	35.00	\N	\N	\N	216	2	\N
+458		Fernand & Laurent Pillot, Chassagne Montrachet Champgains		2009	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A5	t	t	t	\N	\N	\N	18.79	18.79	\N	32.60	\N	28.50	\N	\N	\N	217	2	\N
+438		Sociando Mallet		2006	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	18.08	18.08	\N	52.40	\N	45.00	\N	\N	\N	130	2	\N
+446		Domaine Pierre Andre, Corton Pougets		1998	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N		t	t	t	\N	\N	\N	17.41	17.41	\N	43.36	\N	0.00	\N	\N	\N	219	2	\N
+455		Chasse Spleen		2006	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	17.38	17.38	\N	34.92	\N	32.00	\N	\N	\N	124	2	\N
+450		Camensac		2000	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	17.17	17.17	\N	37.24	\N	32.00	\N	\N	\N	139	2	\N
+16		Berliquet		2004	f		0.00	\N	\N			0.00		0.75			\N		Berliquet 2004	0	\N	B2	t	t	t	\N	\N	BERL001	15.25	15.25	\N	27.96	\N	24.00	\N	\N	\N	142	2	\N
+460		Monteviejo, Malbec Lindaflor		2007	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	14.48	14.48	\N	30.36	\N	25.00	\N	\N	\N	220	2	\N
+465		Monteviejo, Malbec Monteviejo		2005	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	14.07	14.07	\N	20.96	\N	19.00	\N	\N	\N	167	2	\N
+169		Poggio Salvi, Chianti Colli Senesi		2009	f		0.00	\N	\N			0.00		0.375	To increase price		\N		Poggio Salvi, Chianti Colli Senesi 2009 Half Bottles	0	\N	A2	t	t	t	\N	\N	POGG003	8.36	8.36	\N	6.88	\N	9.75	\N	\N	\N	86	4	\N
+157		Pastor Diaz, Rioja Valdejimena Gran Reserva		2001	f		0.00	\N	\N			0.00		0.75			\N		Pastor Diaz, Rioja Valdejimena Gran Reserva 2001	0	\N		t	t	t	\N	\N	PAST001	10.42	10.42	\N	19.12	\N	16.75	\N	\N	\N	230	2	\N
+466		Graham, Crusted		2003	f		0.00	\N	\N			0.00		0.75	Shop only		\N			0	\N		t	t	t	\N	\N	\N	0.00	0.00	\N	19.68	\N	0.00	\N	\N	\N	231	2	\N
+489		Montrose		2003	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	244.17	122.09	\N	0.00	\N	175.00	\N	\N	\N	72	2	\N
+490		Montrose		2003	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	244.17	122.09	\N	0.00	\N	175.00	\N	\N	\N	72	2	\N
+491		Montrose		2003	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	244.17	122.09	\N	0.00	\N	175.00	\N	\N	\N	72	2	\N
+493		Montrose		2003	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	244.17	122.09	\N	0.00	\N	175.00	\N	\N	\N	72	2	\N
+494		Montrose		2003	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	244.17	122.09	\N	0.00	\N	175.00	\N	\N	\N	72	2	\N
+495		Montrose		2003	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	244.17	122.09	\N	0.00	\N	175.00	\N	\N	\N	72	2	\N
+499		Lascombes		2004	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	89.17	39.33	\N	174.60	\N	70.00	\N	\N	\N	126	2	\N
+194		Serio and Borgogno, Barolo Riserva		2005	f		0.00	\N	\N			0.00		0.75			\N		Serio and Borgogno, Barolo Riserva 2005	0	\N		t	t	t	\N	\N	SERI004	14.56	14.56	\N	20.44	\N	18.50	\N	\N	\N	232	2	\N
+488		Montrose		2003	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	244.17	122.09	\N	0.00	\N	175.00	\N	\N	\N	72	2	\N
+500		Ruinart, Rose		NV	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N	A7	t	t	t	\N	\N	\N	62.50	30.00	\N	95.76	\N	0.00	\N	\N	\N	131	2	\N
+479		Pichon Baron		2010	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	84.04	84.04	\N	0.00	\N	185.00	\N	\N	\N	129	2	\N
+497		Lynch Bages		2003	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	144.54	72.27	\N	267.72	\N	110.00	\N	\N	\N	77	2	\N
+480		Canon (Saint Emilion)		2009	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	58.96	58.96	\N	0.00	\N	125.00	\N	\N	\N	233	2	\N
+498		Lascombes		2005	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	100.92	50.46	\N	186.24	\N	75.00	\N	\N	\N	126	2	\N
+8		Antonin Guyon, Cote de Beaune Village 		2008	f		0.00	\N	\N			0.00		0.75			\N		Antonin Guyon, Cote de Beaune Village 2008	0	\N		t	t	t	\N	\N	GUYO005	10.36	10.36	\N	19.68	\N	17.25	\N	\N	\N	235	2	\N
+468		Domaine Dominique Guyon, Hautes Cotes de Nuits Dames de Vergy		2011	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	10.19	10.19	\N	15.72	\N	14.00	\N	\N	\N	236	2	\N
+467		Graham, 10 Year Old Tawny Port		NV	f		0.00	\N	\N			0.00		0.75	Shop only		\N			0	\N		t	t	t	\N	\N	\N	10.00	10.00	\N	18.56	\N	0.00	\N	\N	\N	237	2	\N
+93		Guillopees, Sancerre Cuvee Henri Vernoy		2013	f		0.00	\N	\N			0.00		0.75			\N		Guillopees, Sancerre Cuvee Henri Vernoy Rose 2013	0	\N	A1	t	t	t	\N	\N	GUIL003	6.51	7.87	\N	12.56	\N	11.00	\N	\N	\N	160	2	\N
+223		Vignes Tracey, Pouilly Fume		2011	f		0.00	\N	\N			0.00		0.75			\N		Vignes Tracey, Pouilly Fume 2011	0	\N		t	t	t	\N	\N	TRAC001	7.51	7.51	\N	13.04	\N	11.75	\N	\N	\N	238	2	\N
+145		Navrina Cove, Sauvignon Blanc 		2012	f		0.00	\N	\N			0.00		0.75			\N		Navrina Cove, Sauvignon Blanc 2012	0	\N	A1	t	t	t	\N	\N	NAVR001	7.30	7.30	\N	10.28	\N	9.75	\N	\N	\N	239	2	\N
+19		Cailleteau Bergeron, Rouge		2012	f		0.00	\N	\N			0.00		0.75			\N		Cailleteau Bergeron, Rouge 2012	0	\N	B9	t	t	t	\N	\N	CAIL001	6.98	6.98	\N	11.08	\N	9.75	\N	\N	\N	240	2	\N
+212		Valle Andino Gran Reserva, Merlot		2008	f		0.00	\N	\N			0.00		0.75			\N		Valle Andino Gran Reserva, Merlot 2008	0	\N		t	t	t	\N	\N	VALL010	6.98	6.98	\N	11.28	\N	10.00	\N	\N	\N	241	2	\N
+472		Villa Teresa, Prosecco Spumante		NV	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	5.73	5.73	\N	9.44	\N	8.25	\N	\N	\N	242	2	\N
+65		Empson, Spumante Borgo Imperiale Brut Rose		NV	f		0.00	\N	\N			0.00		0.75			\N		Empson, Spumante Borgo Imperiale Brut Rose NV	0	\N	A5	t	t	t	\N	\N	BORG001	5.54	5.54	\N	8.64	\N	7.25	\N	\N	\N	243	2	\N
+474		Benchmark, Shiraz Grant Burge		2012	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	5.52	5.52	\N	8.72	\N	7.50	\N	\N	\N	244	2	\N
+209		Trois Celliers, Cotes du Rhone Sentier des Terroirs		2012	f		0.00	\N	\N			0.00		0.75			\N		Trois Celliers, Cotes du Rhone Sentier des Terroirs 2012	0	\N		t	t	t	\N	\N	TROI001	5.41	5.41	\N	8.40	\N	7.50	\N	\N	\N	245	2	\N
+476		Monteviejo, Torrontes Festivo		2010	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	5.25	5.25	\N	8.16	\N	7.75	\N	\N	\N	246	2	\N
+23		Castra Rubra, Dominant Red		2010	f		0.00	\N	\N			0.00		0.75			\N		Castra Rubra, Dominant Red 2010	0	\N	A8	t	t	t	\N	\N	CAST001	5.05	5.05	\N	7.84	\N	7.00	\N	\N	\N	247	2	\N
+159		Pastor Diaz, Rioja Valdejimena Tempranillo		2012	f		0.00	\N	\N			0.00		0.75			\N		Pastor Diaz, Rioja Valdejimena Tempranillo 2012	0	\N		t	t	t	\N	\N	PAST004	5.04	5.04	\N	8.40	\N	7.50	\N	\N	\N	248	2	\N
+469		Henriques, Madeira 10 Years		NV	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N		t	t	t	\N	\N	\N	5.00	5.00	\N	15.44	\N	0.00	\N	\N	\N	249	2	\N
+471		Henriques, Madeira Full Rich		NV	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N		t	t	t	\N	\N	\N	5.00	5.00	\N	9.68	\N	0.00	\N	\N	\N	250	2	\N
+127		Mont Auriol, Cabernet Sauvignon		2009	f		0.00	\N	\N			0.00		0.75			\N		Mont Auriol, Cabernet Sauvignon 2009	0	\N	B10	t	t	t	\N	\N	MONT009	4.84	4.84	\N	7.16	\N	6.75	\N	\N	\N	251	2	\N
+217		Valle Andino Reserva, Cabernet Sauvignon		2012	f		0.00	\N	\N			0.00		0.75			\N		Valle Andino Reserva, Cabernet Sauvignon 2012	0	\N		t	t	t	\N	\N	VALL003	4.73	4.73	\N	7.84	\N	7.00	\N	\N	\N	252	2	\N
+77		Friarwood, Marcassin Merlot		2011	f		0.00	\N	\N			0.00		0.75			\N		Friarwood, Marcassin Merlot 2011	0	\N	B2	t	t	t	\N	\N	FRIA002	4.38	4.38	\N	6.80	\N	6.25	\N	\N	\N	253	2	\N
+478		Henriques, Olivier		2011	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N		t	t	t	\N	\N	\N	4.24	4.24	\N	5.52	\N	0.00	\N	\N	\N	254	2	\N
+475		Benchmark, Chardonnay Grant Burge		2012	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	4.00	4.00	\N	8.72	\N	7.50	\N	\N	\N	255	2	\N
+152		Ormer Bay, Sauvignon Blanc		2009	f		0.00	\N	\N			0.00		0.75			\N		Ormer Bay, Sauvignon Blanc 2009	0	\N	A5	t	t	t	\N	\N	ORME004	3.89	3.89	\N	6.24	\N	5.50	\N	\N	\N	256	2	\N
+470		Jean Cordier Pere et Fils, Saint Veran		2012	f		0.00	\N	\N			0.00		0.75	\N		\N			0	\N	A4	t	t	t	\N	\N	\N	12.01	\N	\N	13.68	\N	\N	\N	\N	\N	221	2	\N
+57		Ellevin, Chablis		2012	f		0.00	\N	\N			0.00		0.75			\N		Ellevin, Chablis 2012	0	\N	A3	t	t	t	\N	\N	ELLE002	7.75	7.75	\N	11.92	\N	11.00	\N	\N	\N	5	2	\N
+477		Friarwood, Sauvignon Blanc Saumon		2012	f		0.00	\N	\N			0.00		0.75	\N		\N			0	\N	A1	t	t	t	\N	\N	\N	5.42	\N	\N	6.80	\N	\N	\N	\N	\N	222	2	\N
+481		Castra Rubra, Nimbus Premium		2012	f		0.00	\N	\N			0.00		0.75	\N		\N			0	\N	A6	t	t	t	\N	\N	\N		\N	\N	0.00	\N	\N	\N	\N	\N	223	2	\N
+482		Macon Lugny, Les Charmes		2013	f		0.00	\N	\N			0.00		0.75	\N		\N			0	\N	A2	t	t	t	\N	\N	\N		\N	\N	0.00	\N	\N	\N	\N	\N	224	2	\N
+483		Monbousquet		2000	f		0.00	\N	\N			0.00		0.75	\N		\N			0	\N	B1	t	t	t	\N	\N	\N		\N	\N	0.00	\N	\N	\N	\N	\N	205	2	\N
+484		Clos Du Marouis		2008	f		0.00	\N	\N			0.00		0.75	\N		\N			0	\N	C8	t	t	t	\N	\N	\N		\N	\N		\N	\N	\N	\N	\N	225	2	\N
+485		Giscours		2005	f		0.00	\N	\N			0.00		0.75	\N		\N			0	\N	C	t	t	t	\N	\N	\N		\N	\N		\N	\N	\N	\N	\N	134	2	\N
+486		Meerlust, Rubicon		2009	f		0.00	\N	\N			0.00		0.75	\N		\N			0	\N	B10	t	t	t	\N	\N	\N		\N	\N		\N	\N	\N	\N	\N	226	2	\N
+487		Michel Wust, Pinot-Blanc Auxerrois		2009	f		0.00	\N	\N			0.00		0.75	\N		\N			0	\N	A2	t	t	t	\N	\N	\N		\N	\N		\N	\N	\N	\N	\N	227	2	\N
+222		Verne Maziere, Fleurie Madone		2013	f		0.00	\N	\N			0.00		0.75			\N		Verne Maziere, Fleurie Madone 2013	0	\N		t	t	t	\N	\N	VERN001	7.13	7.13	\N	0.00	\N	10.00	\N	\N	\N	127	2	\N
+37		Clos Rene		2000	f		0.00	\N	\N			0.00		0.375	To put on the wholesale list. 312 bottles in bond		\N		Clos Rene 2000 Half Bottles	0	\N	C4	t	t	t	\N	\N	CLOS002	11.77	11.77	\N	19.20	\N	0.00	\N	\N	\N	34	4	\N
+160		Paul Dangin, Carte Or		NV	f		0.00	\N	\N			0.00		0.375			\N		Paul Dangin, Carte Or NV Half Bottles	0	\N		t	t	t	\N	\N	PAUL001	7.21	7.21	\N	10.80	\N	10.00	\N	\N	\N	159	4	\N
+496		Lynch Bages		2004	f		0.00	\N	\N			0.00		0.75	market price is GBP 80. bought too expensive. Shop only? 24 bottles in stock		\N			0	\N		t	t	t	\N	\N	\N	228.00	113.00	\N	267.72	\N	110.00	\N	\N	\N	77	2	\N
+364		Palmer		2006	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C5	t	t	t	\N	\N	\N	102.50	102.50	\N	0.00	\N	170.00	\N	\N	\N	178	2	\N
+321		Yquem		1995	f		0.00	\N	\N			0.00		0.375			\N			0	\N	C5	t	t	t	\N	\N	\N	65.00	65.00	\N	0.00	\N	145.00	\N	\N	\N	125	4	\N
+405		Moulin		2000	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	50.00	50.00	\N	114.00	\N	100.00	\N	\N	\N	266	2	\N
+244		Montrose		2000	f		0.00	\N	\N			0.00		0.375	To add to wholesale list		\N			0	\N	C4	t	t	t	\N	\N	\N	40.00	40.00	\N	0.00	\N	0.00	\N	\N	\N	72	4	\N
+382		Mouton Rothschild		1997	f		0.00	\N	\N			0.00		0.75	Error by Edward. Market value GBP 300		\N			0	\N	C1	t	t	t	\N	\N	\N	37.50	37.50	\N	465.60	\N	400.00	\N	\N	\N	174	2	\N
+407		Pichon Baron		1998	f		0.00	\N	\N			0.00		0.75	Edward mistake. Charged 30 GBP when market price is GBP70		\N			0	\N		t	t	t	\N	\N	\N	30.00	30.00	\N	110.60	\N	95.00	\N	\N	\N	129	2	\N
+522		Enclose		2000	f		0.00	\N	\N			0.00		0.75	market price around 46 GBP. To increase price		\N			0	\N		t	t	t	\N	\N	\N	\N	27.00	\N	\N	\N	30.00	\N	\N	\N	269	2	\N
+518		Ellevin, Chablis		2012	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	10.54	7.75	\N	29.76	\N	11.00	\N	\N	\N	5	2	\N
+510		Ellevin, Chablis Vaucoupin		2011	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	19.68	9.08	\N	42.00	\N	15.25	\N	\N	\N	8	2	\N
+515		Ellevin, Chablis		2012	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	10.54	7.75	\N	29.76	\N	11.00	\N	\N	\N	5	2	\N
+435		Boyd Cantenac		2000	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C8	t	t	t	\N	\N	\N	23.54	23.54	\N	58.20	\N	50.00	\N	\N	\N	123	2	\N
+511		Ellevin, Chablis Vaucoupin		2011	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	19.68	9.08	\N	42.00	\N	15.25	\N	\N	\N	8	2	\N
+514		Ellevin, Chablis		2012	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	10.54	7.75	\N	29.76	\N	11.00	\N	\N	\N	5	2	\N
+519		Quatre Tours, Provence Rose		2013	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	7.43	3.74	\N	19.60	\N	7.50	\N	\N	\N	273	2	\N
+462		Hartford Court, Russian river valley, Pinot Noir 		2012	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N		t	t	t	\N	\N	\N	0.00	0.00	\N	27.68	\N	0.00	\N	\N	\N	259	2	\N
+390		Louis Roederer, Cristal		2002	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N	A7	t	t	t	\N	\N	\N	0.00	0.00	\N	180.96	\N	0.00	\N	\N	\N	260	2	\N
+461		Marchesato Degli Aleramici, Brunello di Montalcino Carlo Magno		2005	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N	B10	t	t	t	\N	\N	\N	0.00	0.00	\N	29.12	\N	28.00	\N	\N	\N	261	2	\N
+380		Mouton Rothschild		1995	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C3	t	t	t	\N	\N	\N	277.50	277.50	\N	552.92	\N	475.00	\N	\N	\N	174	2	\N
+381		Mouton Rothschild		2002	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C3	t	t	t	\N	\N	\N	234.00	234.00	\N	523.80	\N	450.00	\N	\N	\N	174	2	\N
+383		Evangile		2005	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	137.50	137.50	\N	244.44	\N	210.00	\N	\N	\N	179	2	\N
+492		Montrose		2003	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	244.17	122.09	\N	0.00	\N	175.00	\N	\N	\N	72	2	\N
+109		Leoville Las Cases		1998	f		0.00	\N	\N			0.00		0.75	right on market price. Shop only?		\N		Leoville Las Cases 1998	0	\N	C8	t	t	t	\N	\N	LEOV001	102.50	102.50	\N	0.00	\N	120.00	\N	\N	\N	262	2	\N
+521		Ducru Beaucallou		2003	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	\N	98.33	\N	\N	\N	140.00	\N	\N	\N	263	2	\N
+406		Krug, Grand Cuvee		NV	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N	A7	t	t	t	\N	\N	\N	88.71	88.71	\N	112.00	\N	0.00	\N	\N	\N	264	2	\N
+256		Lynch Bages		2003	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C4	t	t	t	\N	\N	\N	38.00	72.27	\N	69.84	\N	110.00	\N	\N	\N	77	2	\N
+501		Ruinart, Blanc De Blancs Vv		NV	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N	A7	t	t	t	\N	\N	\N	58.08	27.98	\N	95.76	\N	0.00	\N	\N	\N	265	2	\N
+140		Montrose		2001	f		0.00	\N	\N			0.00		0.75			\N		Montrose 2001	0	\N	C7	t	t	t	\N	\N	MONT018	47.83	47.83	\N	75.68	\N	70.00	\N	\N	\N	72	2	\N
+342		Gaffeliere (Saint Emilion)		2009	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	44.79	44.79	\N	0.00	\N	76.00	\N	\N	\N	188	2	\N
+240		Krug, Grand Cuvee		NV	f		0.00	\N	\N			0.00		0.375	shop only		\N			0	\N		t	t	t	\N	\N	\N	44.00	44.00	\N	0.00	\N	0.00	\N	\N	\N	264	4	\N
+404		Calon Segur		2001	f		0.00	\N	\N			0.00		0.75			\N			0	\N	C5	t	t	t	\N	\N	\N	41.46	41.46	\N	116.40	\N	100.00	\N	\N	\N	182	2	\N
+41		Corte Aleardi, Amarone Valpolicella Classico		2006	f		0.00	\N	\N			0.00		1.5			\N		Corte Aleardi, Amarone Valpolicella Classico 2006 Mag	0	\N		t	t	t	\N	\N	CORT003	40.39	40.39	\N	78.96	\N	70.00	\N	\N	\N	38	6	\N
+503		Corte Aleardi, Amarone Valpolicella Classico		2006	f		0.00	\N	\N			0.00		1.5			\N			0	\N		t	t	t	\N	\N	\N	40.39	40.39	\N	78.96	\N	70.00	\N	\N	\N	38	6	\N
+247		Montrose		2000	f		0.00	\N	\N			0.00		0.375	To add to wholesale list		\N			0	\N	C4	t	t	t	\N	\N	\N	40.00	40.00	\N	0.00	\N	0.00	\N	\N	\N	72	4	\N
+61		Ellevin, Chablis Vaucoupin		2011	f		0.00	\N	\N			0.00		0.75			\N		Ellevin, Chablis Vaucoupin 2011 Magnums	0	\N	A2	t	t	t	\N	\N	ELLE007	19.68	9.08	\N	42.00	\N	15.25	\N	\N	\N	8	2	\N
+412		Clos L'Eglise (Pomerol)		2008	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	34.46	34.46	\N	93.12	\N	80.00	\N	\N	\N	267	2	\N
+17		Bollinger, Brut		NV	f		0.00	\N	\N			0.00		0.75	Shop only		\N		Bollinger, Brut NV	0	\N	A7	t	t	t	\N	\N	BOLL001	32.16	32.16	\N	35.60	\N	0.00	\N	\N	\N	268	2	\N
+502		Bollinger, Brut		NV	f		0.00	\N	\N			0.00		0.75	Shop only		\N			0	\N	A7	t	t	t	\N	\N	\N	64.32	32.16	\N	92.30	\N	0.00	\N	\N	\N	268	2	\N
+270		Ruinart, Blanc De Blancs Vv		NV	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N	A7	t	t	t	\N	\N	\N	15.00	27.98	\N	23.92	\N	0.00	\N	\N	\N	265	2	\N
+442		Ruinart, Blanc De Blancs Vv		NV	f		0.00	\N	\N			0.00		0.75	shop only		\N			0	\N		t	t	t	\N	\N	\N	27.98	27.98	\N	46.40	\N	0.00	\N	\N	\N	265	2	\N
+162		Pichon Lalande		1988	f		0.00	\N	\N			0.00		0.75	Edward mistake. Charged 27.5 when market price is GBP100		\N		Pichon Lalande 1988	0	\N	C2	t	t	t	\N	\N	PICH002	27.50	27.50	\N	128.04	\N	110.00	\N	\N	\N	116	2	\N
+516		Ellevin, Chablis		2012	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	10.54	7.75	\N	29.76	\N	11.00	\N	\N	\N	5	2	\N
+517		Ellevin, Chablis		2012	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	10.54	7.75	\N	29.76	\N	11.00	\N	\N	\N	5	2	\N
+523		Dufort Vivens		1995	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	\N	20.00	\N	\N	\N	30.00	\N	\N	\N	271	2	\N
+505		Fonplegade		2010	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	40.00	20.00	\N	56.00	\N	30.00	\N	\N	\N	31	2	\N
+513		Lucas		2000	f		0.00	\N	\N			0.00		1.5			\N			0	\N	A8	t	t	t	\N	\N	\N	16.99	16.99	\N	32.60	\N	28.50	\N	\N	\N	73	6	\N
+374		Valle Andino Reserva, Sauvignon Blanc		2009	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	6.34	6.34	\N	0.00	\N	7.00	\N	\N	\N	168	2	\N
+399		Domaine Guyon, Echezeaux Grand Cru		2004	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	40.00	40.00	\N	128.04	\N	120.00	\N	\N	\N	189	2	\N
+167		Poggio Salvi, Brunello Di Montalcino		2007	f		0.00	\N	\N			0.00		0.75			\N		Poggio Salvi, Brunello Di Montalcino 2007	0	\N		t	t	t	\N	\N	POGG004	17.59	17.59	\N	29.12	\N	28.00	\N	\N	\N	272	2	\N
+512		Lucas		2000	f		0.00	\N	\N			0.00		1.5			\N			0	\N	A8	t	t	t	\N	\N	\N	16.99	16.99	\N	32.60	\N	28.50	\N	\N	\N	73	6	\N
+274		Antonin Guyon, Gevrey Chambertin Justice		2008	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	15.10	15.10	\N	19.20	\N	17.25	\N	\N	\N	136	4	\N
+96		Henri & Gilles Remoriquet, Nuits Saint Georges		2009	f		0.00	\N	\N			0.00		0.75			\N		Henri & Gilles Remoriquet, Nuits Saint Georges 2009	0	\N		t	t	t	\N	\N	REMO001	14.95	14.95	\N	27.60	\N	23.75	\N	\N	\N	275	2	\N
+192		Serio and Borgogno, Barolo Cannubi		2003	f		0.00	\N	\N			0.00		0.75			\N		Serio and Borgogno, Barolo Cannubi 2003	0	\N		t	t	t	\N	\N	SERI002	14.77	14.77	\N	27.00	\N	23.75	\N	\N	\N	276	2	\N
+10		Antonin Guyon, Gevrey Chambertin Justice		2009	f		0.00	\N	\N			0.00		0.375			\N		Antonin Guyon, Gevrey Chambertin Justice 2009 Half Bottles	0	\N		t	t	t	\N	\N	GUYO003	14.26	14.26	\N	19.20	\N	17.25	\N	\N	\N	136	4	\N
+70		Fonbel		2006	f		0.00	\N	\N			0.00		0.75			\N		Fonbel 2006	0	\N		t	t	t	\N	\N	FONB001	13.13	13.13	\N	27.96	\N	24.00	\N	\N	\N	277	2	\N
+289		Mille Roses (Haut Medoc)		2006	f		0.00	\N	\N			0.00		0.375	bought too expensive. 		\N			0	\N	C4	t	t	t	\N	\N	\N	13.13	13.13	\N	12.24	\N	10.75	\N	\N	\N	43	4	\N
+290		Mille Roses (Haut Medoc)		2006	f		0.00	\N	\N			0.00		0.375	bought too expensive. 		\N			0	\N	C4	t	t	t	\N	\N	\N	13.13	13.13	\N	12.24	\N	10.75	\N	\N	\N	43	4	\N
+291		Mille Roses (Haut Medoc)		2006	f		0.00	\N	\N			0.00		0.375	bought too expensive. 		\N			0	\N	C4	t	t	t	\N	\N	\N	13.13	13.13	\N	12.24	\N	10.75	\N	\N	\N	43	4	\N
+122		Mille Roses (Haut Medoc)		2006	f		0.00	\N	\N			0.00		0.375	bought too expensive. 		\N		Mille Roses (Haut Medoc) 2006 Half Bottles	0	\N	C4	t	t	t	\N	\N	MILL004	13.13	13.13	\N	12.24	\N	10.75	\N	\N	\N	43	4	\N
+292		Mille Roses (Haut Medoc)		2006	f		0.00	\N	\N			0.00		0.375	bought too expensive. 		\N			0	\N	C4	t	t	t	\N	\N	\N	13.13	13.13	\N	12.24	\N	10.75	\N	\N	\N	43	4	\N
+293		Mille Roses (Haut Medoc)		2006	f		0.00	\N	\N			0.00		0.375	bought too expensive. 		\N			0	\N	C4	t	t	t	\N	\N	\N	13.13	13.13	\N	12.24	\N	10.75	\N	\N	\N	43	4	\N
+260		Rieussec		2005	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	13.00	13.00	\N	44.24	\N	37.50	\N	\N	\N	118	4	\N
+261		Rieussec		2005	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	13.00	13.00	\N	44.24	\N	37.50	\N	\N	\N	118	4	\N
+186		Saint Georges		2011	f		0.00	\N	\N			0.00		0.75			\N		Saint Georges 2011	0	\N		t	t	t	\N	\N	GEOR002	12.93	12.93	\N	20.80	\N	19.00	\N	\N	\N	81	2	\N
+187		Saint Georges		2011	f		0.00	\N	\N			0.00		0.75			\N		Saint Georges 2011 Magnums	0	\N		t	t	t	\N	\N	GEOR004	25.30	12.93	\N	52.44	\N	19.00	\N	\N	\N	81	2	\N
+284		Saint Georges		2011	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	6.97	12.93	\N	13.32	\N	19.00	\N	\N	\N	81	2	\N
+285		Saint Georges		2011	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	6.97	12.93	\N	13.32	\N	19.00	\N	\N	\N	81	2	\N
+287		Saint Georges		2011	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	6.97	12.93	\N	13.32	\N	19.00	\N	\N	\N	81	2	\N
+286		Saint Georges		2011	f		0.00	\N	\N			0.00		0.75			\N			0	\N	A2	t	t	t	\N	\N	\N	6.97	12.93	\N	13.32	\N	19.00	\N	\N	\N	81	2	\N
+506		Saint Georges		2011	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	25.30	12.93	\N	52.44	\N	19.00	\N	\N	\N	81	2	\N
+507		Saint Georges		2011	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	25.30	12.93	\N	52.44	\N	19.00	\N	\N	\N	81	2	\N
+508		Saint Georges		2011	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	25.30	12.93	\N	52.44	\N	19.00	\N	\N	\N	81	2	\N
+228		Vincent Prunier, Saint Aubin Frionnes		2010	f		0.00	\N	\N			0.00		0.75			\N		Vincent Prunier, Saint Aubin Frionnes 2010	0	\N	A5	t	t	t	\N	\N	PRUN001	12.73	12.73	\N	20.64	\N	18.25	\N	\N	\N	279	2	\N
+177		Ransom, K Syrah		2007	f		0.00	\N	\N			0.00		0.75			\N		Ransom, K Syrah 2007	0	\N		t	t	t	\N	\N	RANS001	12.70	12.70	\N	20.96	\N	24.00	\N	\N	\N	280	2	\N
+193		Serio and Borgogno, Barolo Cannubi		2007	f		0.00	\N	\N			0.00		0.75			\N		Serio and Borgogno, Barolo Cannubi 2007 Magnum	0	\N		t	t	t	\N	\N	SERI003	25.00	12.54	\N	59.40	\N	23.75	\N	\N	\N	276	2	\N
+504		Serio and Borgogno, Barolo Cannubi		2007	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	25.00	12.54	\N	59.40	\N	23.75	\N	\N	\N	276	2	\N
+176		Ransom, Dark Summit 		2005	f		0.00	\N	\N			0.00		0.75			\N		Ransom, Dark Summit 2005	0	\N		t	t	t	\N	\N	RANS002	12.49	12.49	\N	20.96	\N	24.00	\N	\N	\N	281	2	\N
+98		Henri Delagrange, Volnay Vv		2006	f		0.00	\N	\N			0.00		0.75			\N		Henri Delagrange, Volnay Vv 2006	0	\N		t	t	t	\N	\N	DELA002	12.35	12.35	\N	23.52	\N	21.25	\N	\N	\N	282	2	\N
+527		Jean Cordier, Saint Veran		2012	f		0.00	\N	\N			0.00		0.75	To increase price		\N			0	\N		t	t	t	\N	\N	\N	\N	12.01	\N	\N	\N	12.50	\N	\N	\N	283	2	\N
+43		Corte Aleardi, Ripasso Valpolicella Bure Alto		2008	f		0.00	\N	\N			0.00		0.75			\N		Corte Aleardi, Ripasso Valpolicella Bure Alto 2008	0	\N	B10	t	t	t	\N	\N	CORT001	9.23	9.23	\N	15.88	\N	14.25	\N	\N	\N	284	2	\N
+91		Guillopees, Sancerre Cuvee Henri Vernoy		2012	f		0.00	\N	\N			0.00		0.75			\N		Guillopees, Sancerre Cuvee Henri Vernoy 2012 Blanc	0	\N	A1	t	t	t	\N	\N	GUIL001	8.75	8.75	\N	11.92	\N	11.00	\N	\N	\N	160	2	\N
+74		Friarwood, Bourgogne Blanc Chatelaine		2013	f		0.00	\N	\N			0.00		0.75	Bought too expensive. To increase price		\N		Friarwood, Bourgogne Blanc Chatelaine 2013	0	\N		t	t	t	\N	\N	FRIA006	7.61	7.61	\N	0.00	\N	7.50	\N	\N	\N	285	2	\N
+11		Antonin Guyon, Savigny les Beaune Goudelettes		2009	f		0.00	\N	\N			0.00		0.75	Bought in bond 45.96 for 12x75 Edward mistake !		\N		Antonin Guyon, Savigny les Beaune Goudelettes 2009	0	\N		t	t	t	\N	\N	GUYO008	7.12	7.12	\N	23.04	\N	20.50	\N	\N	\N	19	2	\N
+216		Valle Andino Reserva Especial, Sauvignon Blanc		2009	f		0.00	\N	\N			0.00		0.75			\N		Valle Andino Reserva Especial, Sauvignon Blanc 2009	0	\N	A5	t	t	t	\N	\N	VALL007	6.14	6.14	\N	9.28	\N	8.25	\N	\N	\N	286	2	\N
+528		Clos Pins, Rouge		2009	f		0.00	\N	\N			0.00		0.375	Shop only		\N			0	\N		t	t	t	\N	\N	\N	\N	5.62	\N	\N	\N	0.00	\N	\N	\N	287	4	\N
+529		Stony, Muscat		2008	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	\N	5.54	\N	\N	\N	6.75	\N	\N	\N	288	4	\N
+530		Friarwood, Sauvignon Saumon		2012	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	\N	5.42	\N	\N	\N	6.25	\N	\N	\N	289	2	\N
+531		Tonon, Pinot Grigio Venezia		2013	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	\N	5.23	\N	\N	\N	8.25	\N	\N	\N	290	2	\N
+164		Pignataro, Montelpuciano d'Abruzzo Monte Tessa		2012	f		0.00	\N	\N			0.00		0.75			\N		Pignataro, Montelpuciano d'Abruzzo Monte Tessa 2012	0	\N	B2	t	t	t	\N	\N	PIGN001	4.92	4.92	\N	6.64	\N	6.25	\N	\N	\N	291	2	\N
+532		Valle Andino Reserva, Syrah		2011	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	\N	4.67	\N	\N	\N	7.00	\N	\N	\N	292	2	\N
+533		Guillopees, Sancerre Cuvee Henri Vernoy Rose		2013	f		0.00	\N	\N			0.00		0.375			\N			0	\N		t	t	t	\N	\N	\N	\N	4.53	\N	\N	\N	6.75	\N	\N	\N	294	4	\N
+534		Ormer Bay, Chardonnay Viogner		2009	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	\N	4.48	\N	\N	\N	5.50	\N	\N	\N	295	2	\N
+535		Pignataro, Trebbiano d'Abruzzo		2008	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	\N	4.13	\N	\N	\N	6.25	\N	\N	\N	296	2	\N
+524		Graham, 		NV	f		0.00	\N	\N			0.00		0.75	Shop only		\N			0	\N		t	t	t	\N	\N	\N	\N	15.00	\N	\N	\N	0.00	\N	\N	\N	58	2	\N
+30		Chassenay D'arc, Martivey Rose		NV	f		0.00	\N	\N			0.00		0.75			\N		Chassenay D'arc, Martivey Rose NV	0	\N	A6	t	t	t	\N	\N	CHAS002	13.40	13.40	\N	19.92	\N	20.25	\N	\N	\N	196	2	\N
+9		Antonin Guyon, Gevrey Chambertin Justice		2009	f		0.00	\N	\N			0.00		0.75			\N		Antonin Guyon, Gevrey Chambertin Justice 2009	0	\N		t	t	t	\N	\N	GUYO002	19.21	19.21	\N	35.48	\N	31.50	\N	\N	\N	136	2	\N
+526		Marchesi Barolo, Picit Langue		1999	f		0.00	\N	\N			0.00		0.75			\N			0	\N		t	t	t	\N	\N	\N	\N	13.30	\N	\N	\N	34.25	\N	\N	\N	56	2	\N
+171		Poggio Salvi, Morellino di Scansano		2012	f		0.00	\N	\N			0.00		0.75			\N		Poggio Salvi, Morellino di Scansano 2012	0	\N	B10	t	t	t	\N	\N	POGG001	7.54	7.54	\N	10.20	\N	10.00	\N	\N	\N	229	2	\N
+29		Chassenay D'arc, Martivey Brut		NV	f		0.00	\N	\N			0.00		0.75			\N		Chassenay D'arc, Martivey Brut NV	0	\N	A8	t	t	t	\N	\N	CHAS001	11.30	11.30	\N	15.92	\N	16.75	\N	\N	\N	228	2	\N
+473		Bouchard Pere et Fils, Bourgogne Vignee		2012	f		0.00	\N	\N			0.00		0.75	Shop only		\N			0	\N		t	t	t	\N	\N	\N	0.00	0.00	\N	9.28	\N	0.00	\N	\N	\N	258	2	\N
+166		Poggio Salvi, Brunello Di Montalcino		2005	f		0.00	\N	\N			0.00		0.75			\N		Poggio Salvi, Brunello Di Montalcino 2005	0	\N		t	t	t	\N	\N	POGG007	18.92	18.92	\N	0.00	\N	28.00	\N	\N	\N	272	2	\N
+102		Jean Chartron, Puligny Montrachet Clos Cailleret Rouge		2006	f		0.00	\N	\N			0.00		0.75			\N		Jean Chartron, Puligny Montrachet Clos Cailleret Rouge 2006	0	\N		t	t	t	\N	\N	CHART001	20.90	20.90	\N	41.00	\N	48.50	\N	\N	\N	270	2	\N
+18		Broustet		2001	f		0.00	\N	\N			0.00		0.75	Only 19 bottles left. Shop only?		\N		Broustet  2001	0	\N		t	t	t	\N	\N	BROU001	18.79	18.79	\N	22.80	\N	19.75	\N	\N	\N	274	2	\N
+106		Landes, Cuvee Tradition		2011	f		0.00	\N	\N			0.00		0.75	To put on the wholesale list.		\N		Landes, Cuvee Tradition 2011 Magnum	0	\N		t	t	t	\N	\N	LAND002	22.66	12.98	\N	25.04	\N	0.00	\N	\N	\N	121	2	\N
+220		Valle Andino Reserva, Syrah 		2009	f		0.00	\N	\N			0.00			\N		\N		Valle Andino Reserva, Syrah 2009	0	\N		t	t	t	\N	\N	VALL004		\N	\N		\N		\N	\N	\N	110	2	\N
+125		Mille Roses (Haut Medoc) 		2009	f		0.00	\N	\N			0.00			\N		\N		Mille Roses (Haut Medoc) 2009	0	\N		t	t	t	\N	\N	MILL007		\N	\N		\N		\N	\N	\N	63	2	\N
+100		Jean Chartron, Puligny Montrachet Cailleret 		2005	f		0.00	\N	\N			0.00			\N		\N		Jean Chartron, Puligny Montrachet Cailleret 2005	0	\N		t	t	t	\N	\N	CHART002		\N	\N		\N		\N	\N	\N	301	2	\N
+76		Friarwood, Macon Lugny "Les Charmes" 		2013	f		0.00	\N	\N			0.00			\N		\N		Friarwood, Macon Lugny "Les Charmes" 2013	0	\N		t	t	t	\N	\N	FRIA007		\N	\N		\N		\N	\N	\N	300	2	\N
+66		Fernand & Laurent Pillot, Chassagne Montrachet Champgai 		2009	f		0.00	\N	\N			0.00			\N		\N		Fernand & Laurent Pillot, Chassagne Montrachet Champgai 2009	0	\N		t	t	t	\N	\N	PILL001		\N	\N		\N		\N	\N	\N	299	2	\N
+6		Antonin Guyon, Chorey Les Beaune Champs Long 2009 		2009	f		0.00	\N	\N			0.00			\N		\N		Antonin Guyon, Chorey Les Beaune Champs Long 2009 Half Bottl	0	\N		t	t	t	\N	\N	GUYO007		\N	\N		\N		\N	\N	\N	297	2	\N
+87		Grand Montmirail, Vacqueyras Deux Frere		2012	f		0.00	\N	\N			0.00		0.75			\N		Grand Montmirail, Vacqueyras Deux Frere 2012	0	\N	B10	t	t	t	\N	\N	MONT010	8.57	8.57	\N	13.04	\N	12.00	\N	\N	\N	44	2	\N
+369		Pichon Baron		2011	f		0.00	\N	\N			0.00		0.75	To add to wholesale list		\N			0	\N		t	t	t	\N	\N	\N	44.79	44.79	\N	0.00	\N	0.00	\N	\N	\N	129	2	\N
+227		Vincent Prunier, Puligny Montrachet Garennes		2009	f		0.00	\N	\N			0.00		0.75			\N		Vincent Prunier, Puligny Montrachet Garennes 2009	0	\N	A3	t	t	t	\N	\N	PRUN002	18.71	18.71	\N	31.44	\N	27.00	\N	\N	\N	218	2	\N
+86		Grand Montmirail, Gigondas Beauchamp		2009	f		0.00	\N	\N			0.00		0.75			\N		Grand Montmirail, Gigondas Beauchamp 2009	0	\N		t	t	t	\N	\N	MONT011	10.39	10.39	\N	16.32	\N	14.50	\N	\N	\N	234	2	\N
+147		Olivier Ravoire, Chateauneuf du Pape		2010	f		0.00	\N	\N			0.00		0.75			\N		Olivier Ravoire, Chateauneuf du Pape 2010	0	\N		t	t	t	\N	\N	OLIV001	12.89	12.89	\N	19.96	\N	18.00	\N	\N	\N	278	2	\N
+45		Cristo de la Vega, Tempranillo Marques de Castilla		2013	f		0.00	\N	\N			0.00		0.75	shop only?		\N		Cristo de la Vega, Tempranillo Marques de Castilla 2013	0	\N	A4	t	t	t	\N	\N	CRIST001	4.61	4.61	\N	5.48	\N	0.00	\N	\N	\N	293	2	\N
+53		Domaine Dominique Guyon, Hautes Cotes De Nuits Dames 		2011	f		0.00	\N	\N			0.00			\N		\N		Domaine Dominique Guyon, Hautes Cotes de Nuits Dames 2011	0	\N		t	t	t	\N	\N	GUYO001	\N	\N	\N	\N	\N	\N	\N	\N	\N	298	5	\N
+\.
+
+
+--
+-- Name: inventory_wine_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Benshep
+--
+
+SELECT pg_catalog.setval('inventory_wine_id_seq', 535, true);
+
+
+--
+-- Name: auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions_group_id_permission_id_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_permission_id_key UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission_content_type_id_codename_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_codename_key UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_user_id_group_id_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_group_id_key UNIQUE (user_id, group_id);
+
+
+--
+-- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id_permission_id_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_permission_id_key UNIQUE (user_id, permission_id);
+
+
+--
+-- Name: auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_username_key UNIQUE (username);
+
+
+--
+-- Name: django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type_app_label_2c70dc1151bf699d_uniq; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_app_label_2c70dc1151bf699d_uniq UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY django_migrations
+    ADD CONSTRAINT django_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: inventory_appellation_country_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_appellation
+    ADD CONSTRAINT inventory_appellation_country_key UNIQUE (country);
+
+
+--
+-- Name: inventory_appellation_name_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_appellation
+    ADD CONSTRAINT inventory_appellation_name_key UNIQUE (name);
+
+
+--
+-- Name: inventory_appellation_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_appellation
+    ADD CONSTRAINT inventory_appellation_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_pricegroup_name_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_pricegroup
+    ADD CONSTRAINT inventory_pricegroup_name_key UNIQUE (name);
+
+
+--
+-- Name: inventory_pricegroup_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_pricegroup
+    ADD CONSTRAINT inventory_pricegroup_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_producer_name_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_producer
+    ADD CONSTRAINT inventory_producer_name_key UNIQUE (name);
+
+
+--
+-- Name: inventory_producer_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_producer
+    ADD CONSTRAINT inventory_producer_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_size_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_size
+    ADD CONSTRAINT inventory_size_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_size_size_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_size
+    ADD CONSTRAINT inventory_size_size_key UNIQUE (size);
+
+
+--
+-- Name: inventory_varietal_name_key; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_varietal
+    ADD CONSTRAINT inventory_varietal_name_key UNIQUE (name);
+
+
+--
+-- Name: inventory_varietal_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_varietal
+    ADD CONSTRAINT inventory_varietal_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inventory_wine_pkey; Type: CONSTRAINT; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+ALTER TABLE ONLY inventory_wine
+    ADD CONSTRAINT inventory_wine_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_permissions_0e939a4f; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_0e939a4f ON auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_8373b171; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_8373b171 ON auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_417f1b1c; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX auth_permission_417f1b1c ON auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: auth_user_groups_0e939a4f; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_0e939a4f ON auth_user_groups USING btree (group_id);
+
+
+--
+-- Name: auth_user_groups_e8701ad4; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_e8701ad4 ON auth_user_groups USING btree (user_id);
+
+
+--
+-- Name: auth_user_user_permissions_8373b171; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_8373b171 ON auth_user_user_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_user_user_permissions_e8701ad4; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_e8701ad4 ON auth_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: django_admin_log_417f1b1c; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_417f1b1c ON django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_e8701ad4; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_e8701ad4 ON django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_session_de54fa62; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX django_session_de54fa62 ON django_session USING btree (expire_date);
+
+
+--
+-- Name: inventory_wine_3c053924; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX inventory_wine_3c053924 ON inventory_wine USING btree (appellation_id);
+
+
+--
+-- Name: inventory_wine_8222f9c0; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX inventory_wine_8222f9c0 ON inventory_wine USING btree (size_id);
+
+
+--
+-- Name: inventory_wine_8daa8a0a; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX inventory_wine_8daa8a0a ON inventory_wine USING btree (price_group_id);
+
+
+--
+-- Name: inventory_wine_b1cbcd4f; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX inventory_wine_b1cbcd4f ON inventory_wine USING btree (varietal_id);
+
+
+--
+-- Name: inventory_wine_ffd0e4bf; Type: INDEX; Schema: public; Owner: Benshep; Tablespace: 
+--
+
+CREATE INDEX inventory_wine_ffd0e4bf ON inventory_wine USING btree (producer_id);
+
+
+--
+-- Name: auth_content_type_id_54a66ae2dd2cda81_fk_django_content_type_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_content_type_id_54a66ae2dd2cda81_fk_django_content_type_id FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissio_group_id_59f37589996ac9ac_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissio_group_id_59f37589996ac9ac_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permission_id_43b7d31b59498621_fk_auth_permission_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permission_id_43b7d31b59498621_fk_auth_permission_id FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups_group_id_3ab2615eaa1471a3_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_group_id_3ab2615eaa1471a3_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups_user_id_4fdd8e13b4a00b64_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_4fdd8e13b4a00b64_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_u_permission_id_9f5d412bd7b8cab_fk_auth_permission_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_u_permission_id_9f5d412bd7b8cab_fk_auth_permission_id FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissi_user_id_4192ae4fc4987f9_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissi_user_id_4192ae4fc4987f9_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: djan_content_type_id_152a61d6e7224eb8_fk_django_content_type_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT djan_content_type_id_152a61d6e7224eb8_fk_django_content_type_id FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log_user_id_60996b7f727270c9_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_60996b7f727270c9_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inv_appellation_id_68b81e8bce5bc93d_fk_inventory_appellation_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY inventory_wine
+    ADD CONSTRAINT inv_appellation_id_68b81e8bce5bc93d_fk_inventory_appellation_id FOREIGN KEY (appellation_id) REFERENCES inventory_appellation(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inve_price_group_id_789208ea41595586_fk_inventory_pricegroup_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY inventory_wine
+    ADD CONSTRAINT inve_price_group_id_789208ea41595586_fk_inventory_pricegroup_id FOREIGN KEY (price_group_id) REFERENCES inventory_pricegroup(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_producer_id_5e1721a4aee610a5_fk_inventory_producer_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY inventory_wine
+    ADD CONSTRAINT inventory_producer_id_5e1721a4aee610a5_fk_inventory_producer_id FOREIGN KEY (producer_id) REFERENCES inventory_producer(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_varietal_id_4b77ee270e2b852f_fk_inventory_varietal_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY inventory_wine
+    ADD CONSTRAINT inventory_varietal_id_4b77ee270e2b852f_fk_inventory_varietal_id FOREIGN KEY (varietal_id) REFERENCES inventory_varietal(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: inventory_wine_size_id_5a8574754d848051_fk_inventory_size_id; Type: FK CONSTRAINT; Schema: public; Owner: Benshep
+--
+
+ALTER TABLE ONLY inventory_wine
+    ADD CONSTRAINT inventory_wine_size_id_5a8574754d848051_fk_inventory_size_id FOREIGN KEY (size_id) REFERENCES inventory_size(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: Benshep
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM "Benshep";
+GRANT ALL ON SCHEMA public TO "Benshep";
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

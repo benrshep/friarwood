@@ -34,8 +34,18 @@ class Appellation(models.Model):
 	def __str__(self):
 		return self.name
 
+class Size(models.Model):
+	"""docstring for Size"""
+	size = models.CharField(max_length=200, blank=True, unique=True)
+	name = models.CharField(max_length=200, default='None')
+
+	def __str__(self):
+		return self.name
+		
+
 class Wine(models.Model):
 	"""docstring for  Wine"""
+
 	wine = models.CharField(max_length=100)
 	
 	short_name = models.CharField(max_length=100, blank=True)
@@ -43,6 +53,7 @@ class Wine(models.Model):
 
 	producer = models.ForeignKey('Producer',null=True, blank=True)
 	appellation = models.ForeignKey('Appellation',null=True, blank=True)
+	varietal = models.ForeignKey('Varietal', null=True, blank=True)
 
 	vintage = models.CharField(max_length=50, blank=True)
 	price_group = models.ForeignKey('PriceGroup',null=True, blank=True)
@@ -59,8 +70,8 @@ class Wine(models.Model):
 	classification = models.CharField(max_length=200)
 
 	#Variations
-
 	single_size = models.CharField(max_length=50, blank=True)
+	size = models.ForeignKey('Size', null=True, blank=True)
 
 	note = models.TextField(blank = True, null=True)
 
@@ -84,52 +95,6 @@ class Wine(models.Model):
 
 	cost_price_s = models.CharField(max_length=100,blank=True, null = True)
 	w_cost_price_s = models.CharField(max_length=100,blank=True, null = True)
-	cost_price = models.DecimalField(max_digits=6, decimal_places=2,blank=True, null = True)
-
-	retail_price_s = models.CharField(max_length=100,blank=True, null = True)
-	retail_price= models.DecimalField(max_digits=6, decimal_places=2,blank=True, null = True)
-
-	wholesale_price_s = models.CharField(max_length=100,blank=True, null = True)
-	wholesale_price = models.DecimalField(max_digits=6, decimal_places=2,blank=True, null = True)
-
-	def _get_variants(self):
-		try:
-			return self.winevariant_set.all().count()
-		except:
-			return "None"
-
-	variants = property(_get_variants)
-
-	def __str__(self):
-		return self.sage_name
-
-class WineVariant(models.Model):
-
-	wine = models.ForeignKey('Wine')
-	single_size = models.CharField(max_length=50, blank=True)
-
-	sku = models.CharField(max_length=200, blank=True, null=True)
-	product_code = models.CharField(max_length=20, blank=True, null=True)
-	l_win = models.CharField(max_length=200, blank=True)
-	sage_name = models.CharField(max_length=100, blank=True, null=True)
-	note = models.TextField(blank = True, null=True)
-
-
-	case_size = models.IntegerField(default=0)
-	stocked = models.NullBooleanField()
-	stock_bin = models.CharField(max_length=100, null = True)
-
-	wholesale = models.BooleanField(default=True)
-	pricelist = models.BooleanField(default=True)
-	retail = models.BooleanField(default=True)
-
-	octavian_ref = models.CharField(max_length=100,blank=True, null = True)
-	lcb_ref = models.CharField(max_length=100,blank=True, null = True)
-	sage_ref = models.CharField(max_length=100,blank=True, null = True)
-
-	
-	w_cost_price_s = models.CharField(max_length=100,blank=True, null = True)
-	cost_price_s = models.CharField(max_length=100,blank=True, null = True)
 	cost_price = models.DecimalField(max_digits=6, decimal_places=2,blank=True, null = True)
 
 	retail_price_s = models.CharField(max_length=100,blank=True, null = True)
@@ -163,7 +128,15 @@ class WineVariant(models.Model):
 	retail_margin = property(_retail_margin)
 	wholesale_margin = property(_wholesale_margin)
 
+	def _get_variants(self):
+		try:
+			return self.winevariant_set.all().count()
+		except:
+			return "None"
+
+	variants = property(_get_variants)
+
 	def __str__(self):
-		return ('%s : %s' % (self.wine.short_name,self.single_size))
+		return self.short_name
 
 

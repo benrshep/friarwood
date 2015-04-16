@@ -14,4 +14,6 @@ def run():
 				wine.save()
 				#print(nums)
 			except:
-				print(nums)
+				pass
+				#print(nums)
+	print('Complete')

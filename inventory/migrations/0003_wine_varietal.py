@@ -7,18 +7,14 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('inventory', '0010_auto_20150414_1435'),
+        ('inventory', '0002_auto_20150415_1802'),
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='wine',
-            name='case_type',
-        ),
         migrations.AddField(
             model_name='wine',
-            name='pricelist',
-            field=models.BooleanField(default=True),
+            name='varietal',
+            field=models.ForeignKey(null=True, to='inventory.Varietal', blank=True),
             preserve_default=True,
         ),
     ]

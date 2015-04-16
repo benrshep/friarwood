@@ -7,13 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('inventory', '0002_auto_20150409_1842'),
+        ('inventory', '0001_initial'),
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='wine',
-            name='short_name',
-            field=models.CharField(blank=True, max_length=100),
+        migrations.AlterField(
+            model_name='size',
+            name='name',
+            field=models.CharField(max_length=200, default='None'),
         ),
     ]

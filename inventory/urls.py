@@ -1,7 +1,6 @@
 from django.conf.urls import url
-
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.pdf_creator, name='pdf'),
+    url(r'^$/pdf/', views.pdf_creator, name='pdf'),
 ]

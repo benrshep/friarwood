@@ -91,6 +91,5 @@ def run():
 		print("Not Found Handled: %d" % n_handled)
 		print("Total: %d" % total)
 		print("Rows: %d" % rows)
-		
 		print("Handled Total: %d" % h_total)
 
