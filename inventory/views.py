@@ -16,11 +16,17 @@ from reportlab.rl_config import defaultPageSize
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase import pdfmetrics
 
-from reportlab.lib.styles import ParagraphStyle
-
 from .pdf import getWineListStyleSheet
 
 from itertools import groupby
+
+from reportlab.lib.styles import ParagraphStyle as PS
+from reportlab.platypus import PageBreak
+from reportlab.platypus.paragraph import Paragraph
+from reportlab.platypus.doctemplate import PageTemplate, BaseDocTemplate
+from reportlab.platypus.tableofcontents import TableOfContents
+from reportlab.platypus.frames import Frame
+
 
 
 def pdf_creator(request):
@@ -74,22 +80,18 @@ def pdf_creator(request):
 		canvas.rect(x=0.6*cm , y=0.6*cm , width=19.8*cm , height=28.5*cm , stroke=1)
 		canvas.setLineWidth(0.01*cm)
 		canvas.rect(x=0.7*cm , y=0.7*cm , width=19.6*cm , height=28.3*cm , stroke=1)
-
 		canvas.setFont('Times-Roman',9)
 		canvas.drawCentredString(PAGE_WIDTH/2.0, 55, Title.upper())
 		canvas.drawCentredString(PAGE_WIDTH/2.0, 43, address)
 		canvas.drawCentredString(PAGE_WIDTH/2.0, 31, phone)
-
 		#canvas.drawString(cm, 0.75 * cm, "Page %d %s" % (doc.page, pageinfo))
-
 		canvas.restoreState()
-
 
 	doc = SimpleDocTemplate(response)
 	story = []
 	tableIn = styles["TableIn"]
 	tableH = styles["TableH"]
-	tableh1 = styles["TableH1"]
+	tableH1 = styles["TableH1"]
 	style = styles["Normal"]
 	styleH = styles['h1']
 
@@ -99,27 +101,42 @@ def pdf_creator(request):
 		story.append(Spacer(1,1*cm))
 		story.append(Paragraph("%s" % group.name.upper(), styleH))
 
-		wines = group.wine_set.all()
+		wines = group.wine_set.all().order_by('appellation__name')
 
-		g = groupby(wines, lambda wine: wine.producer)
+		appellation_groups = groupby(wines, lambda wine: wine.appellation)
+
 		data = [[ '', 'Vintage', 'Bottle', 'Case']]
-		
-		for producer, wines in g:
-			datarow = ['']
-			data.append(datarow)
-			datarow = []
-			datarow.append(Paragraph(producer.name.upper() ,tableH))
-			data.append(datarow)
-			'''
-			for wine in wines:
-				datarow = []
-				datarow.append(Paragraph(wine.wine, tableIn))
-				datarow.append(wine.vintage)
-				datarow.append("%s%s" % ('\u00A3' , wine.wholesale_price_s))
-				datarow.append("%s%s" % ('\u00A3' , wine.wholesale_case_price))
+
+		for appellation, wines in appellation_groups:
+			try: 
+				datarow = ['']
 				data.append(datarow)
-				#print('\t%s' % wine.short_name)
-			'''
+				datarow = []
+				datarow.append(Paragraph(appellation.name.upper() ,tableH1))
+				data.append(datarow)
+			except:
+				pass
+			
+			producer_groups = groupby(wines, lambda wine: wine.producer)
+
+			for producer, wines in producer_groups:
+				datarow = ['']
+				data.append(datarow)
+				datarow = []
+				datarow.append(Paragraph(producer.name.upper() ,tableH))
+				data.append(datarow)
+
+				for wine in sorted(wines, key=lambda wine: wine.wine):
+					datarow = []
+					datarow.append(Paragraph(wine.wine, tableIn))
+					datarow.append(wine.vintage)
+					try:
+						whole_price = float(wine.wholesale_price_s)
+					except ValueError:
+						whole_price = "0.0"
+					datarow.append("%s%.2f" % ('\u00A3' , float(whole_price)))
+					datarow.append("%s%.2f" % ('\u00A3' , float(wine.wholesale_case_price)))
+					data.append(datarow)
 
 		t = Table(data, colWidths = (300,50,50,50), style=None, rowHeights=20)
 		t.setStyle(TableStyle([
@@ -131,6 +148,9 @@ def pdf_creator(request):
 		)
 		story.append(t)
 		#story.append(Paragraph("%s" % wine.short_name , style))
+
+
+
 
 	story.append(Spacer(1,0.2*cm))
 

@@ -129,7 +129,7 @@ class Wine(models.Model):
 		try:
 			return  str(round(float(self.wholesale_price_s)*self.case_size, 2))
 		except: 
-			return 'N/A'
+			return '0'
 
 	in_sage = property(_in_sage)
 	retail_margin = property(_retail_margin)
