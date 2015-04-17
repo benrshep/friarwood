@@ -1,9 +1,8 @@
 from django.contrib import admin
 from django.db import models
-from .models import Wine, Producer, Varietal, PriceGroup, Size
-from .forms import WineForm, PriceGroupForm, VarietalForm
+from .models import Wine, Producer, Varietal, PriceGroup, Size, Appellation
+from .forms import WineForm, PriceGroupForm, VarietalForm, ProducerForm, AppellationForm
 from import_export.admin import ImportExportActionModelAdmin
-from django.contrib.auth.decorators import user_passes_test
 # WINE SEARCHER
 #from wines.tasks import find_wine
 
@@ -12,11 +11,6 @@ from django.shortcuts import get_object_or_404
 #Change admin site titles
 admin.sites.AdminSite.site_header = 'Friarwood Fine Wines'
 admin.sites.AdminSite.site_title = 'Friarwood'
-
-def has_approval_permission(request, obj=None):
-     if request.user.has_perm('blog.can_approve_post'):
-         return True
-     return False
 
 # Resources
 
@@ -30,17 +24,30 @@ class WineResource(resources.ModelResource):
 
 class WineInline(admin.TabularInline):
 	model = Wine
-	fields = ['short_name', 'vintage']
+	verbose_name= False
+	show_change_link = True
+	ordering = ("producer",)
+	fields = ('producer', 'wine', 'size' , 'vintage', 'wholesale_price_s', 'case_size', 'wholesale_case_price' ,'product_code')
+	readonly_fields = ( 'producer', 'vintage', 'size' , 'product_code', 'wholesale_case_price')
 	extra = 0
+	max_num=0
+	
+class AppellationAdmin(admin.ModelAdmin):
+	form = AppellationForm
+	list_display = ('name',)
+	inlines = (WineInline,)
 
 class ProducerAdmin(admin.ModelAdmin):
-	fieldsets = [(None, {'fields': ['name']}),]
+	form = ProducerForm
 	ordering = ('name',)
-	inlines = [WineInline]
+	search_fields = ('name',)
+	
 
 class PriceGroupAdmin(admin.ModelAdmin):
 	form = PriceGroupForm
 	list_display = ('name',)
+	inlines = (WineInline,)
+
 
 class SizeAdmin(admin.ModelAdmin):
 	list_display = ('name', 'size')
@@ -55,20 +62,20 @@ class WineAdmin(ImportExportActionModelAdmin):
 
 	fieldsets = (
 		(None, {
-			'fields': ('short_name','producer', 'full_name', 'appellation', 'varietal', 'vintage', 'note', 'size', 'cost_price_s','retail_price_s', 'wholesale_price_s')
+			'fields': ('short_name','wine' ,'producer', 'full_name', 'appellation', 'varietal', 'vintage', 'note', 'size', 'cost_price_s','retail_price_s', 'wholesale_price_s')
 			}),
 		('Linking Fields', {
 			'classes': ('collapse',),
 			'fields': ('sage_name','sage_ref','lcb_ref', 'octavian_ref')
 			}),
 		)
-	
-	list_filter = ['size', 'varietal', 'price_group' ,'vintage']
-	search_fields = ['short_name' ,'vintage', 'sage_ref']
+	save_as = True
+	#list_filter = ['size', 'varietal', 'price_group' ,'vintage']
+	search_fields = ['short_name' ,'vintage', 'producer__name', 'sage_ref']
 	list_per_page = 50
-	list_display = ['short_name','vintage', 'producer','varietal', 'size' , 'product_code', 'sage_ref', 'cost_price_s', 'retail', 'retail_price_s', 'wholesale', 'wholesale_price_s']
-	#list_editable = ['varietal', 'product_code', 'retail','wholesale', 'cost_price_s','retail_price_s', 'wholesale_price_s']
-	list_editable = ['product_code','retail','wholesale']
+	list_display = ['short_name','vintage','wine' , 'producer', 'size' , 'product_code', 'sage_ref', 'cost_price_s', 'retail', 'retail_price_s', 'wholesale', 'wholesale_price_s']
+	list_editable = ['producer','sage_ref' , 'vintage', 'size', 'wine', 'product_code', 'retail','wholesale', 'cost_price_s','retail_price_s', 'wholesale_price_s']
+	#list_editable = ['product_code','retail','wholesale']
 	
 	def get_changelist_form(self, request, **kwargs):
 		return WineForm
@@ -86,5 +93,6 @@ class WineAdmin(ImportExportActionModelAdmin):
 admin.site.register(Producer, ProducerAdmin)
 admin.site.register(Wine, WineAdmin)
 admin.site.register(Size, SizeAdmin)
+admin.site.register(Appellation, AppellationAdmin)
 admin.site.register(PriceGroup, PriceGroupAdmin)
 admin.site.register(Varietal, VarietalAdmin)

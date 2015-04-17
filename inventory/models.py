@@ -29,7 +29,7 @@ class Varietal(models.Model):
 class Appellation(models.Model):
 	"""docstring for  Varietal"""
 	name = models.CharField(max_length=200, unique=True)
-	country = models.CharField(max_length=200, unique=True)
+	country = models.CharField(max_length=200)
 
 	def __str__(self):
 		return self.name
@@ -46,7 +46,7 @@ class Size(models.Model):
 class Wine(models.Model):
 	"""docstring for  Wine"""
 
-	wine = models.CharField(max_length=100)
+	wine = models.CharField(max_length=100, blank=True)
 	
 	short_name = models.CharField(max_length=100, blank=True)
 	full_name = models.CharField(max_length=200, blank=True)
@@ -54,9 +54,9 @@ class Wine(models.Model):
 	producer = models.ForeignKey('Producer',null=True, blank=True)
 	appellation = models.ForeignKey('Appellation',null=True, blank=True)
 	varietal = models.ForeignKey('Varietal', null=True, blank=True)
+	price_group = models.ForeignKey('PriceGroup',null=True, blank=True)
 
 	vintage = models.CharField(max_length=50, blank=True)
-	price_group = models.ForeignKey('PriceGroup',null=True, blank=True)
 
 	searcher_details = models.NullBooleanField(default=False)
 	searcher_url = models.CharField(max_length=200, blank=True)
@@ -84,9 +84,9 @@ class Wine(models.Model):
 	stocked = models.NullBooleanField()
 	stock_bin = models.CharField(max_length=100)
 
-	wholesale = models.BooleanField(default=True)
-	pricelist = models.BooleanField(default=True)
-	retail = models.BooleanField(default=True)
+	wholesale = models.BooleanField(default=False)
+	pricelist = models.BooleanField(default=False)
+	retail = models.BooleanField(default=False)
 	
 
 	octavian_ref = models.CharField(max_length=100,blank=True, null = True)
@@ -124,9 +124,17 @@ class Wine(models.Model):
 		except: 
 			return 'N/A'
 
+	def __wholesale_case(self):
+		"Returns the total"
+		try:
+			return  str(round(float(self.wholesale_price_s)*self.case_size, 2))
+		except: 
+			return 'N/A'
+
 	in_sage = property(_in_sage)
 	retail_margin = property(_retail_margin)
 	wholesale_margin = property(_wholesale_margin)
+	wholesale_case_price = property(__wholesale_case)
 
 	def _get_variants(self):
 		try:
@@ -137,6 +145,6 @@ class Wine(models.Model):
 	variants = property(_get_variants)
 
 	def __str__(self):
-		return self.short_name
+		return "%s : %s" % (self.short_name, self.vintage)
 
 

@@ -8,6 +8,9 @@ class WineForm(forms.ModelForm):
         fields = ['short_name', 'producer','cost_price_s', 'retail_price_s', 'wholesale_price_s']
         widgets = { 
         'short_name': forms.TextInput(attrs={'size':'100'}),
+        'vintage': forms.TextInput(attrs={'size':'5'}),
+        'wine': forms.TextInput(attrs={'size':'25'}),
+        'sage_ref': forms.TextInput(attrs={'size':'10'}),
         'cost_price_s': forms.TextInput(attrs={'size':'5'}),
         'retail_price_s': forms.TextInput(attrs={'size':'5'}),
         'wholesale_price_s': forms.TextInput(attrs={'size':'5'}),
@@ -71,3 +74,59 @@ class VarietalForm(forms.ModelForm):
 			varietal.wine_set = self.cleaned_data['wines']
 			self.save_m2m()
 		return varietal
+
+class ProducerForm(forms.ModelForm):
+	class Meta:
+		model = Producer
+		fields = ('name',)
+
+	wines = forms.ModelMultipleChoiceField(
+		queryset=Wine.objects.all(),
+		required=False,
+		widget=FilteredSelectMultiple(
+			verbose_name='Wines',
+			is_stacked=False
+			)
+		)
+	def __init__(self, *args, **kwargs):
+		super(ProducerForm, self).__init__(*args, **kwargs)
+		if self.instance.pk:
+			self.fields['wines'].initial = self.instance.wine_set.all()
+	def save(self, commit=True):
+		producer = super(ProducerForm, self).save(commit=False)  
+
+		if commit:
+			producer.save()
+
+		if producer.pk:
+			producer.wine_set = self.cleaned_data['wines']
+			self.save_m2m()
+		return producer
+
+class AppellationForm(forms.ModelForm):
+	class Meta:
+		model = Appellation
+		fields = ('name',)
+
+	wines = forms.ModelMultipleChoiceField(
+		queryset=Wine.objects.all(),
+		required=False,
+		widget=FilteredSelectMultiple(
+			verbose_name='Wines',
+			is_stacked=False
+			)
+		)
+	def __init__(self, *args, **kwargs):
+		super(AppellationForm, self).__init__(*args, **kwargs)
+		if self.instance.pk:
+			self.fields['wines'].initial = self.instance.wine_set.all()
+	def save(self, commit=True):
+		appellation = super(AppellationForm, self).save(commit=False)  
+
+		if commit:
+			appellation.save()
+
+		if appellation.pk:
+			appellation.wine_set = self.cleaned_data['wines']
+			self.save_m2m()
+		return appellation
