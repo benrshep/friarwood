@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'storages',
     'import_export',
     'boto',
+    'adminsortable2',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -83,7 +84,6 @@ DATABASES = {
             'ENGINE': 'django.db.backends.postgresql_psycopg2'
             }
         }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

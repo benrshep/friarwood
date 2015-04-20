@@ -5,15 +5,14 @@ from .models import Wine, Producer, Appellation, PriceGroup, Varietal
 class WineForm(forms.ModelForm):
     class Meta:
         model = Wine
-        fields = ['short_name', 'producer','cost_price_s', 'retail_price_s', 'wholesale_price_s']
+        fields = ['short_name', 'producer','cost_price', 'retail_price', 'wholesale_price']
         widgets = { 
         'short_name': forms.TextInput(attrs={'size':'100'}),
         'vintage': forms.TextInput(attrs={'size':'5'}),
         'wine': forms.TextInput(attrs={'size':'25'}),
-        'sage_ref': forms.TextInput(attrs={'size':'10'}),
-        'cost_price_s': forms.TextInput(attrs={'size':'5'}),
-        'retail_price_s': forms.TextInput(attrs={'size':'5'}),
-        'wholesale_price_s': forms.TextInput(attrs={'size':'5'}),
+        #'cost_price': forms.TextInput(attrs={'size':'5'}),
+        #'retail_price': forms.TextInput(attrs={'size':'5'}),
+        #'wholesale_price': forms.TextInput(attrs={'size':'5'}),
         'single_size': forms.TextInput(attrs={'size':'5'}),
         'product_code': forms.TextInput(attrs={'size':'10'}),
         'producer': forms.Select(attrs={'style':'width:150px'}),

@@ -1,47 +1,7 @@
 from django.db import models
 import datetime
 
-# Create your models here.
-
-class Producer(models.Model):
-	"""docstring for  Producer"""
-	name = models.CharField(max_length=200, unique=True)
-
-	def __str__(self):
-		return self.name
-
-class PriceGroup(models.Model):
-	"""docstring for  Varietal"""
-	name = models.CharField(max_length=200, unique=True)
-	details = models.TextField(blank = True, null = True)
-
-	def __str__(self):
-		return self.name
-
-class Varietal(models.Model):
-	"""docstring for  Varietal"""
-	name = models.CharField(max_length=200, unique=True)
-	details = models.TextField(blank = True, null = True)
-
-	def __str__(self):
-		return self.name
-
-class Appellation(models.Model):
-	"""docstring for  Varietal"""
-	name = models.CharField(max_length=200, unique=True)
-	country = models.CharField(max_length=200)
-
-	def __str__(self):
-		return self.name
-
-class Size(models.Model):
-	"""docstring for Size"""
-	size = models.CharField(max_length=200, blank=True, unique=True)
-	name = models.CharField(max_length=200, default='None')
-
-	def __str__(self):
-		return self.name
-		
+# Create your models here.		
 
 class Wine(models.Model):
 	"""docstring for  Wine"""
@@ -87,21 +47,21 @@ class Wine(models.Model):
 	wholesale = models.BooleanField(default=False)
 	pricelist = models.BooleanField(default=False)
 	retail = models.BooleanField(default=False)
-	
+	#Added for stocklist
+	bond_stock = models.CharField(max_length=6, blank=True, default=0)
+	cellar_stock = models.CharField(max_length=6, blank=True, default=0)
 
 	octavian_ref = models.CharField(max_length=100,blank=True, null = True)
 	lcb_ref = models.CharField(max_length=100,blank=True, null = True)
-	sage_ref = models.CharField(max_length=100,blank=True, null = True)
 
-	cost_price_s = models.CharField(max_length=100,blank=True, null = True)
-	w_cost_price_s = models.CharField(max_length=100,blank=True, null = True)
-	cost_price = models.DecimalField(max_digits=6, decimal_places=2,blank=True, null = True)
+	cost_price = models.DecimalField(max_digits=6, decimal_places=2,blank=True ,null=True)
+	retail_price= models.DecimalField(max_digits=6, decimal_places=2,blank=True ,null=True)
+	wholesale_price = models.DecimalField(max_digits=6, decimal_places=2,blank=True , null=True)
+	
+	my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
 
-	retail_price_s = models.CharField(max_length=100,blank=True, null = True)
-	retail_price= models.DecimalField(max_digits=6, decimal_places=2,blank=True, null = True)
-
-	wholesale_price_s = models.CharField(max_length=100,blank=True, null = True)
-	wholesale_price = models.DecimalField(max_digits=6, decimal_places=2,blank=True, null = True)
+	class Meta(object):
+		ordering = ('my_order',)
 
 	def _in_sage(self):
 		"Returns whether item in sage"
@@ -113,28 +73,23 @@ class Wine(models.Model):
 	def _retail_margin(self):
 		"Returns the total"
 		try:
-			return  str(round((float(self.cost_price_s) / float(self.retail_price_s))*100, 2)) + '%' 
+			return str( round( (self.cost_price/self.retail_price)*100 ,2)) +'%'
 		except: 
 			return 'N/A'
 
 	def _wholesale_margin(self):
 		"Returns the total"
 		try:
-			return  str(round((float(self.cost_price_s) / float(self.wholesale_price_s))*100, 2)) + '%' 
+			return str( round( (self.cost_price/self.wholesale_price)*100 ,2)) +'%'
 		except: 
 			return 'N/A'
 
-	def __wholesale_case(self):
+	def _wholesale_case(self):
 		"Returns the total"
 		try:
-			return  str(round(float(self.wholesale_price_s)*self.case_size, 2))
+			return  round(self.wholesale_price*self.case_size, 2)
 		except: 
 			return '0'
-
-	in_sage = property(_in_sage)
-	retail_margin = property(_retail_margin)
-	wholesale_margin = property(_wholesale_margin)
-	wholesale_case_price = property(__wholesale_case)
 
 	def _get_variants(self):
 		try:
@@ -143,8 +98,102 @@ class Wine(models.Model):
 			return "None"
 
 	variants = property(_get_variants)
-
+	in_sage = property(_in_sage)
+	retail_margin = property(_retail_margin)
+	wholesale_margin = property(_wholesale_margin)
+	wholesale_case_price = property(_wholesale_case)
+	
 	def __str__(self):
 		return "%s : %s" % (self.short_name, self.vintage)
 
+class WholesaleManager(models.Manager):
+	def get_queryset(self):
+		return super(WholesaleManager, self).get_queryset().filter(wholesale=True)
+
+class WholesaleWine(Wine):
+	objects = WholesaleManager()
+
+	class Meta:
+		proxy = True
+
+class RetailManager(models.Manager):
+	def get_queryset(self):
+		return super(RetailManager, self).get_queryset().filter(retail=True)
+
+class RetailWine(Wine):
+    objects = RetailManager()
+    class Meta:
+        proxy = True
+
+class Employee(models.Model):
+	first_name = models.CharField(max_length=200)
+	last_name = models.CharField(max_length=200)
+	position = models.CharField(max_length=200)
+	email = models.CharField(max_length=200, blank=True)
+	my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+	class Meta(object):
+		ordering = ('my_order',)
+
+	def __str__(self):
+		return "%s %s" % (self.first_name, self.last_name)
+
+class Producer(models.Model):
+	"""docstring for  Producer"""
+	name = models.CharField(max_length=200, unique=True)
+	my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+	class Meta(object):
+		ordering = ('my_order',)
+
+	def __str__(self):
+		return self.name
+
+class PriceGroup(models.Model):
+	"""docstring for  PriceGroup"""
+	name = models.CharField(max_length=200, unique=True)
+	details = models.TextField(blank = True, null = True)
+	my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+	class Meta(object):
+		ordering = ('my_order',)
+
+	def __str__(self):
+		return self.name
+
+class Appellation(models.Model):
+	"""docstring for  Varietal"""
+	name = models.CharField(max_length=200, unique=True)
+	country = models.CharField(max_length=200)
+	my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+	class Meta(object):
+		ordering = ('my_order',)
+
+	def __str__(self):
+		return self.name
+
+class Varietal(models.Model):
+	"""docstring for  Varietal"""
+	name = models.CharField(max_length=200, unique=True)
+	details = models.TextField(blank = True, null = True)
+	my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+	class Meta(object):
+		ordering = ('my_order',)
+
+	def __str__(self):
+		return self.name
+
+class Size(models.Model):
+	"""docstring for Size"""
+	size = models.CharField(max_length=200, blank=True, unique=True)
+	name = models.CharField(max_length=200, default='None')
+	my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+	class Meta(object):
+		ordering = ('my_order',)
+
+	def __str__(self):
+		return self.name
 
