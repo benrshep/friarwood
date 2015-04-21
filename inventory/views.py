@@ -1,15 +1,32 @@
 from django.http import HttpResponse
 from .models import Wine, PriceGroup
-from .pdf import createPDFPriceList
+from .pdf import createWholesalePriceList, createRetailPriceList
 import csv
+from django.shortcuts import render
 
-def pdf_creator(request):
+def index(request):
+    latest_wine_list = Wine.objects.order_by('wine')[:5]
+    context = {'latest_wine_list': latest_wine_list,}
+    return render(request, 'inventory/index.html', context)
+    
+def wholesale_list(request):
 	# Create the HttpResponse object with the appropriate PDF headers.
 	response = HttpResponse(content_type='application/pdf')
 	response['Content-Disposition'] = 'attachment; filename="WineList.pdf"'
 	
 	# Create PDF from wine models
-	createPDFPriceList(response)
+	createWholesalePriceList(response)
+
+	# Return PDF response
+	return response
+
+def retail_list(request):
+	# Create the HttpResponse object with the appropriate PDF headers.
+	response = HttpResponse(content_type='application/pdf')
+	response['Content-Disposition'] = 'attachment; filename="RetailList.pdf"'
+	
+	# Create PDF from wine models
+	createRetailPriceList(response)
 
 	# Return PDF response
 	return response
