@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- 
 
 from reportlab.platypus.doctemplate import _doNothing
 from reportlab.platypus.doctemplate import PageTemplate, BaseDocTemplate
