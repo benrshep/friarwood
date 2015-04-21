@@ -179,8 +179,8 @@ def createWholesalePriceList(response):
               whole_price = wine.wholesale_price
             except ValueError:
               whole_price = 0.0
-            datarow.append("%s%.2f" % ('\u00A3' , whole_price))
-            datarow.append("%s%.2f" % ('\u00A3' , wine.wholesale_case_price))
+            datarow.append("%s%.2f" % (u"\u00A3" , whole_price))
+            datarow.append("%s%.2f" % (u"\u00A3" , wine.wholesale_case_price))
             data.append(datarow)
 
     t = Table(data, colWidths = (290,50,50,50), style=None, rowHeights=19)
@@ -313,7 +313,7 @@ def createRetailPriceList(response):
             datarow.append(wine.vintage)
             try:
               price = float(wine.retail_price)
-              datarow.append("%s%.2f" % ('\u00A3' , price))
+              datarow.append("%s%.2f" % (u"\u00A3" , price))
             except:
               price = 0.0
               datarow.append('N/A')
