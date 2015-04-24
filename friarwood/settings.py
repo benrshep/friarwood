@@ -40,7 +40,7 @@ INSTALLED_APPS = (
     'import_export',
     'boto',
     'adminsortable2',
-    #'twitter_bootstrap',
+    'twitter_bootstrap',
 )
 
 MIDDLEWARE_CLASSES = (
