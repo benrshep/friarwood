@@ -8,6 +8,7 @@ django-extensions==1.5.2
 django-import-export==0.2.6
 django-storages==1.1.8
 django-toolbelt==0.0.1
+django-twitter-bootstrap==3.3.0
 fpdf==1.7.2
 gunicorn==19.3.0
 lxml==3.4.2
