@@ -139,5 +139,3 @@ if not DEBUG:
    STATIC_URL = S3_URL
    #AWS_IS_GZIPPED = True
 
-debug = True
-
