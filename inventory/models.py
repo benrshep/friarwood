@@ -140,7 +140,7 @@ class Employee(models.Model):
 
 class Producer(models.Model):
 	"""docstring for  Producer"""
-	name = models.CharField(max_length=200, unique=True)
+	name = models.CharField(max_length=200)
 	my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
 
 	class Meta(object):
@@ -151,7 +151,7 @@ class Producer(models.Model):
 
 class PriceGroup(models.Model):
 	"""docstring for  PriceGroup"""
-	name = models.CharField(max_length=200, unique=True)
+	name = models.CharField(max_length=200)
 	details = models.TextField(blank = True, null = True)
 	my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
 
@@ -163,7 +163,7 @@ class PriceGroup(models.Model):
 
 class Appellation(models.Model):
 	"""docstring for  Varietal"""
-	name = models.CharField(max_length=200, unique=True)
+	name = models.CharField(max_length=200)
 	country = models.CharField(max_length=200)
 	my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
 
@@ -175,7 +175,7 @@ class Appellation(models.Model):
 
 class Varietal(models.Model):
 	"""docstring for  Varietal"""
-	name = models.CharField(max_length=200, unique=True)
+	name = models.CharField(max_length=200)
 	details = models.TextField(blank = True, null = True)
 	my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
 
@@ -187,7 +187,7 @@ class Varietal(models.Model):
 
 class Size(models.Model):
 	"""docstring for Size"""
-	size = models.CharField(max_length=200, blank=True, unique=True)
+	size = models.CharField(max_length=200, blank=True)
 	name = models.CharField(max_length=200, default='None')
 	my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
 
