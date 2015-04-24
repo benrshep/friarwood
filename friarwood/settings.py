@@ -40,7 +40,7 @@ INSTALLED_APPS = (
     'import_export',
     'boto',
     'adminsortable2',
-    'twitter_bootstrap',
+    #'twitter_bootstrap',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -138,5 +138,3 @@ if not DEBUG:
    S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
    STATIC_URL = S3_URL
    #AWS_IS_GZIPPED = True
-
-debug = True
