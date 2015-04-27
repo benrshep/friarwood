@@ -10,12 +10,12 @@ class WineForm(forms.ModelForm):
         'short_name': forms.TextInput(attrs={'size':'100'}),
         'vintage': forms.TextInput(attrs={'size':'5'}),
         'wine': forms.TextInput(attrs={'size':'25'}),
-        #'cost_price': forms.TextInput(attrs={'size':'5'}),
-        #'retail_price': forms.TextInput(attrs={'size':'5'}),
-        #'wholesale_price': forms.TextInput(attrs={'size':'5'}),
+        'cost_price': forms.TextInput(attrs={'size':'5'}),
+        'retail_price': forms.TextInput(attrs={'size':'5'}),
+        'wholesale_price': forms.TextInput(attrs={'size':'5'}),
         'single_size': forms.TextInput(attrs={'size':'5'}),
-        'product_code': forms.TextInput(attrs={'size':'10'}),
-        'producer': forms.Select(attrs={'style':'width:150px'}),
+        'product_code': forms.TextInput(attrs={'size':'9'}),
+        'producer': forms.Select(attrs={'style':'width:180px'}),
         }
 
 class PriceGroupForm(forms.ModelForm):

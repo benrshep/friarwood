@@ -81,19 +81,17 @@ class WineAdmin(ImportExportActionModelAdmin):
 			}),
 		)
 	save_as = True
+
 	#list_filter = ['size', 'varietal', 'price_group' ,'vintage']
-	
 	#list_filter = ['wholesale', 'retail']
-
-	search_fields = ['short_name' ,'vintage', 'product_code','producer__name']
-	list_per_page = 50
 	#list_display = ['vintage','short_name','wine' , 'producer','price_group' , 'size' , 'product_code', 'cost_price', 'retail', 'retail_price', 'wholesale', 'wholesale_price']
-	list_display = ['vintage', 'wine', 'producer', 'short_name', 'size', 'product_code', 'cost_price','retail', 'retail_price', 'wholesale', 'wholesale_price']
-
 	#list_editable = ['producer', 'size', 'wine', 'product_code','price_group', 'retail','wholesale', 'cost_price','retail_price', 'wholesale_price']
-	list_editable = ['wine', 'size', 'product_code', 'retail', 'wholesale', 'cost_price', 'retail_price', 'wholesale_price']
-	
 	#list_editable = ['product_code','retail','wholesale']
+
+	list_per_page = 50
+	search_fields = ['short_name' ,'vintage', 'product_code','producer__name']
+	list_display = ['vintage', 'wine', 'producer', 'short_name', 'size', 'product_code', 'cost_price','retail', 'retail_price', 'wholesale', 'wholesale_price']
+	list_editable = ['wine', 'size', 'product_code', 'producer', 'retail', 'wholesale', 'cost_price', 'retail_price', 'wholesale_price']
 	
 	def get_changelist_form(self, request, **kwargs):
 		return WineForm
@@ -112,16 +110,17 @@ class WholesaleWineAdmin(WineAdmin):
     #def get_queryset(self, request):
     #    return self.model.objects.filter(wholesale = True)
     list_display = ['product_code', 'wine', 'producer', 'vintage' , 'short_name', 'size', 'case_size', 'cost_price', 'wholesale_price' , 'wholesale_margin', 'bond_stock', 'cellar_stock', 'note']
+    list_editable = []
     search_fields = ['product_code']
     list_filter = ['price_group']
-    list_editable = []
+    
 
 class RetailWineAdmin(WineAdmin):
     #def get_queryset(self, request):
     #    return self.model.objects.filter(wholesale = True)
     list_display = ['short_name','product_code', 'size', 'case_size', 'vintage', 'cost_price', 'retail_price', 'cellar_stock', 'note']
-    search_fields = ['product_code']
     list_editable = []
+    search_fields = ['product_code']
     list_filter = []
 
 		
