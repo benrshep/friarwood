@@ -32,7 +32,7 @@ class Wine(models.Model):
 	searcher_status = models.CharField(max_length=100, blank=True, null = True)
 	searcher_data = models.TextField(blank= True, null=True)
 
-	colour = models.CharField(max_length=10, choices=COLOURS)
+	colour = models.CharField(max_length=10, choices=COLOURS, blank=True)
 	wine_type = models.CharField(max_length=100)
 	alcohol = models.DecimalField(max_digits=3, decimal_places=2,default=0)
 	classification = models.CharField(max_length=200)
