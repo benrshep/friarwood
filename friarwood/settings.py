@@ -36,9 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    #'storages',
     'import_export',
-    #'boto',
     'adminsortable2',
     'twitter_bootstrap',
 )
@@ -77,14 +75,9 @@ WSGI_APPLICATION = 'friarwood.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
 # We only need the engine name, as heroku takes care of the rest --HEROKU
 
-DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2'
-            }
-        }
+DATABASES = {'default': {'ENGINE': 'django.db.backends.postgresql_psycopg2'}}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -95,42 +88,43 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+
+# -- HEROKU
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
 
 # -- HEROKU
-
 # Allow all host hosts/domain names for this site
 ALLOWED_HOSTS = ['friarwood.herokuapp.com']
 
+# -- HEROKU
 # Parse database configuration from $DATABASE_URL
 
 import dj_database_url
-
 DATABASES['default'] =  dj_database_url.config()
+
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# try to load local_settings.py if it exists
+# -- HEROKU
+# Try to load local_settings.py if it exists
 try:
     from .local_settings import *
 except ImportError as e:
     pass
     #print('Unable to load local_settings.py:', e)
 
-#Amazon S3
-
-#Storage on S3 settings are stored as os.environs to keep settings.py clean
 '''
+#Amazon S3
+#BOTO not working with Python 3
+#Storage on S3 settings are stored as os.environs to keep settings.py clean
 if not DEBUG:
 
     STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
@@ -144,4 +138,4 @@ if not DEBUG:
     #AWS_IS_GZIPPED = True
 '''
 
-DEBUG = True
+#DEBUG = True
