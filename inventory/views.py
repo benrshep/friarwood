@@ -31,6 +31,33 @@ def retail_list(request):
 	# Return PDF response
 	return response
 
+def retail_export(request):
+	response = HttpResponse(content_type='text/csv')
+	response['Content-Disposition'] = 'attachment; filename="retailexport.csv"'
+	writer = csv.writer(response)
+
+	writer.writerow([
+			'full name',
+	    	'Short Name',
+	    	'vintage',
+	    	'single size',
+	    	'product_code',
+	    	'price'
+
+	    ])
+		
+	for wine in Wine.objects.filter(retail=True):
+		writer.writerow([
+			wine.wine,
+			wine.short_name,
+			wine.vintage,
+			wine.size.size,
+			wine.product_code,
+			wine.retail_price
+		])
+
+	return response
+
 def eddy_export(request):
 	# Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(content_type='text/csv')

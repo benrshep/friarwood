@@ -6,4 +6,5 @@ urlpatterns = [
 	url(r'^wholesalelist/', views.wholesale_list, name='wholesalelist'),
 	url(r'^retaillist/', views.retail_list, name='retaillist'),
 	url(r'^shopify/', views.shopify_export, name='shopify'),
+	url(r'^retail/', views.retail_export, name='retail'),
 ]
