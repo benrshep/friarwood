@@ -6,6 +6,12 @@ import datetime
 class Wine(models.Model):
 	"""docstring for  Wine"""
 
+	COLOURS = (
+        ('R', 'Red'),
+        ('W', 'White'),
+        ('Ro', 'Rose'),
+    )
+
 	wine = models.CharField(max_length=100, blank=True)
 	
 	short_name = models.CharField(max_length=100, blank=True)
@@ -15,6 +21,7 @@ class Wine(models.Model):
 	appellation = models.ForeignKey('Appellation',null=True, blank=True)
 	varietal = models.ForeignKey('Varietal', null=True, blank=True)
 	price_group = models.ForeignKey('PriceGroup',null=True, blank=True)
+	region = models.ForeignKey('Region',null=True, blank=True)
 
 	vintage = models.CharField(max_length=50, blank=True)
 
@@ -24,7 +31,7 @@ class Wine(models.Model):
 	searcher_status = models.CharField(max_length=100, blank=True, null = True)
 	searcher_data = models.TextField(blank= True, null=True)
 
-	colour = models.CharField(max_length=100)
+	colour = models.CharField(max_length=10, choices=COLOURS)
 	wine_type = models.CharField(max_length=100)
 	alcohol = models.DecimalField(max_digits=3, decimal_places=2,default=0)
 	classification = models.CharField(max_length=200)
@@ -172,6 +179,10 @@ class Appellation(models.Model):
 
 	def __str__(self):
 		return self.name
+
+class Region(models.Model):
+	name = models.CharField(max_length=200)
+	my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
 
 class Varietal(models.Model):
 	"""docstring for  Varietal"""

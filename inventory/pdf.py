@@ -173,7 +173,7 @@ def createWholesalePriceList(response):
           data.append(datarow)
           for wine in winelist:
             datarow = []
-            datarow.append(Paragraph(wine.wine, tableIn))
+            datarow.append(Paragraph( "<font color=\"magenta\">%s,%s</font>" % (wine.colour, wine.wine), tableIn))
             datarow.append(wine.vintage)
             try:
               whole_price = wine.wholesale_price

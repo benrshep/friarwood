@@ -30,7 +30,7 @@ class WineInline(admin.TabularInline):
 	verbose_name= False
 	show_change_link = True
 	ordering = ("producer",)
-	fields = ('producer', 'wine', 'size' , 'vintage', 'wholesale_price', 'case_size', 'wholesale_case_price' ,'product_code')
+	fields = ('producer', 'wine', 'colour', 'size', 'vintage', 'wholesale_price', 'case_size', 'wholesale_case_price' ,'product_code')
 	readonly_fields = ( 'producer', 'vintage', 'size' , 'product_code', 'wholesale_case_price')
 	extra = 0
 	max_num=0
