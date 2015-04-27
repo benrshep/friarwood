@@ -21,7 +21,7 @@ class Wine(models.Model):
 	appellation = models.ForeignKey('Appellation',null=True, blank=True)
 	varietal = models.ForeignKey('Varietal', null=True, blank=True)
 	price_group = models.ForeignKey('PriceGroup',null=True, blank=True)
-	#region = models.ForeignKey('Region',null=True, blank=True)
+	region = models.ForeignKey('Region',null=True, blank=True)
 
 	vintage = models.CharField(max_length=50, blank=True)
 
