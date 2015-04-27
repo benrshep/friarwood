@@ -1,2 +1,1 @@
-web: waitress-serve --port=$PORT friarwood.wsgi:application
-
+web: gunicorn friarwood.wsgi --log-file -
