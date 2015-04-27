@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.encoding import smart_text
 import datetime
 
 # Create your models here.		
@@ -111,7 +112,11 @@ class Wine(models.Model):
 	wholesale_case_price = property(_wholesale_case)
 	
 	def __str__(self):
-		return "%s : %s" % (self.short_name, self.vintage)
+		return smart_text( "%s : %s" % (self.short_name, self.vintage), 
+			encoding='utf-8', 
+			strings_only=False, 
+			errors='strict')
+		
 
 class WholesaleManager(models.Manager):
 	def get_queryset(self):
@@ -154,7 +159,10 @@ class Producer(models.Model):
 		ordering = ('my_order',)
 
 	def __str__(self):
-		return self.name
+		return smart_text( self.name, 
+			encoding='utf-8', 
+			strings_only=False, 
+			errors='strict')
 
 class PriceGroup(models.Model):
 	"""docstring for  PriceGroup"""
