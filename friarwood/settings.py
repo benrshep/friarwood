@@ -103,7 +103,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 # -- HEROKU
 
@@ -130,10 +136,11 @@ except ImportError as e:
 #Amazon S3
 
 #Storage on S3 settings are stored as os.environs to keep settings.py clean
+'''
 if not DEBUG:
 
     STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-    '''
+
     AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
     AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
     AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
@@ -141,5 +148,6 @@ if not DEBUG:
     S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
     STATIC_URL = S3_URL
     #AWS_IS_GZIPPED = True
-    '''
+'''
+
 DEBUG = True

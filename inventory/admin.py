@@ -83,7 +83,7 @@ class WineAdmin(ImportExportActionModelAdmin):
 	save_as = True
 	#list_filter = ['size', 'varietal', 'price_group' ,'vintage']
 	
-	list_filter = ['wholesale', 'retail']
+	#list_filter = ['wholesale', 'retail']
 
 	search_fields = ['short_name' ,'vintage', 'product_code','producer__name']
 	list_per_page = 50
@@ -91,7 +91,7 @@ class WineAdmin(ImportExportActionModelAdmin):
 	list_display = ['vintage','wine','producer','short_name','size', 'retail', 'retail_price', 'wholesale', 'product_code', 'cost_price', 'wholesale_price']
 
 	#list_editable = ['producer', 'size', 'wine', 'product_code','price_group', 'retail','wholesale', 'cost_price','retail_price', 'wholesale_price']
-	list_editable = ['size', 'product_code', 'retail','wholesale', 'cost_price','retail_price', 'wholesale_price']
+	list_editable = ['wine', 'size', 'product_code', 'retail','wholesale', 'cost_price','retail_price', 'wholesale_price']
 	
 	#list_editable = ['product_code','retail','wholesale']
 	
