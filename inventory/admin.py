@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.db import models
-from .models import Wine, Producer, Varietal, PriceGroup, Size, Appellation, Employee, WholesaleWine, RetailWine
+from .models import Wine, Producer, Varietal, PriceGroup, Size, Appellation, Employee, WholesaleWine, RetailWine, Region
 
 from .forms import WineForm, PriceGroupForm, VarietalForm, ProducerForm, AppellationForm
 from adminsortable2.admin import SortableAdminMixin
@@ -79,7 +79,7 @@ class WineAdmin(admin.ModelAdmin):
 	#list_editable = ['producer', 'size', 'wine', 'product_code','price_group', 'retail','wholesale', 'cost_price','retail_price', 'wholesale_price']
 	#list_editable = ['product_code','retail','wholesale']
 
-	list_per_page = 50
+	list_per_page = 20
 	search_fields = ['short_name' ,'vintage', 'product_code','producer__name']
 	list_display = ['vintage', 'wine', 'size', 'producer', 'appellation', 'short_name', 'product_code', 'cost_price','wholesale_price', 'retail_price', 'wholesale', 'retail', ]
 	list_editable = ['wine', 'size', 'product_code', 'producer', 'appellation', 'retail', 'wholesale', 'cost_price', 'retail_price', 'wholesale_price']
@@ -114,6 +114,14 @@ class RetailWineAdmin(WineAdmin):
     search_fields = ['product_code']
     list_filter = []
 
+class RegionAdmin(admin.ModelAdmin):
+	#def get_queryset(self, request):
+	#    return self.model.objects.filter(wholesale = True)
+	fields = ('country', 'name')
+	list_display = ('name', 'country')
+	list_editable = ('name',)
+
+
 		
 admin.site.register(Producer, ProducerAdmin)
 admin.site.register(Wine, WineAdmin)
@@ -124,3 +132,4 @@ admin.site.register(Varietal, VarietalAdmin)
 admin.site.register(Employee, EmployeeAdmin)
 admin.site.register(WholesaleWine, WholesaleWineAdmin)
 admin.site.register(RetailWine, RetailWineAdmin)
+admin.site.register(Region, RegionAdmin)

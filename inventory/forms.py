@@ -106,7 +106,7 @@ class ProducerForm(forms.ModelForm):
 class AppellationForm(forms.ModelForm):
 	class Meta:
 		model = Appellation
-		fields = ('name', 'retail_list', 'wholesale_list')
+		fields = ('name', 'region', 'retail_list', 'wholesale_list')
 
 	wines = forms.ModelMultipleChoiceField(
 		queryset=Wine.objects.all(),

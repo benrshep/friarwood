@@ -22,7 +22,6 @@ class Wine(models.Model):
 	appellation = models.ForeignKey('Appellation',null=True, blank=True)
 	varietal = models.ForeignKey('Varietal', null=True, blank=True)
 	price_group = models.ForeignKey('PriceGroup',null=True, blank=True)
-	region = models.ForeignKey('Region',null=True, blank=True)
 
 	vintage = models.CharField(max_length=50, blank=True)
 
@@ -159,11 +158,8 @@ class Producer(models.Model):
 		ordering = ('my_order',)
 
 	def __str__(self):
-		return smart_text( self.name, 
-			encoding='utf-8', 
-			strings_only=False, 
-			errors='strict')
-
+		return self.name
+			
 class PriceGroup(models.Model):
 	"""docstring for  PriceGroup"""
 	name = models.CharField(max_length=200)
@@ -181,7 +177,7 @@ class Appellation(models.Model):
 	name = models.CharField(max_length=200)
 	retail_list = models.BooleanField(default=False)
 	wholesale_list = models.BooleanField(default=False)
-	country = models.CharField(max_length=200)
+	region = models.ForeignKey('Region',null=True, blank=True)
 	my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
 
 	class Meta(object):
@@ -191,8 +187,12 @@ class Appellation(models.Model):
 		return self.name
 
 class Region(models.Model):
-	name = models.CharField(max_length=200)
+	name = models.CharField(max_length=200, blank=True)
+	country = models.CharField(max_length=200, null=True)
 	my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+
+	def __str__(self):
+		return self.name
 
 class Varietal(models.Model):
 	"""docstring for  Varietal"""
