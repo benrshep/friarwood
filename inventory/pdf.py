@@ -133,14 +133,15 @@ def createWholesalePriceList(response):
   story.append(PageBreak())
   
   #generatePriceList(PriceGroup.objects.all(), story)
-  for group in PriceGroup.objects.all():
-
+  
+  #for group in PriceGroup.objects.all():
+  '''
     #Add title for Price Group
     story.append(Spacer(1, 0.5*cm))
     story.append(Paragraph("%s" % group.name.upper(), styleH))
 
-    '''
-    
+  '''
+  '''
     wines = group.wine_set.all().order_by('appellation_group__my_order')
 
     wines = group.wine_set.all().order_by('appellation_group__my_order')
@@ -163,7 +164,8 @@ def createWholesalePriceList(response):
         sortedwines = sorted(wines, key=lambda wine: wine.producer.name)
       except AttributeError:
         story.append('Wine missing producer')
-    '''
+  '''
+  '''
       producer_groups = groupby(sortedwines, lambda wine: wine.producer)
       #producer_groups = sorted(producer_groups, key=lambda wine: (producer.name,)
 
@@ -214,7 +216,7 @@ def createWholesalePriceList(response):
     )
     story.append(t)
     story.append(PageBreak())
-
+  '''
 
   story.append(Spacer(1,0.2*cm))
 
