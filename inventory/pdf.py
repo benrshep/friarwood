@@ -40,7 +40,7 @@ def getWineListStyleSheet():
                                   spaceAfter=6),alias='h1')
 
     stylesheet.add(ParagraphStyle(name='TableH',
-                                  fontName='Helvetica-Bold',
+                                  fontName='Helvetica',
                                   fontSize=9,
                                   )
                    )
@@ -135,28 +135,35 @@ def createWholesalePriceList(response):
   #generatePriceList(PriceGroup.objects.all(), story)
   for group in PriceGroup.objects.all():
 
+    #Add title for Price Group
     story.append(Spacer(1, 0.5*cm))
     story.append(Paragraph("%s" % group.name.upper(), styleH))
+
+    '''
     
-    wines = group.wine_set.all().order_by('appellation__my_order')
+    wines = group.wine_set.all().order_by('appellation_group__my_order')
+
+    wines = group.wine_set.all().order_by('appellation_group__my_order')
     appellation_groups = groupby(wines, lambda wine: wine.appellation)
 
     data = [[ '', 'Vintage', 'Bottle', 'Case']]
 
     for appellation, wines in appellation_groups:
-      try: 
-        datarow1 = [Spacer(1, 0.5*cm)]
-        datarow = []
-        datarow.append(Paragraph(appellation.name.upper() ,tableH1))
-        data.append(datarow1)
-        data.append(datarow)
+
+      try:
+        if appellation.name.upper() != "NA":
+          datarow1 = [Spacer(1, 0.5*cm)]
+          datarow = []
+          datarow.append(Paragraph(appellation.name.upper() ,tableH1))
+          data.append(datarow1)
+          data.append(datarow)
       except:
         pass
       try:
         sortedwines = sorted(wines, key=lambda wine: wine.producer.name)
       except AttributeError:
         story.append('Wine missing producer')
-
+    '''
       producer_groups = groupby(sortedwines, lambda wine: wine.producer)
       #producer_groups = sorted(producer_groups, key=lambda wine: (producer.name,)
 
@@ -173,7 +180,21 @@ def createWholesalePriceList(response):
           data.append(datarow)
           for wine in winelist:
             datarow = []
-            datarow.append(Paragraph( "<font color=\"magenta\">%s,%s</font>" % (wine.colour, wine.wine), tableIn))
+
+            def red():
+              return "red"
+            def white():
+              return "green"
+            def rose():
+              return "pink"
+            options = { 'red' : red, 'white' : white, 'rose' : rose }
+            wc = wine.colour
+            try: 
+              colour = options[wc.lower()]()
+            except:
+              colour = 'black'
+            
+            datarow.append(Paragraph( "<font color=\"%s\">%s</font>" % (colour, wine.wine), tableIn))
             datarow.append(wine.vintage)
             try:
               whole_price = wine.wholesale_price

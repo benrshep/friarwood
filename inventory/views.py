@@ -5,11 +5,16 @@ import csv
 from django.shortcuts import render
 
 def index(request):
-    latest_wine_list = Wine.objects.order_by('wine')[:5]
-    context = {'latest_wine_list': latest_wine_list,}
+    wine_list = Wine.objects.order_by('wine')
+    context = {'wine_list': wine_list,}
     return render(request, 'inventory/index.html', context)
+
+def retailView(request):
+	wine_list = Wine.objects.order_by('wine')
+	context = {'wine_list': wine_list,}
+	return render(request, 'inventory/retail.html', context)
     
-def wholesale_list(request):
+def wholesaleList(request):
 	# Create the HttpResponse object with the appropriate PDF headers.
 	response = HttpResponse(content_type='application/pdf')
 	response['Content-Disposition'] = 'attachment; filename="WineList.pdf"'
@@ -20,7 +25,7 @@ def wholesale_list(request):
 	# Return PDF response
 	return response
 
-def retail_list(request):
+def retailList(request):
 	# Create the HttpResponse object with the appropriate PDF headers.
 	response = HttpResponse(content_type='application/pdf')
 	response['Content-Disposition'] = 'attachment; filename="RetailList.pdf"'
@@ -31,7 +36,7 @@ def retail_list(request):
 	# Return PDF response
 	return response
 
-def retail_export(request):
+def retailExport(request):
 	response = HttpResponse(content_type='text/csv')
 	response['Content-Disposition'] = 'attachment; filename="retailexport.csv"'
 	writer = csv.writer(response)
@@ -58,7 +63,7 @@ def retail_export(request):
 
 	return response
 
-def eddy_export(request):
+def eddyExport(request):
 	# Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="shopifyexport.csv"'
@@ -164,7 +169,7 @@ def eddy_export(request):
 
     return response
 
-def shopify_export(request):
+def shopifyExport(request):
     # Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="shopifyexport.csv"'

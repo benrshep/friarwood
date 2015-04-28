@@ -13,9 +13,10 @@ class WineForm(forms.ModelForm):
         'cost_price': forms.TextInput(attrs={'size':'5'}),
         'retail_price': forms.TextInput(attrs={'size':'5'}),
         'wholesale_price': forms.TextInput(attrs={'size':'5'}),
-        'single_size': forms.TextInput(attrs={'size':'5'}),
+        'size': forms.Select(attrs={'style':'width:70px'}),
         'product_code': forms.TextInput(attrs={'size':'9'}),
-        'producer': forms.Select(attrs={'style':'width:180px'}),
+        'producer': forms.Select(attrs={'style':'width:160px'}),
+        'appellation': forms.Select(attrs={'style':'width:160px'}),
         }
 
 class PriceGroupForm(forms.ModelForm):
@@ -105,7 +106,7 @@ class ProducerForm(forms.ModelForm):
 class AppellationForm(forms.ModelForm):
 	class Meta:
 		model = Appellation
-		fields = ('name',)
+		fields = ('name', 'retail_list', 'wholesale_list')
 
 	wines = forms.ModelMultipleChoiceField(
 		queryset=Wine.objects.all(),

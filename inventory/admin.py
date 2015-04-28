@@ -3,7 +3,6 @@ from django.db import models
 from .models import Wine, Producer, Varietal, PriceGroup, Size, Appellation, Employee, WholesaleWine, RetailWine
 
 from .forms import WineForm, PriceGroupForm, VarietalForm, ProducerForm, AppellationForm
-from import_export.admin import ImportExportActionModelAdmin
 from adminsortable2.admin import SortableAdminMixin
 
 # WINE SEARCHER
@@ -14,14 +13,6 @@ from django.shortcuts import get_object_or_404
 #Change admin site titles
 admin.sites.AdminSite.site_header = 'Friarwood Fine Wines'
 admin.sites.AdminSite.site_title = 'Friarwood'
-
-# Resources
-
-from import_export import resources
-
-class WineResource(resources.ModelResource):
-    class Meta:
-        model = Wine
 
 # Register your models here.
 
@@ -41,7 +32,9 @@ class EmployeeAdmin(SortableAdminMixin, admin.ModelAdmin):
 	
 class AppellationAdmin(SortableAdminMixin, admin.ModelAdmin):
 	form = AppellationForm
-	list_display = ('name',)
+	list_display = ('name', 'retail_list', 'wholesale_list')
+	list_editable = ('retail_list', 'wholesale_list')
+	search_fields = ('name',)
 	ordering = ('name',)
 	inlines = (WineInline,)
 
@@ -64,9 +57,7 @@ class VarietalAdmin(admin.ModelAdmin):
 	form = VarietalForm
 	list_display = ('name',)
 	
-class WineAdmin(ImportExportActionModelAdmin):
-
-	resource_class = WineResource
+class WineAdmin(admin.ModelAdmin):
 
 	fieldsets = (
 		(None, {
@@ -90,8 +81,8 @@ class WineAdmin(ImportExportActionModelAdmin):
 
 	list_per_page = 50
 	search_fields = ['short_name' ,'vintage', 'product_code','producer__name']
-	list_display = ['vintage', 'wine', 'producer', 'short_name', 'size', 'product_code', 'cost_price','retail', 'retail_price', 'wholesale', 'wholesale_price']
-	list_editable = ['wine', 'size', 'product_code', 'producer', 'retail', 'wholesale', 'cost_price', 'retail_price', 'wholesale_price']
+	list_display = ['vintage', 'wine', 'size', 'producer', 'appellation', 'short_name', 'product_code', 'cost_price','wholesale_price', 'retail_price', 'wholesale', 'retail', ]
+	list_editable = ['wine', 'size', 'product_code', 'producer', 'appellation', 'retail', 'wholesale', 'cost_price', 'retail_price', 'wholesale_price']
 	
 	def get_changelist_form(self, request, **kwargs):
 		return WineForm

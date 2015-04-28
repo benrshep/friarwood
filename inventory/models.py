@@ -179,6 +179,8 @@ class PriceGroup(models.Model):
 class Appellation(models.Model):
 	"""docstring for  Varietal"""
 	name = models.CharField(max_length=200)
+	retail_list = models.BooleanField(default=False)
+	wholesale_list = models.BooleanField(default=False)
 	country = models.CharField(max_length=200)
 	my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
 

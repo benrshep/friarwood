@@ -36,9 +36,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'import_export',
+    #'import_export',
     'adminsortable2',
-    'twitter_bootstrap',
 )
 
 MIDDLEWARE_CLASSES = (
