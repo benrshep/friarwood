@@ -1,9 +1,8 @@
 from django.http import HttpResponse
-from .models import Wine, PriceGroup
+from inventory.models import Wine, PriceGroup
+from .stylesheet import createWholesalePriceList, createRetailPriceList
 import csv
 from django.shortcuts import render
-
-import pdf.builder as pdf
 
 def index(request):
     wine_list = Wine.objects.order_by('wine')
@@ -14,14 +13,14 @@ def retailView(request):
 	wine_list = Wine.objects.order_by('wine')
 	context = {'wine_list': wine_list,}
 	return render(request, 'inventory/retail.html', context)
-
+    
 def wholesaleList(request):
 	# Create the HttpResponse object with the appropriate PDF headers.
 	response = HttpResponse(content_type='application/pdf')
 	response['Content-Disposition'] = 'attachment; filename="WineList.pdf"'
 	
 	# Create PDF from wine models
-	pdf.createWholesalePriceList(response, PriceGroup)
+	createWholesalePriceList(response)
 
 	# Return PDF response
 	return response
@@ -32,7 +31,7 @@ def retailList(request):
 	response['Content-Disposition'] = 'attachment; filename="RetailList.pdf"'
 	
 	# Create PDF from wine models
-	pdf.createRetailPriceList(response, PriceGroup)
+	createRetailPriceList(response)
 
 	# Return PDF response
 	return response
