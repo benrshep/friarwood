@@ -59,32 +59,26 @@ def drawFooter(canvas):
 def titlePage(canvas, doc):
 	''' A4 Size 210*297 '''
 	canvas.saveState()
-	
 	canvas.setFont('Castellar',34)
 	canvas.drawCentredString(PAGE_WIDTH/2.0, PAGE_HEIGHT-350, 'Friarwood'.upper())
 	canvas.setFont('Times-Roman',18)
 	canvas.drawCentredString(PAGE_WIDTH/2.0, PAGE_HEIGHT-390, 'Fine Wine'.upper())
 	canvas.drawCentredString(PAGE_WIDTH/2.0, 200, 'Price List'.upper())
-	
 	canvas.restoreState()
 
 def tocPage(canvas, doc):
 	canvas.saveState()
-
 	canvas.setFont('Castellar',20)
 	canvas.drawCentredString(PAGE_WIDTH/2.0, PAGE_HEIGHT-40, 'Wholesale Price List'.upper())
 	drawBorder(canvas)
 	drawFooter(canvas)
-	
 	canvas.restoreState()
 
 def defaultPage(canvas, doc):
 	canvas.saveState()
-	
 	canvas.setFont('Castellar',16)
 	drawBorder(canvas)
 	drawFooter(canvas)
-
 	canvas.restoreState()
 
 class MyDocTemplate(BaseDocTemplate):
@@ -106,21 +100,22 @@ class MyDocTemplate(BaseDocTemplate):
 
 	def __init__(self, filename, **kw):
 		
-		self.allowSplitting = 1
+		self.allowSplitting = 0
 		BaseDocTemplate.__init__(self, filename, **kw)
 
 		self.pagesize = A4
 		self.topMargin = 0.5*cm
-		self.bottomMargin = 1*cm
+		self.bottomMargin = 2*cm
 		self.leftMargin = 1*cm
 		self.rightMargin = 1*cm
 		self._calc()
 
-		frameT = Frame(self.topMargin, self.bottomMargin, self.width, self.height, id='normal')
+		frameT = Frame(self.leftMargin, self.bottomMargin, self.width, self.height, 
+			id='normal', showBoundary=1)
 		# Table of contents padding
 		tocP = 3*cm
-		frameTOC = Frame(self.topMargin, self.bottomMargin, self.width, self.height, 
-			leftPadding=tocP, rightPadding=tocP, id='toc')
+		frameTOC = Frame(self.leftMargin, self.bottomMargin, self.width, self.height, 
+			leftPadding=tocP, rightPadding=tocP, id='toc', showBoundary=1)
 
 		titleTemplate = PageTemplate('title', frames=frameT, onPage=titlePage)
 		tocTemplate =PageTemplate('toc', frames=frameTOC, onPage=tocPage)

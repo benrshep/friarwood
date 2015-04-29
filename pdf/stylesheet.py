@@ -26,14 +26,22 @@ styles.add(ParagraphStyle(
   name='Body',
   fontName='Times-Roman',
   fontSize=9,
-  leading=12
+  leading=8
 ))
 
 styles.add(ParagraphStyle(
   name='BodyWine',
   fontName='Times-Roman',
   fontSize=9,
-  leading=12
+  leading=8
+))
+
+styles.add(ParagraphStyle(
+  name='BodyIn',
+  fontName='Times-Roman',
+  fontSize=9,
+  leading=8,
+  leftIndent=10,
 ))
 
 # Price Group
@@ -43,7 +51,6 @@ styles.add(ParagraphStyle(
   fontName='Castellar',
   alignment=TA_CENTER,
   fontSize=18,
-  leading=22,
   spaceAfter=6
 ),alias='h1')
 
@@ -78,7 +85,7 @@ tstyles = {
     ('SIZE', (0,0), (-1,-1), 9),
     ('LINEBELOW', (-3,0), (-1,0), 1, colors.black),
     ('ALIGN', (-3,0), (-1,-1), 'CENTER'),
-    #('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
+    ('GRID', (0,0), (-1,-1), 0.25, colors.gray),
   ]),
   'tnormal' : 
   TableStyle([
@@ -86,7 +93,23 @@ tstyles = {
     ('SIZE', (0,0), (-1,-1), 9),
     #('LINEBELOW', (-3,0), (-1,0), 1, colors.black),
     ('ALIGN', (-3,0), (-1,-1), 'CENTER'),
-    #('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
+    ('GRID', (0,0), (-1,-1), 0.25, colors.gray),
+  ]),
+  'tappellation' : 
+  TableStyle([
+    ('FONT', (0,0), (-1,-1), 'Times-Bold'),
+    ('SIZE', (0,0), (-1,-1), 9),
+    #('LINEBELOW', (-3,0), (-1,0), 1, colors.black),
+    ('ALIGN', (0,0), (-1,-1), 'LEFT'),
+    ('GRID', (0,0), (-1,-1), 0.25, colors.gray),
+  ]),
+  'tproducer' : 
+  TableStyle([
+    ('FONT', (0,0), (-1,-1), 'Times-Roman'),
+    ('SIZE', (0,0), (-1,-1), 9),
+    #('LINEBELOW', (-3,0), (-1,0), 1, colors.black),
+    ('ALIGN', (0,0), (-1,-1), 'LEFT'),
+    ('GRID', (0,0), (-1,-1), 0.25, colors.gray),
   ])
 }
 

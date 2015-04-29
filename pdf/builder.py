@@ -14,100 +14,124 @@ from inventory.models import Wine, PriceGroup
 from .template import MyDocTemplate, addFontFile
 from .stylesheet import styles, tstyles 
 
+from reportlab.lib.colors import CMYKColor, PCMYKColor
 
-def createWholesalePriceList(response, priceGroup):
-	addFontFile()
+title = styles['Title']
+subtitle = styles['sTitle']
+body = styles['Body']
+bodyin = styles['BodyIn']
+bodyWine = styles['BodyWine']
+h1 = styles['h1']
+h2 = styles['h2']
+h3 = styles['h3']
+nh1 = styles['nh1']
+colW = (10.75*cm,1.75*cm,1.75*cm,1.75*cm)
+fullW = sum(colW)
+rowH = 17
+
+def createPriceList(response, wine, mode = 'wholesale'):
+
+	def addTableTitle(title, style):
+		data=[[title]]
+		story.append(Spacer(1, 0.5*cm))
+		story.append(Table(data, colWidths=fullW, style=tstyles[style], rowHeights=rowH))
 	
+	addFontFile()
 	story = []
-	toc = TableOfContents()
 
-	title = styles['Title']
-	subtitle = styles['sTitle']
-	body = styles['Body']
-	bodyWine = styles['BodyWine']
-	h1 = styles['h1']
-	h2 = styles['h2']
-	h3 = styles['h3']
-	nh1 = styles['nh1']
-	colW = (290,50,50,50)
-	fullW = sum(colW)
-	rowH = 19
-
-	toc.levelStyles = [body, body]
-
+	# TITLE PAGE 
 	story.append(NextPageTemplate(['toc']))
 	story.append(PageBreak())
+
+	# TABLE OF CONTENTS
+	toc = TableOfContents()
+	toc.levelStyles = [body, bodyin]
 	story.append(Spacer(1, 2.5*cm))
 	story.append(Paragraph('<b>CONTENTS</b>', body))
 	story.append(Spacer(1, 0.5*cm))
 	story.append(toc)
 	story.append(NextPageTemplate(['normal']))
 	story.append(PageBreak())
-	
 
-	for group in priceGroup.objects.all():
-		story.append(Paragraph(group.name.upper(), h1))
+	# GET ALL WINE OBJECTS
+	if mode == 'retail':
+		wines=wine.objects.filter(
+			retail=True, price_group__isnull=False).order_by(
+			'price_group__my_order', 'appellation__my_order', 'producer__name')
+	else:
+		wines=wine.objects.filter(
+			wholesale=True, price_group__isnull=False).order_by(
+			'price_group__my_order', 'appellation__my_order', 'producer__name')
 
+	## PRICE GROUP START
+	price_groups=groupby(wines, lambda wine: wine.price_group)	
+	for pg, w in price_groups:
+		story.append(Paragraph(pg.name.upper(), h1))
 		# Set header row -> Wine, Vintage, Bottle, Case
-		data = [[ '', '', 'Bottle', 'Case']]
-		t = Table(data, colWidths = colW, style=None, rowHeights=rowH)
-		t.setStyle(tstyles['theader'])
+		data=[[ '', 'Vintage', 'Bottle', 'Case']]
 		story.append(Spacer(1, 1*cm))
-		story.append(t)
+		story.append(Table(
+			data, 
+			colWidths=colW, 
+			style=tstyles['theader'], 
+			rowHeights=rowH
+		))
 
-		wines = group.wine_set.all().order_by('appellation__my_order')
-		appellation_groups = groupby(wines, lambda wine: wine.appellation)
-		
-		# Add headers for Appelations if activated in Admin
-		for appellation, wines in appellation_groups:
-			if appellation.wholesale_list:
-				story.append(Paragraph(appellation.name.upper(), h2))
-			
-			try:
-				sortedwines = sorted(wines, key=lambda wine: wine.producer.name)
-			except AttributeError:
-				story.append('Wine missing producer')
-			
-			producer_groups = groupby(sortedwines, lambda wine: wine.producer)
+	## PRICE GROUP END
+		# APPELLATION GROUP START	
+		appellation_groups=groupby(w, lambda wine: wine.appellation)
+		for a, w in appellation_groups:
 
-			# Add headers for producers if wines exist
-			for producer, wines in producer_groups:
-				#winelist = sorted(wines, key=lambda wine: wine.vintage)
-				winelist = sorted(wines, key=lambda wine: wine.wine)
-				winelist = [elem for elem in winelist if elem.wholesale == True]
-				if winelist == []:
-					#story.append(Paragraph('<b>NO WINES</b>', body))
-					pass
-				else:
-					data = []
-					datarow = [Paragraph(producer.name.upper() ,h3)]
+			if a.retail_list and mode is 'retail' or a.wholesale_list:
+				addTableTitle(a.name.upper(), 'tappellation')
+
+		# APPELLATION GROUP END
+			# PRODUCER GROUP START			
+			producer_groups=groupby(w, lambda wine: wine.producer)
+			for p, wines in producer_groups:
+				addTableTitle(p.name.upper(), 'tproducer')
+
+				#w = sorted(w, key=lambda wine: wine.vintage)
+				#w = sorted(w, key=lambda wine: wine.size.size)
+				#w = sorted(w, key=lambda wine: wine.wine)
+				data = []
+				row = 0
+				wine_colours = []
+				for w in wines:	
+					datarow = []
+					if w.size.name == 'Bottle':
+						wine_name = w.wine
+					else:
+						wine_name = "%s - %s" % (w.wine, w.size)
+					
+					colour = {
+						None : PCMYKColor(0,0,0,100),
+						'' : PCMYKColor(0,0,0,100),
+						'Ro' : PCMYKColor(0,76,23,9),
+						'W' : PCMYKColor(84,0,100,42),
+						'R' : PCMYKColor(0,89,100,9)
+					}
+					wine_colour = w.colour
+
+					#Set wine colour
+					wine_colours.append(('TEXTCOLOR',(0,row),(0,row), colour[wine_colour]))
+					datarow.append( "%s" % (wine_name))
+					#set default colour
+						
+					datarow.append(w.vintage)
+					try:
+						whole_price = w.wholesale_price
+					except ValueError:
+						whole_price = 0.0
+					datarow.append("%s%.2f" % (u"\u00A3" , whole_price))
+					datarow.append("%s%.2f" % (u"\u00A3" , w.wholesale_case_price))
 					data.append(datarow)
-					t = Table(data, colWidths = fullW, style=None, rowHeights=rowH)
-					#t.setStyle(tstyles['tnormal'])
-					story.append(Spacer(1, 1*cm))
-					story.append(t)
+					row += 1
+				t = Table(data, colWidths = colW, style=tstyles['tnormal'], rowHeights=rowH)
+				t.setStyle(TableStyle(wine_colours))
+				story.append(t)
 
-					# Add wines for producer
-					data = []
-					for wine in winelist:
-						datarow = []
-
-						if wine.size.name == 'Bottle':
-							wine_name = wine.wine
-						else:
-							wine_name = "%s - %s" % (wine.wine, wine.size)
-						datarow.append(Paragraph( "<font color=\"black\">%s</font>" % (wine_name), bodyWine))
-						datarow.append(wine.vintage)
-						try:
-							whole_price = wine.wholesale_price
-						except ValueError:
-							whole_price = 0.0
-						datarow.append("%s%.2f" % (u"\u00A3" , whole_price))
-						datarow.append("%s%.2f" % (u"\u00A3" , wine.wholesale_case_price))
-						data.append(datarow)
-
-					t = Table(data, colWidths = colW, style=tstyles['tnormal'], rowHeights=rowH)
-					story.append(t)
+			# PRODUCER GROUP END
 
 		story.append(PageBreak())
 

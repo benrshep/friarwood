@@ -21,7 +21,7 @@ def wholesaleList(request):
 	response['Content-Disposition'] = 'attachment; filename="WineList.pdf"'
 	
 	# Create PDF from wine models
-	pdf.createWholesalePriceList(response, PriceGroup)
+	pdf.createPriceList(response, Wine, 'wholesale')
 
 	# Return PDF response
 	return response
@@ -32,7 +32,7 @@ def retailList(request):
 	response['Content-Disposition'] = 'attachment; filename="RetailList.pdf"'
 	
 	# Create PDF from wine models
-	pdf.createRetailPriceList(response, PriceGroup)
+	pdf.createPriceList(response, Wine, 'retail')
 
 	# Return PDF response
 	return response
