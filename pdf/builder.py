@@ -11,7 +11,7 @@ from itertools import groupby
 
 from inventory.models import Wine, PriceGroup
 
-from .template import MyDocTemplate, addFontFile
+from .template import MyDocTemplate, addFontFile, wineTable
 from .stylesheet import styles, tstyles 
 
 from reportlab.lib.colors import CMYKColor, PCMYKColor
@@ -82,8 +82,12 @@ def createPriceList(response, wine, mode = 'wholesale'):
 		appellation_groups=groupby(w, lambda wine: wine.appellation)
 		for a, w in appellation_groups:
 
-			if a.retail_list and mode is 'retail' or a.wholesale_list:
-				addTableTitle(a.name.upper(), 'tappellation')
+			if a.retail_list or a.wholesale_list:
+				data=[[a.name.upper()]]
+				story.append(Spacer(1, 0.5*cm))
+				t = wineTable(data, colWidths=fullW, style=tstyles['tappellation'], rowHeights=rowH)
+				t.name = a.name.upper()
+				story.append(t)
 
 		# APPELLATION GROUP END
 			# PRODUCER GROUP START			

@@ -85,7 +85,7 @@ tstyles = {
     ('SIZE', (0,0), (-1,-1), 9),
     ('LINEBELOW', (-3,0), (-1,0), 1, colors.black),
     ('ALIGN', (-3,0), (-1,-1), 'CENTER'),
-    ('GRID', (0,0), (-1,-1), 0.25, colors.gray),
+    #('GRID', (0,0), (-1,-1), 0.25, colors.gray),
   ]),
   'tnormal' : 
   TableStyle([
@@ -93,7 +93,7 @@ tstyles = {
     ('SIZE', (0,0), (-1,-1), 9),
     #('LINEBELOW', (-3,0), (-1,0), 1, colors.black),
     ('ALIGN', (-3,0), (-1,-1), 'CENTER'),
-    ('GRID', (0,0), (-1,-1), 0.25, colors.gray),
+    #('GRID', (0,0), (-1,-1), 0.25, colors.gray),
   ]),
   'tappellation' : 
   TableStyle([
@@ -101,7 +101,7 @@ tstyles = {
     ('SIZE', (0,0), (-1,-1), 9),
     #('LINEBELOW', (-3,0), (-1,0), 1, colors.black),
     ('ALIGN', (0,0), (-1,-1), 'LEFT'),
-    ('GRID', (0,0), (-1,-1), 0.25, colors.gray),
+    #('GRID', (0,0), (-1,-1), 0.25, colors.gray),
   ]),
   'tproducer' : 
   TableStyle([
@@ -109,7 +109,7 @@ tstyles = {
     ('SIZE', (0,0), (-1,-1), 9),
     #('LINEBELOW', (-3,0), (-1,0), 1, colors.black),
     ('ALIGN', (0,0), (-1,-1), 'LEFT'),
-    ('GRID', (0,0), (-1,-1), 0.25, colors.gray),
+    #('GRID', (0,0), (-1,-1), 0.25, colors.gray),
   ])
 }
 

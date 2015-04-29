@@ -1,6 +1,6 @@
 from reportlab.lib.styles import ParagraphStyle as PS
 from reportlab.platypus import PageBreak
-from reportlab.platypus.paragraph import Paragraph
+from reportlab.platypus import Paragraph, Table
 from reportlab.platypus.doctemplate import PageTemplate, BaseDocTemplate
 from reportlab.platypus.tableofcontents import TableOfContents
 from reportlab.platypus.frames import Frame
@@ -18,6 +18,9 @@ pageinfo = "Wine List"
 address = "26 New Kings Road, LONDON SW6 4ST"
 phone = "T:+44 (0) 20 7736 2628  F:+44 (0) 20 7731 0411"
 PAGE_WIDTH, PAGE_HEIGHT = A4
+
+class wineTable(Table):
+	name = 'test'
 
 def addFontFile(font='castellar'):
 
@@ -111,11 +114,11 @@ class MyDocTemplate(BaseDocTemplate):
 		self._calc()
 
 		frameT = Frame(self.leftMargin, self.bottomMargin, self.width, self.height, 
-			id='normal', showBoundary=1)
+			id='normal', showBoundary=0)
 		# Table of contents padding
 		tocP = 3*cm
 		frameTOC = Frame(self.leftMargin, self.bottomMargin, self.width, self.height, 
-			leftPadding=tocP, rightPadding=tocP, id='toc', showBoundary=1)
+			leftPadding=tocP, rightPadding=tocP, id='toc', showBoundary=0)
 
 		titleTemplate = PageTemplate('title', frames=frameT, onPage=titlePage)
 		tocTemplate =PageTemplate('toc', frames=frameTOC, onPage=tocPage)
@@ -135,5 +138,9 @@ class MyDocTemplate(BaseDocTemplate):
 				self.notify('TOCEntry', (0, text, self.page))
 			if style == 'Heading2':
 				self.notify('TOCEntry', (1, text, self.page))
+		if flowable.__class__.__name__ == 'wineTable':
+			text = flowable.name
+			#style = flowable.style.name
+			self.notify('TOCEntry', (1, text, self.page))
 
 
