@@ -1,33 +1,23 @@
-from reportlab.platypus.doctemplate import _doNothing
-from reportlab.platypus.doctemplate import PageTemplate, BaseDocTemplate, NextPageTemplate
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, Image, Table, TableStyle
-from reportlab.pdfgen import canvas
-from reportlab.platypus.frames import Frame
+from reportlab.platypus.doctemplate import NextPageTemplate
+from reportlab.platypus import Paragraph, Spacer, PageBreak, Image, Table, TableStyle
 from reportlab.platypus.tableofcontents import TableOfContents
-from reportlab.lib.styles import ParagraphStyle as PS
+
+from reportlab.pdfgen import canvas
 
 from reportlab.lib.units import cm
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.lib.enums import TA_LEFT, TA_CENTER
 from reportlab.lib import colors
-from reportlab.lib.pagesizes import A4
-
-from reportlab.rl_config import defaultPageSize
-from reportlab.pdfbase import pdfmetrics
 
 from itertools import groupby
 
 from inventory.models import Wine, PriceGroup
 
 from .template import MyDocTemplate, addFontFile
-
 from .stylesheet import styles, tstyles 
 
 
 def createWholesalePriceList(response, priceGroup):
-
 	addFontFile()
-
+	
 	story = []
 	toc = TableOfContents()
 
@@ -58,20 +48,21 @@ def createWholesalePriceList(response, priceGroup):
 	for group in priceGroup.objects.all():
 		story.append(Paragraph(group.name.upper(), h1))
 
-		wines = group.wine_set.all().order_by('appellation__my_order')
-		appellation_groups = groupby(wines, lambda wine: wine.appellation)
-
 		# Set header row -> Wine, Vintage, Bottle, Case
 		data = [[ '', '', 'Bottle', 'Case']]
 		t = Table(data, colWidths = colW, style=None, rowHeights=rowH)
 		t.setStyle(tstyles['theader'])
 		story.append(Spacer(1, 1*cm))
 		story.append(t)
+
+		wines = group.wine_set.all().order_by('appellation__my_order')
+		appellation_groups = groupby(wines, lambda wine: wine.appellation)
 		
 		# Add headers for Appelations if activated in Admin
 		for appellation, wines in appellation_groups:
 			if appellation.wholesale_list:
 				story.append(Paragraph(appellation.name.upper(), h2))
+			
 			try:
 				sortedwines = sorted(wines, key=lambda wine: wine.producer.name)
 			except AttributeError:

@@ -71,7 +71,6 @@ styles.add(ParagraphStyle(
   fontSize=9,
 ),alias='h3')
 
-
 tstyles = { 
   'theader' : 
   TableStyle([
@@ -84,6 +83,7 @@ tstyles = {
   'tnormal' : 
   TableStyle([
     ('FONT', (0,0), (-1,-1), 'Times-Roman'),
+    ('SIZE', (0,0), (-1,-1), 9),
     #('LINEBELOW', (-3,0), (-1,0), 1, colors.black),
     ('ALIGN', (-3,0), (-1,-1), 'CENTER'),
     #('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),

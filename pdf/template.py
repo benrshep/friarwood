@@ -6,8 +6,10 @@ from reportlab.platypus.tableofcontents import TableOfContents
 from reportlab.platypus.frames import Frame
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.units import cm
+
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase.pdfmetrics import registerFontFamily
 
 from reportlab.lib.colors import gray
 
@@ -18,13 +20,9 @@ phone = "T:+44 (0) 20 7736 2628  F:+44 (0) 20 7731 0411"
 PAGE_WIDTH, PAGE_HEIGHT = A4
 
 def addFontFile(font='castellar'):
-	afmFile = '%s.afm' % font.lower()
-	pfbFile = '%s.pfb' % font.lower()
-	justFace = pdfmetrics.EmbeddedType1Face(afmFile, pfbFile)
-	faceName = font.title() # pulled from AFM file
-	pdfmetrics.registerTypeFace(justFace)
-	justFont = pdfmetrics.Font(font.title(),faceName,'WinAnsiEncoding')
-	pdfmetrics.registerFont(justFont)
+
+	pdfmetrics.registerFont(TTFont('Castellar', 'castellar.ttf'))
+	registerFontFamily('Castellar',normal='Castellar',bold='Castellar',italic='Castellar',boldItalic='Castellar')
 
 def drawBorder(canvas):
 	canvas.setStrokeColorCMYK(0, 0, 0, 20)
